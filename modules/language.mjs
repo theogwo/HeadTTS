@@ -1,0 +1,458 @@
+import * as utils from "./utils.mjs";
+
+// Base class for language modules
+class LanguageBase {
+
+  /**
+  * @constructor
+  */
+  constructor( settings = null ) {
+    this.settings = Object.assign({
+      trace: false
+    }, settings || {});
+
+    // Whitespace characters
+    this.whitespaces = {
+      " ": " ", "\n": "\n", "\t": "\t", "\r": "\r", "\v": "\v", "\f": "\f",
+      "\u00A0": "\u00A0", "\u1680": "\u1680", "\u2000": "\u2000",
+      "\u2001": "\u2001", "\u2002": "\u2002", "\u2003": "\u2003",
+      "\u2004": "\u2004", "\u2005": "\u2005", "\u2006": "\u2006",
+      "\u2007": "\u2007", "\u2008": "\u2008", "\u2008": "\u2008",
+      "\u2009": "\u2009", "\u200A": "\u200A", "\u2028": "\u2028",
+      "\u2029": "\u2029", "\u202F": "\u202F", "\u205F": "\u205F"
+    };
+
+    // Misaki tokens to Oculus visemes
+    this.misakiToOculusViseme = {
+      "$": null, ";": null, ":": null, ",": null, ".": null, "!": null,
+      "?": null, "—": null, "…": null, "\"": null, "(": null, ")": null,
+      "“": null, "”": null, " ": null, "\u0303": null, "ʣ": "DD", "ʥ": "CH",
+      "ʦ": "CH", "ʨ": "CH", "ᵝ": null, "ꭧ": null, "A": "E", "I": "I",
+      "O": "O", "Q": "O", "S": "SS", "T": "DD", "W": "U", "Y": "I",
+      "ᵊ": null, "a": "aa", "b": "PP", "c": "kk", "d": "DD", "e": "E",
+      "f": "FF", "h": null, "i": "I", "j": "I", "k": "kk", "l": "RR",
+      "m": "PP", "n": "nn", "o": "O", "p": "PP", "q": "kk", "r": "RR",
+      "s": "SS", "t": "DD", "u": "U", "v": "FF", "w": "U", "x": "SS",
+      "y": "I", "z": "SS", "ɑ": "aa", "ɐ": "aa", "ɒ": "aa", "æ": "aa",
+      "β": "FF", "ɔ": "O", "ɕ": "SS", "ç": "SS", "ɖ": "DD", "ð": "TH", "ʤ":
+      "CH", "ə": "E", "ɚ": "RR", "ɛ": "E", "ɜ": "E", "ɟ": "DD", "ɡ": "kk",
+      "ɥ": "U", "ɨ": "I", "ɪ": "I", "ʝ": "I", "ɯ": "U", "ɰ": "U", "ŋ": "nn",
+      "ɳ": "nn", "ɲ": "nn", "ɴ": "nn", "ø": "O", "ɸ": "FF", "θ": "TH",
+      "œ": "E", "ɹ": "RR", "ɾ": "DD", "ɻ": "RR", "ʁ": "RR", "ɽ": "RR",
+      "ʂ": "SS", "ʃ": "SS", "ʈ": "DD", "ʧ": "CH", "ʊ": "U", "ʋ": "FF",
+      "ʌ": "aa", "ɣ": null, "ɤ": "O", "χ": null, "ʎ": "RR", "ʒ": "SS",
+      "ʔ": null, "ˈ": null, "ˌ": null, "ː": null, "ʰ": null, "ʲ": null,
+      "↓": null, "→": null, "↗": null, "↘": null, "ᵻ": "I"
+    };
+
+    // Allowed letters in upper case
+    // NOTE: Diacritics will be removed unless added to this object.
+    this.normalizedLettersUpper = {
+      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'G', 'D': 'D',
+      'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K',
+      'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R',
+      'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y',
+      'Z': 'Z', 'ß': 'SS', 'Ø': 'O', 'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D',
+      'Þ': 'TH', 'Ł': 'L',
+    };
+
+    // Allowed punctuations
+    this.punctuations = {
+      ";": ";", ":": ":", ",": ",", ".": ".", "!": "!", "?": "?", "¡": "!",
+      "¿": "?", "—": "—", '"': '"', "…": "…", "«": '"', "»": '"', "“": "“",
+      "”": "”", "(": "(", ")": ")", "{": "(", "}": ")", "[": "(", "]": ")",
+      " ": " ", "-": "-", "'": "'"
+    };
+
+    // Allowed punctuations in mid-word
+    this.punctuationsMidWord = {
+      "-": "-", "'": "'", ".": ".", ",": ","
+    }
+
+    if ( this.settings.trace ) {
+      utils.trace( 'Language base module initiated.' );
+    }
+  }
+
+  /**
+  * Convert number to words.
+  *
+  * @param {number|string} num Number
+  * @return {string} String
+  */
+  convertNumberToWords(num){
+    throw new Error("The method convertNumberToWords not implemented.");
+  }
+
+  /**
+  * Convert graphemes to phonemes.
+  *
+  * @param {string} s Word
+  * @return {string[]} Array of phonemes
+  */
+  phonemizeWord(s) {
+    throw new Error("The method phonemizeWord not implemented.");
+  }
+
+  /**
+  * Load pronouncing dictionary.
+  *
+  * @param {string} [dictionary=null] Dictionary path/url. If null, do not use dictionaries
+  * @param {boolean} [force=false] If true, re-load even if already loaded.
+  */
+  async loadDictionary( dictionary = null, force = false ) {
+
+    if ( this.dictionary && !force ) return;
+    this.dictionary = null;
+    if ( dictionary ) {
+
+      // Process one CSV line
+      const processLine = (s) => {
+        if ( s.startsWith(";;;") ) return; // Comment
+        const fields = s.split("\t");
+        if ( fields.length >= 2) {
+          const word = fields[0];
+          const phonemes = fields[1].split("");
+          this.dictionary[word] = phonemes;
+        }
+      };
+
+      // Use stream to read the file
+      if ( utils.isNode() ) {
+        const fs = await import('node:fs');
+        const readline = await import('node:readline');
+        let stream = fs.createReadStream(dictionary, { encoding: 'utf8' });
+        const rl = readline.createInterface({
+          input: stream,
+          crlfDelay: Infinity
+        });
+        this.dictionary = {};
+        for await (const line of rl) {
+          processLine(line);
+        }
+      } else {
+        const response = await fetch(dictionary);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder(); // Defaults to utf-8
+        let buffer = "";
+        this.dictionary = {};
+        while (true) {
+          const { value, done } = await reader.read();
+          let lines;
+          if (done) {
+            lines = [buffer];
+          } else {
+            buffer += decoder.decode(value, { stream: true });
+            lines = buffer.split(/\r?\n/);
+            buffer = lines.pop(); // Save the incomplete line
+          }
+          for (const line of lines) {
+            processLine(line);
+          }
+          if ( done ) break;
+        }
+      }
+    }
+
+    if ( this.settings.trace ) {
+      utils.trace( 'Language dictionary "' + dictionary + '" loaded.' );
+    }
+
+  }
+
+
+  /**
+  * Split text string in parts that contain one word.
+  * Each part is split from the first letter of the word, except
+  * the first part, which starts from the beginning including
+  * leading spaces, if any.
+  *
+  * @param {string} s Text string
+  * @return {string[]} Array of parts
+  */
+  splitText(s) {
+
+    const parts = [];
+    const chars = [...s];
+    const len = chars.length;
+    let i = 0;
+    let lastType = 0; // 0=unknown, 1=whitespace, 2=other
+    let foundWord = false;
+    let part = "";
+    while( i<len ) {
+      const isLast = i === (len-1);
+      const c = chars[i];
+      const type = this.whitespaces.hasOwnProperty(c) ? 1 : 2;
+
+      if ( isLast ) {
+        parts.push(part+c);
+      } else if ( foundWord && type === 2 && type !== lastType) {
+        parts.push(part);
+        part = c;
+        lastType = type;
+        foundWord = type === 2;
+      } else {
+        part += c;
+        lastType = type;
+        foundWord = foundWord || type === 2;
+      }
+
+      i++;
+    }
+    return parts;
+
+  }
+
+  /**
+  * Normalize text and set it to uppercase.
+  *
+  * @param {string} s Text string
+  * @return {string[]} Normalized array of characters in upper case.
+  */
+  normalizeUpper(s) {
+    const norm = [];
+    const chars = [...s.toUpperCase()];
+    const len = chars.length;
+    let i=0;
+    while( i<len ) {
+      let c = chars[i];
+      if ( this.normalizedLettersUpper.hasOwnProperty(c) ) {
+        norm.push( this.normalizedLettersUpper[c] );
+      } else if ( this.punctuations.hasOwnProperty(c) ) {
+        norm.push( this.punctuations[c] );
+      } else {
+        c = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").normalize("NFC");
+        if ( this.normalizedLettersUpper.hasOwnProperty(c) ) {
+          norm.push( this.normalizedLettersUpper[c] );
+        }
+      }
+      i++;
+    }
+    return norm;
+  }
+
+  /**
+  * Set the text to be spoken by analysing the part content.
+  * NOTE: Only `text` type currently supported.
+  * TODO: Add support for other types.
+  *
+  * @param {Object} part Part object
+  */
+  partSetText(part) {
+
+    if ( !part.hasOwnProperty("type") ) {
+      const s = part.subtitles;
+      if ( s ) {
+        const num = s.replace(/,/g, '').trim();
+        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
+          part.text = this.convertNumberToWords(num);
+        } else {
+          part.type = "text";
+          part.text = s;
+        }
+      }
+    } else {
+      // TODO: Other types.
+    }
+
+  }
+
+
+  /**
+  * Divide the given part into punctionations and words.
+  * NOTE: Only `text` type currently supported.
+  * TODO: Add support for other types.
+  *
+  * @param {Object} part Part object
+  */
+  partSetSpeak(part) {
+
+    part.speak = [];
+
+    if ( part.text && typeof part.text === "string" ) {
+      const chars = this.normalizeUpper(part.text);
+      const len = chars.length;
+      let i=0;
+      let word = "";
+      let lastType = 0; // 0=Unknown, 1=punctuation, 2=word
+      while( i<len ) {
+        const isLast = i === (len-1);
+        const c = chars[i];
+        const cNext = isLast ? null : chars[i+1];
+        const isPunctuation = this.punctuations.hasOwnProperty(c);
+        const isPunctuationMid = !isLast && this.punctuationsMidWord.hasOwnProperty(c) && !this.punctuations.hasOwnProperty(cNext);
+        const type = (isPunctuation && !isPunctuationMid) ? 1 : 2;
+
+        if ( type === lastType ) {
+          word += c;
+        } else {
+          if ( word ) {
+            part.speak.push({ type: lastType, word: word });
+            word = "";
+          }
+          word = c;
+          lastType = type;
+        }
+        if ( isLast && word ) {
+          part.speak.push({ type, word });
+        }
+        i++;
+      }
+    }
+
+  }
+
+  /**
+  * Construct `phonemes` from speakable words and punctuations.
+  *
+  * @param {Object} part Part object
+  */
+  partSetPhonemes(part) {
+
+    // Initialize
+    part.phonemes = [];
+
+    if ( part.speak && Array.isArray(part.speak) ) {
+      const len = part.speak.length;
+      let i = 0;
+      while ( i<len ) {
+        const s = part.speak[i];
+        if ( s.type === 1 ) {
+          part.phonemes.push(...s.word);
+        } else if ( s.type === 2 ) {
+          part.phonemes.push(...this.phonemizeWord(s.word));
+        }
+        i++;
+      }
+    }
+
+  }
+
+  /**
+  * Construct `visemes` from `phonemes`.
+  *
+  * @param {Object} part Part object
+  */
+  partSetVisemes(part) {
+
+    // Initialize
+    part.visemes = [];
+
+    // Map
+    if ( part.phonemes && Array.isArray(part.phonemes)) {
+      part.phonemes.forEach( ph => {
+        if ( this.misakiToOculusViseme.hasOwnProperty(ph) ) {
+          part.visemes.push( this.misakiToOculusViseme[ph] );
+        } else {
+          console.error('Viseme not found for "' + ph + '"');
+          part.visemes.push(null)
+        }
+      });
+    }
+
+  }
+
+
+  /**
+  * Generate phonemes and TalkingHead metadata from input.
+  * NOTE: Starting times and durations in `metadata` refer to phoneme
+  * start and end indices respectively.
+  *
+  * @param {string|Object[]} input Input element
+  * @return {Object} `phonemes` array and TalkingHead `metadata` template
+  */
+  generate(input) {
+
+    if ( this.settings.trace ) {
+      utils.trace( 'Generate start, input=', input );
+    }
+
+    // Output data
+    let phonemes = [];
+    const metadata = {
+      words: [], wtimes: [], wdurations: [],
+      visemes: [], vtimes: [], vdurations: []
+    };
+
+    // Add item to output
+    const addPart = (part) => {
+
+      // Populate
+      this.partSetText(part);
+      if ( part.hasOwnProperty("phonemes") ) {
+        if ( typeof part.phonemes === "string" ) {
+          part.phonemes = [...part.phonemes];
+        }
+      } else {
+        this.partSetSpeak(part);
+        this.partSetPhonemes(part);
+      }
+      this.partSetVisemes(part);
+
+      if ( this.settings.trace ) {
+        utils.trace( 'Generate, part=', part );
+      }
+
+      // Create output
+      metadata.words.push( part.subtitles );
+      metadata.wtimes.push( phonemes.length );
+      const len = part.phonemes.length
+      let i = phonemes.length; // Phoneme index
+      for( let j=0; j<len; j++ ) {
+
+        // Phonemes
+        const ph = part.phonemes[j];
+        phonemes.push( ph );
+
+        // Visemes
+        const viseme = part.visemes[j];
+        if ( viseme ) {
+          metadata.visemes.push(viseme);
+          metadata.vtimes.push(i);
+          i = phonemes.length;
+          metadata.vdurations.push(i);
+        } else {
+
+          // Custom timing
+          if ( ph === "ˈ" || ph === "ˌ" ) {
+            // Do not update startingtime
+          } else if ( ph === "ː" ) {
+            i = phonemes.length;
+            const len2 = metadata.visemes.length;
+            if ( len2 ) {
+              metadata.vdurations[len2-1] = i;
+            }
+          } else {
+            i = phonemes.length;
+          }
+
+        }
+      }
+      metadata.wdurations.push( phonemes.length );
+    };
+
+    // Break into parts
+    const inputs = Array.isArray(input) ? input : [input];
+    inputs.forEach( x => {
+      if ( typeof x === "string" ) {
+        const parts = this.splitText(x);
+        parts.forEach( y => {
+          addPart({ subtitles: y });
+        });
+      } else {
+        addPart(x);
+      }
+    });
+
+    if ( this.settings.trace ) {
+      utils.trace( 'Generate end, output=', { phonemes, metadata } );
+    }
+
+    // Output
+    return { phonemes, metadata };
+
+  }
+
+}
+
+export { LanguageBase };

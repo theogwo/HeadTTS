@@ -1,0 +1,8 @@
+index.html linguist-detectable=false
+.* export-ignore
+*.html export-ignore
+*.jpg export-ignore
+*.js export-ignore
+README.md export-ignore
+avatars export-ignore
+voices export-ignore
