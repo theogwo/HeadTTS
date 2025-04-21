@@ -403,7 +403,7 @@ memory consumption becomes a concern.
 Unofficial latency results using my own test app:
 
 TTS Engine | Setup |`FIL`|`FBL`|`RTF`
----|---|---|---|---|---|---|---
+---|---|---|---|---
 HeadTTS, client | Chrome, WebGPU/fp32 | 9.4s | 958ms | 0.30
 HeadTTS, client | Edge, WebGPU/fp32 | 8.7s | 913ms | 0.28
 HeadTTS, client | Chrome, WASM/q4 | 88.4s | 8752ms | 2.87
