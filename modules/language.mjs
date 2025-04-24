@@ -344,7 +344,7 @@ class LanguageBase {
         if ( this.misakiToOculusViseme.hasOwnProperty(ph) ) {
           part.visemes.push( this.misakiToOculusViseme[ph] );
         } else {
-          console.error('Viseme not found for "' + ph + '"');
+          // console.info('Viseme not found for "' + ph + '"');
           part.visemes.push(null)
         }
       });
