@@ -1,7 +1,7 @@
 # HeadTTS
 
 > [!IMPORTANT]
-> This project is UNDER CONSTRUCTION and not yet fully tested.
+> This project is **UNDER CONSTRUCTION** and not yet fully tested.
 Specifications and used technologies and libraries may change without notice.
 
 **HeadTTS** is an JavaScript text-to-speech (TTS) solution
@@ -29,7 +29,8 @@ The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License)
 (Apache 2.0 License) and
 [onnx-community/Kokoro-82M-v1.0-ONNX-timestamped](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
 (Apache 2.0 License) as runtime dependencies. For information on
-language modules and dictionaries, see Appendix B.
+language modules and dictionaries, see Appendix B. Using
+[jest](https://jestjs.io) for testing.
 
 ---
 
@@ -186,8 +187,8 @@ Command line options:
 
 Option|Description|Default
 ---|---|---
-`--config <file>` | JSON configuration file name. | `./headtts-node.json`
-`--trace <0-256>` | Bitmask for tracing different subsystems, `0`=none, `255`=all:<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P, graphemes-to-phonemes</li><li>Bit 4 (16): Language modules</li></ul> | `0`
+`--config [file]` | JSON configuration file name. | `./headtts-node.json`
+`--trace [0-255]` | Bitmask for tracing different subsystems, `0`=none, `255`=all:<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P, graphemes-to-phonemes</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
 JSON configuration file properties:
 
@@ -313,7 +314,7 @@ RESTful server API is a more simple alternative for WebSocket API.
 ### POST `/v1/synthesize`
 
 JSON | Description
----|---|---
+---|---
 `input` | Input to synthesize. For a string of text, maximum 500 characters.
 `voice` | Voice name.
 `language` | Language code.

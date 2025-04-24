@@ -1,4 +1,4 @@
 node_modules/
-test
 tools
+tmp
 .DS_Store

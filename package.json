@@ -8,15 +8,16 @@
     "README.md",
     "LICENSE",
     "headttsd.json",
-    "modules/"
+    "modules/",
+    "dictionaries/"
   ],
   "dependencies": {
-    "ws": "^8.18.1",
-    "@huggingface/transformers": "^3.4.2"
+    "@huggingface/transformers": "^3.4.2",
+    "ws": "^8.18.1"
   },
   "scripts": {
     "start": "node ./modules/headtts-node.mjs",
-    "test": "echo \"No tests yet. Coming soon!\"",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "postinstall": "mkdir -p -m 777 ./node_modules/@huggingface/transformers/.cache"
   },
   "repository": {
@@ -33,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/met4citizen/HeadTTS/issues"
   },
-  "homepage": "https://github.com/met4citizen/HeadTTS#readme"
+  "homepage": "https://github.com/met4citizen/HeadTTS#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
