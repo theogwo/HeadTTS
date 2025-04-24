@@ -396,16 +396,22 @@ class Language extends LanguageBase {
   * @return {string} String
   */
   convertNumberToWords(num){
-    if(num == "0"){
+    const n = parseFloat(num);
+    if (num == "0") {
       return "ZERO";
-    } else if(num.startsWith('0')){
-      return this.convertDigitByDigit(num);
+    } else if(num.toString().startsWith('0')){
+      return this.convertDigitByDigit(num).trim();
+    } else if (num < 0 ) {
+      return "MINUS " + this.convertNumberToWords( Math.abs(num).toString() ).trim();
+    } else if ( n && !Number.isInteger(n) ) {
+      const parts = n.toString().split('.');
+      return this.convertNumberToWords(parts[0]).trim() + " POINT " + this.convertDigitByDigit(parts[1]).trim();
     } else if ((num<1000&&num>99)||(num>10000&&num<1000000)) { //read area and zip codes digit by digit
-      return this.convertDigitByDigit(num);
+      return this.convertDigitByDigit(num).trim();
     } else if ((num > 1000 && num < 2000)||(num>2009&&num<3000)) { //read years as two sets of two digits
-      return (num % 100 != 0 ? this.convertSetsOfTwo(num) : this.convertTens(num.substring(0, 2)) + " HUNDRED");
+      return (num % 100 != 0 ? this.convertSetsOfTwo(num).trim() : this.convertTens(num.toString().substring(0, 2)).trim() + " HUNDRED");
     } else {
-      return this.convertMillions(num);
+      return this.convertMillions(num).trim();
     }
   }
 
