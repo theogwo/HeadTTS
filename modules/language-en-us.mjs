@@ -18,12 +18,11 @@ class Language extends LanguageBase {
     // Allowed letters in upper case
     // NOTE: Diacritics will be removed unless added to this object.
     this.normalizedLettersUpper = {
-      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'G', 'D': 'D',
-      'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K',
-      'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R',
-      'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y',
-      'Z': 'Z', 'ß': 'SS', 'Ø': 'O', 'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D',
-      'Þ': 'TH', 'Ł': 'L',
+      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G',
+      'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N',
+      'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U',
+      'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z', 'ß': 'SS', 'Ø': 'O',
+      'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D', 'Þ': 'TH', 'Ł': 'L'
     };
 
     // English words to phonemes, algorithmic rules adapted from:
@@ -418,7 +417,7 @@ class Language extends LanguageBase {
   /**
   * Convert graphemes to phonemes.
   *
-  * @param {string} s Word
+  * @param {string} s Word, normalized and in upper case
   * @return {string[]} Array of phonemes
   */
   phonemizeWord(s) {
