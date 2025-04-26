@@ -17,22 +17,127 @@ class Language extends LanguageBase {
 
     // Add finnish letters with diaritics (upper case)
     // NOTE: Diacritics will be removed unless added to this object.
-    Object.assign( this.normalizedLettersUpper, { "Ä": "Ä", "Ö": "Ö", "Å": "Å" } );
-
-    // Finnish letters to phonemes
-    this.fiLettersToMisaki = {
-
-      'A': ['ɑ'], 'AA': ['ɑ','ː'], 'E': ['e'], 'EE': ['e','ː'], 'I': ['i'],
-      'II': ['i','ː'], 'O': ['o'], 'OO': ['o','ː'], 'U': ['u'], 'UU': ['u','ː'],
-      'Y': ['y'], 'YY': ['y','ː'], 'Ä': ['æ'], 'ÄÄ': ['æ','ː'], 'Ö': ['ø'],
-      'ÖÖ': ['ø','ː'], 'Å': ['o'], 'ÅÅ': ['o','ː'],
-
-      'B': ['b'], 'C': ['k'], 'D': ['d'], 'F': ['f'], 'G': ['ɡ'], 'H': ['h'],
-      'J': ['j'], 'K': ['k'], 'L': ['l'], 'M': ['m'], 'N': ['n'], 'P': ['p'],
-      'Q': ['k'], 'R': ['r'], 'S': ['s'], 'T': ['t'], 'V': ['ʋ'],
-      'W': ['ʋ'], 'X': ['k'], 'Z': ['s']
-
+    this.normalizedLettersUpper = {
+      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G',
+      'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N',
+      'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U',
+      'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z', 'ß': 'SS', 'Ø': 'O',
+      'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D', 'Þ': 'TH', 'Ł': 'L', "Ä": "Ä",
+      "Ö": "Ö", "Å": "Å"
     };
+
+    this.fiVowels = {
+      'A': 'A', 'E': 'E', 'I': 'I', 'O': 'O', 'U': 'U', 'Y': 'Y',
+      "Ä": "Ä", "Ö": "Ö", "Å": "Å"
+    };
+
+    this.fiConsonants = {
+      'B': 'B', 'C': 'C', 'D': 'D', 'F': 'F', 'G': 'G', 'H': 'H', 'J': 'J',
+      'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'P': 'P', 'Q': 'Q', 'R': 'R',
+      'S': 'S', 'T': 'T', 'V': 'V', 'W': 'W', 'X': 'X', 'Z': 'Z'
+    };
+
+    this.fiDiphthongFirst = {
+      "AI": "AI", "EI": "EI", "OI": "OI", "YI": "YI", "ÄI": "ÄI", "ÖI": "ÖI",
+      "EY": "EY", "IY": "IY", "ÄY": "ÄY", "ÖY": "ÖY", "AU": "AU", "EU": "EU",
+      "IU": "IU", "OU": "OU", "IE": "IE", "UO": "UO", "YÖ": "YÖ"
+    };
+
+    this.fiDiphthongEnd = {
+      "AI": "AI", "EI": "EI", "OI": "OI", "YI": "YI", "ÄI": "ÄI", "ÖI": "ÖI",
+      "EY": "EY", "IY": "IY", "ÄY": "ÄY", "ÖY": "ÖY", "AU": "AU", "EU": "EU",
+      "IU": "IU", "OU": "OU", "UO": "UO", "YÖ": "YÖ"
+    };
+
+    this.rules = {
+      'A': [ "AUSTR[A]=ɑ ː", "A[A]=ː", "[A]=ɑ" ],
+      'B': [ "B[B]=ː", "[B]=b" ],
+      'C': [
+        "[CITY]=s i t i", "C[C]=ː", "[C]I=s", "[C]E=s",
+        "[C]Y=s", "[C]=k"
+      ],
+      'D': [ "D[D]=ː", "[D]=d" ],
+      'E': [ "E[E]=ː", "[E]=e" ],
+      'F': [ "[F]=f" ],
+      'G': [ "G[G]=ː", "[G]=ɡ" ],
+      'H': [ "[H]=h" ],
+      'I': [ "I[I]=ː", "[I]=i" ],
+      'J': [ "[J]=j" ],
+      'K': [ "#LLE[K]#=kː", "#NNE[K]#=kː", "K[K]=ː", "[K]=k" ],
+      'L': [ "[L]=l" ],
+      'M': [ "SYDÄ[M]=m ː", "[M]=m" ],
+      'N': [ "[NG]=ŋ ː", "[N]P=m", "[N]=n" ],
+      'O': [ "SYMB[O]LOI=o", "SYMB[O]L=o ː", "O[O]=ː", "[O]=o" ],
+      'P': [
+        " SHAM[P]O=p ː", " KAM[P]ANJ=p ː", " OTA[P]#=p ː",
+        " OLE[P]#=p ː", " TULE[P]#=p ː", "P[P]=ː", "[P]=p"
+      ],
+      'Q': [ "Q[Q]=ː", "[Q]=q" ],
+      'R': [ "[RUO]AN=r u ː", "[R]=r" ],
+      'S': [ "[S]=s" ],
+      'T': [ "T[T]=ː", "[T]=t" ],
+      'U': [ "U[U]=ː", "[U]=u" ],
+      'V': [ "[V]=ʋ" ],
+      'W': [ "[W]=ʋ" ],
+      'X': [ "X[X]=ː s", "[X]=k s" ],
+      'Y': [ "Y[Y]=ː", "[Y]=y" ],
+      'Z': [ "[Z]=t s" ],
+      'Å': [ "Å[Å]=ː", "[Å]=o" ],
+      'Ä': [ "Ä[Ä]=ː", "[Ä]=æ" ],
+      'Ö': [ "Ö[Ö]=ː", "[Ö]=ø" ]
+    };
+  
+    const ops = {
+        '#': '[AEIOUYÄÖÅ]+', // One or more vowels AEIOUYÄÖÅ
+        ' ': '\\b' // Start/end of the word
+    };
+
+    const IPAToMisaki = {
+      "ɚ": ["ɜ","ɹ"], "ˈɝ": ["ˈɜ","ɹ"], "ˌɝ": ["ˌɜ","ɹ"],
+      "tʃ": ["ʧ"], "dʒ": ["ʤ"],
+      "eɪ": ["A"], "ˈeɪ": ["ˈA"], "ˌeɪ": ["ˌA"],
+      "aɪ": ["I"], "ˈaɪ": ["ˈI"], "ˌaɪ": ["ˌI"],
+      "aʊ": ["W"], "ˈaʊ": ["ˈW"], "ˌaʊ": ["ˌW"],
+      "ɔɪ": ["Y"], "ˈɔɪ": ["ˈY"], "ˌɔɪ": ["ˌY"],
+      "oʊ": ["O"], "ˈoʊ": ["ˈO"], "ˌoʊ": ["ˌO"],
+      "əʊ": ["Q"], "əʊ": ["ˈQ"], "əʊ": ["ˌQ"]
+    };
+
+    // Convert rules to regex
+    Object.keys(this.rules).forEach( key =>  {
+      this.rules[key] = this.rules[key].map( rule =>  {
+        const posL = rule.indexOf('[');
+        const posR = rule.indexOf(']');
+        const posE = rule.indexOf('=');
+        const strLeft = rule.substring(0,posL);
+        const strLetters = rule.substring(posL+1,posR);
+        const strRight = rule.substring(posR+1,posE);
+        const strPhonemes = rule.substring(posE+1);
+
+        const o = { regex: '', move: 0, phonemes: [] };
+
+        let exp = '';
+        exp += [...strLeft].map( x => ops[x] || x ).join('');
+        const ctxLetters = [...strLetters];
+        ctxLetters[0] = ctxLetters[0].toLowerCase();
+        exp += ctxLetters.join('');
+        o.move = ctxLetters.length;
+        exp += [...strRight].map( x => ops[x] || x ).join('');
+        o.regex = new RegExp(exp);
+
+        if ( strPhonemes.length ) {
+          strPhonemes.split(' ').forEach( ph =>  {
+            if ( IPAToMisaki.hasOwnProperty(ph) ) {
+              o.phonemes.push( ...IPAToMisaki[ph] );
+            } else {
+              o.phonemes.push( ph );
+            }
+          });
+        }
+
+        return o;
+      });
+    });
 
     // Finnish number words
     this.numbers = [
@@ -58,17 +163,23 @@ class Language extends LanguageBase {
   }
 
   /**
-  * Load pronouncing dictionary.
+  * Add one dictionary line. For Finnish, it is a dictionary
+  * of compound words.
+  * NOTE: We only add three characters for the last part as
+  * we need only partial match.
   *
-  * @param {string} [dictionary=null] Dictionary path/url. If null, do not use dictionaries
-  * @param {boolean} [force=false] If true, re-load even if already loaded.
+  * @param {string} s Line
   */
-  async loadDictionary( dictionary = null, force = false ) {
-    // No need for library, we can handle Finnish without it (hopefully)
-    if ( this.settings.trace ) {
-      utils.trace( 'Language dictionary not needed.' );
+  addToDictionary(s) {
+    if ( s.startsWith(";;;") ) return; // Ignore comment line
+    const parts = s.split("\t");
+    if ( parts.length === 2 ) {
+      if ( !this.dictionary.hasOwnProperty(parts[0]) ) {
+        this.dictionary[parts[0]] = {};
+      }
+      this.dictionary[parts[0]][parts[1]] = null;
     }
-  }
+  }  
 
   /**
   * Convert number to words.
@@ -117,44 +228,194 @@ class Language extends LanguageBase {
   
 
   /**
+  * Split compound word into its parts.
+  * 
+  * @param {string} word Normalized word in upper case
+  * @return {string[]} Parts of the word
+  */
+  splitOnCompoundWords(s) {
+
+    // Split for hyphens
+    const hyphens = s.split("-").filter( x => x.length );
+    const len = hyphens.length;
+
+    if ( len > 1 ) {
+
+      // Check if parts are compound words
+      return hyphens.map( (x,i) => {
+        const isLast = i === (len-1);
+        return this.splitOnCompoundWords( x + (isLast ? "" : "-") );
+      }).flat();
+
+    } else {
+
+      // Check compound word dictionary
+      for( let i=s.length; i>2; i-- ) {
+        const partFirst = s.substring(0,i);
+        if ( this.dictionary.hasOwnProperty(partFirst) ) {
+          const item = this.dictionary[partFirst];
+          const partNext4 = s.substring(i,i+4);
+          const partNext3 = s.substring(i,i+3);
+          if ( item.hasOwnProperty(partNext4) || item.hasOwnProperty(partNext3) ) {
+            return [ partFirst, ...this.splitOnCompoundWords(s.substring(i)) ];
+          }
+        }
+      }
+      return [s];
+
+    }
+    
+  }
+
+
+  /**
+  * Split single word into syllables.
+  * NOTE: Doesn't handle compound words, so you slip on
+  * compound words before calling this method.
+  *
+  * @param {string} s Normalized and upper case word
+  * @return {string[]} Syllables.
+  */
+  splitOnSyllables(s) {
+    const syllables = [];
+
+    const chars = [...s];
+    let len = chars.length;
+    let i = 0;
+    let syllable = "";
+    let isVowelFound = false;
+    let isConsonantFound = false;
+    while( i < len ) {
+
+      const isLast = i === (len-1);
+      const c = chars[i];
+      const isVowel = this.fiVowels.hasOwnProperty(c);
+      const isConsonant = this.fiConsonants.hasOwnProperty(c);
+      isVowelFound ||= isVowel;
+      isConsonantFound ||= isConsonant;
+      const isNotLetter = !isVowel && !isConsonant;
+      const cSecond = isLast ? null : chars[i+1];
+      const isSecondVowel = this.fiVowels.hasOwnProperty(cSecond);
+      const cTwo = isLast ? null : (c + cSecond);
+      const isDiphthong  = isVowel && isSecondVowel && (c !== cSecond) &&
+        (syllables.length === 0 ? !this.fiDiphthongFirst.hasOwnProperty(cTwo) : !this.fiDiphthongEnd.hasOwnProperty(cTwo));
+      const isBreakBefore = isVowelFound && isConsonant && isSecondVowel;
+      const isBreakAfter = isLast || isDiphthong || isNotLetter;
+
+      // Break before current letter
+      if ( isBreakBefore ) {
+        syllables.push( syllable );
+        syllable = "";
+      }
+      
+      syllable += c;
+      
+      // Break after the current letter
+      if ( isBreakAfter ) {
+        syllables.push( syllable );
+        syllable = "";
+      }
+
+      i++;
+    }
+
+    return syllables;
+  }
+
+
+  /**
+  * Split word or compound word on stress.
+  *
+  * @param {string} s Normalized and upper case word or compound word
+  * @return {string[]} Stresses parts.
+  */
+  splitOnStress(s) {
+    const stressed = [];
+
+    const words = this.splitOnCompoundWords(s);
+    const lenWords = words.length;
+    for( let i=0; i<lenWords; i++ ) {
+      const word = words[i];
+      const syllables = this.splitOnSyllables(word);
+      const lenSyllables = syllables.length;
+      let stress = "";
+      for( let j=0; j<lenSyllables; j++ ) {
+        const syllable = syllables[j];
+        const isLast = j === (lenSyllables-1);
+        if ( j > 0 && (j-1) % 2 && !isLast ) {
+          stressed.push( stress );
+          stress = "";
+        }
+        stress += syllable;
+        if ( isLast ) {
+          stressed.push( stress );
+          break;
+        }
+      }
+    }
+
+    return stressed;
+  }
+
+  
+
+  /**
   * Convert graphemes to phonemes.
   *
-  * @param {string} s Word
+  * @param {string} s Word, normalized and in upper case
   * @return {string[]} Array of phonemes
   */
   phonemizeWord(s) {
     let phonemes = [];
-    const chars = [...s];
-    let len = chars.length;
-    let i = 0;
-    let isFirst = true;
-    while( i < len ) {
-      const isLast = i === (len-1);
-      const c = chars[i];
-      const cTwo = isLast ? null : (c + chars[i+1]);
 
-      if ( this.fiLettersToMisaki.hasOwnProperty(cTwo) ) {
-        if ( isFirst ) {
-          phonemes.push( "ˈ" );
-          isFirst = false;
+    // Split on stress
+    const parts = this.splitOnStress(s);
+
+    parts.forEach( (x,i) => {
+
+      // Stress
+      if ( x ) {
+        if ( i === 0 ) {
+          phonemes.push("ˈ");
+        } else {
+          phonemes.push("ˌ");
         }
-        phonemes.push( ...this.fiLettersToMisaki[cTwo] );
-        i += 2;
-      } else if ( this.fiLettersToMisaki.hasOwnProperty(c) ) {
-        if ( isFirst ) {
-          phonemes.push( "ˈ" );
-          isFirst = false;
-        }
-        phonemes.push( ...this.fiLettersToMisaki[c] );
-        i++;
-      } else {
-        phonemes.push( c );
-        i++;
       }
-    }
+
+      // Phonemize
+      const chars = [...x];
+      let len = chars.length;
+      let j = 0;
+      while( j < len ) {
+        const c = chars[j];
+        if ( this.punctuations.hasOwnProperty(c) ) {
+          phonemes.push( this.punctuations[c] );
+          j++;
+        } else {
+          const ruleset = this.rules[c];
+          if ( ruleset ) {
+            const lenRuleset = ruleset.length;
+            for(let k=0; k<lenRuleset; k++) {
+              const rule = ruleset[k];
+              const test = x.substring(0, j) + c.toLowerCase() + x.substring(j+1);
+              let matches = test.match(rule.regex);
+              if ( matches ) {
+                phonemes.push( ...rule.phonemes );
+                j += rule.move;
+                break;
+              }
+            }
+          } else {
+            j++;  
+          }
+        }
+      }
+    });
+
     if ( this.settings.trace ) {
       utils.trace( 'Rules: "' + s + '" => "' + phonemes.join("") + '"' );
     }
+
     return phonemes;
   }
 

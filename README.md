@@ -62,40 +62,41 @@ Available options for the constructor and `connect`:
 
 Name | Description | Default value
 --- | --- | ---
-`endpoints` | Array of WebSocket/RESTful servers, `webgpu`, or `wasm` in the order of priority. If the first endpoint fails, the second is tried, etc.  | `["webgpu",`<br>` "wasm"]`
-`audioCtx` | Audio context used to create audio buffers. If `null` create a new audio context. | `null`
-`transformersModule` | Module name for the transformers.js module. | `"https://cdn.jsdelivr.net/npm/`<br>`@huggingface/transformers@3.4.2`<br>`/dist/transformers.min.js"`
-`model` | Timestamped Kokoro text-to-speech ONNX model used for browser inference. | `"onnx-community/`<br>`Kokoro-82M-v1.0-ONNX-timestamped"`
-`dtypeWebgpu` | Data type precision for in-browser WebGPU inference: `"fp32"` (recommended), `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`.  | `"fp32"`
-`dtypeWasm` | Data type precision for in-browser WASM inference: `"fp32"`, `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`. | `"q4"`
-`styleDim` | Style embedding dimension for browser inference. | `256`
-`audioSampleRate` | Audio sample rate in Hz for browser inference. | `24000`
-`frameRate` | Frame rate in FPS for browser inference. | `40`
+`endpoints` | List of WebSocket/RESTful servers or backends `webgpu` or `wasm`, in order of priority. If one fails, the next is used.  | `["webgpu",`<br>` "wasm"]`
+`audioCtx` | Audio context for creating audio buffers. If `null`, a new one is created. | `null`
+`transformersModule` | URL of the `transformers.js` module to load. | `"https://cdn.jsdelivr.net/npm/`<br>`@huggingface/transformers@3.4.2`<br>`/dist/transformers.min.js"`
+`model` | Kokoro text-to-speech ONNX model (timestamped) used for in-browser inference. | `"onnx-community/`<br>`Kokoro-82M-v1.0-ONNX-timestamped"`
+`dtypeWebgpu` | Data type precision for WebGPU inference: `"fp32"` (recommended), `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`.  | `"fp32"`
+`dtypeWasm` | Data type precision for WASM inference: `"fp32"`, `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`. | `"q4"`
+`styleDim` | Style embedding dimension for inference. | `256`
+`audioSampleRate` | Audio sample rate in Hz for inference. | `24000`
+`frameRate` | Frame rate in FPS for inference. | `40`
 `languages` | Language modules to be pre-loaded. | [`"en-us"`]
-`dictionaryURL` | URL for language dictionaries. If `null`, disables all dictionaries. | `"../dictionaries"`
-`voiceURL` | URL for voices. | `"https://huggingface.co/`<br>`onnx-community/`<br>`Kokoro-82M-v1.0-ONNX/`<br>`resolve/main/voices"`
-`voices` | Voices to be pre-loaded, e.g. ["af_bella","am_fenrir"].  | `[]`
-`splitSentences` | Split sentences. | `true`
-`splitLength` | Maximum length of text chunk. | `500`
-`deltaStart` | Delta for viseme starting times in milliseconds. | `-10`
-`deltaEnd` | Delta for viseme ending times in milliseconds. | `10`
-`defaultVoice` | Default voice. | `"af_bella"`
-`defaultLanguage` | Default language. | `"en-us"`
-`defaultSpeed` | Talking speed between [0.25,4]. | `1`
-`defaultAudioEncoding` | Default audio encoding. The supported options are `"wav"` and `"pcm"` (PCM 16bit LE). | `"wav"`
-`trace` | Bitmask for tracing different subsystems, `0`=none, `255`=all:<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P, graphemes-to-phonemes</li><li>Bit 4 (16): Language modules</li></ul> | `0`
+`dictionaryURL` | URL to language dictionaries. Set to `null` to disable dictionaries. | `"../dictionaries"`
+`voiceURL` | URL for loading voices. | `"https://huggingface.co/`<br>`onnx-community/`<br>`Kokoro-82M-v1.0-ONNX/`<br>`resolve/main/voices"`
+`voices` | Voices to preload (e.g., `["af_bella", "am_fenrir"]`).  | `[]`
+`splitSentences` | Whether to split text into sentences. | `true`
+`splitLength` | Maximum length (in characters) of each text chunk. | `500`
+`deltaStart` | Adjustment (in ms) to viseme start times. | `-10`
+`deltaEnd` | Adjustment (in ms) to viseme end times. | `10`
+`defaultVoice` | Default voice to use. | `"af_bella"`
+`defaultLanguage` | Default language to use. | `"en-us"`
+`defaultSpeed` | Speaking speed. Range: 0.25–4. | `1`
+`defaultAudioEncoding` | Default audio format: `"wav"` or `"pcm"` (PCM 16-bit LE). | `"wav"`
+`trace` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
-NOTE: Some options are only for browser inference. If the inference is done on
-a server, server specific settings apply.
+Note: Model related options apply only to browser-based inference.
+If inference is performed on a server, server-specific
+settings will apply instead.
 
 ## Events
 
 Event handler | Description
 --- | ---
-`onstart` | First message added when all message queues are empty.
-`onmessage` | Incoming message of the type `audio` or `error`. For more information about messages, see the API section.
-`onend` | All the message queues has become empty.
-`onerror` | System or class level error as a string. If the handler is not set, system and class errors are thrown as exceptions. Note: Error messages related to TTS conversion are delivered to `onmessage` handler, if set, as messages of the type `error`.
+`onstart` | Triggered when the first message is added and all message queues were previously empty.
+`onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
+`onend` | Triggered when all message queues become empty.
+`onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
 
 An example of using the `onmessage` event handler with the
 [TalkingHead](https://github.com/met4citizen/TalkingHead) instance `head`.
@@ -112,7 +113,7 @@ headtts.onmessage = (message) => {
       console.log(error);
     }
   } else if ( message.type === "error" ) {
-    console.error("Received error message, error=", error);
+    console.error("Received error message, error=", message.data.error);
   }
 }
 ```
@@ -138,9 +139,9 @@ headtts.synthesize({
 });
 ```
 
-Using events with `synthesize` is often the best approach for
-real-time use cases, but you can alternatively use `await` to wait for
-all the related audio messages to arrive:
+Using events with `synthesize` is often the best approach
+for real-time use cases. However, you can alternatively
+use `await` to wait for all the related audio messages to arrive:
 
 ```javascript
 try {
@@ -157,10 +158,10 @@ try {
 
 Method | Description
 --- | ---
-`connect( settings=null, onprogress=null, onerror=null )` | Connect to the specied set of `endpoints` set before or in `settings` object. If `settings` parameter is set, forces re-connect. `onprogress` callback for ProgressEvent events and `onerror` callback for system level Error events. Returns a promise. Note: When the method tries to connect to a RESTful server, it sends a hello message and considers the connection to be established, if and only if it gets a text response starting with `HeadTTS`.
-`clear()` | Clear all work queues.
-`setup( data, onerror=null )` | Add a new setup request data to the work queue. See API section for the supported `data` properties. Returns a promise.
-`synthesize( data, onmessage=null, onerror=null )` | Add a new synthesize request data to the work queue. If callbacks are set, they override other event handlers. See API section for the supported `data` properties. Returns a promise, which resolves with a sorted array of all related `audio` or `error` messages.
+`connect( settings=null, onprogress=null, onerror=null )` | Connects to the specified set of `endpoints` set in constructor or within the optinal `settings` object. If the `settings` parameter is provided, it forces a reconnection. The `onprogress` callback handles `ProgressEvent` events, while the `onerror` callback handles system-level error events. Returns a promise. **Note:** When connecting to a RESTful server, the method sends a hello message and considers the connection established only if a text response starting with `HeadTTS` is received.
+`clear()` | Clears all work queues and resolves all promises.
+`setup( data, onerror=null )` | Adds a new setup request to the work queue. See the API section for the supported `data` properties. Returns a promise.
+`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. See the API section for supported `data` properties. Returns a promise that resolves with a sorted array of related `audio` or `error` messages.
 
 ---
 
@@ -180,7 +181,7 @@ npm install
 ## Start server
 
 ```bash
-node ./modules/headtts-node.mjs --config ./headtts-node.json
+node ./modules/headtts-node.mjs
 ```
 
 Command line options:
@@ -188,38 +189,38 @@ Command line options:
 Option|Description|Default
 ---|---|---
 `--config [file]` | JSON configuration file name. | `./headtts-node.json`
-`--trace [0-255]` | Bitmask for tracing different subsystems, `0`=none, `255`=all:<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P, graphemes-to-phonemes</li><li>Bit 4 (16): Language modules</li></ul> | `0`
+`--trace [0-255]` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
 JSON configuration file properties:
 
 Property|Description|Default
 ---|---|---
-`server.port` | Server port number. | `8882`
-`server.certFile` | Certificate file. | `null`
-`server.keyFile` | Certificate key file. | `null`
-`server.websocket` | Enable WebSocket server. | `true`
-`server.rest` | Enable RESTful server. | `true`
-`server.connectionTimeout` | Idle connection timeout in ms. | `20000`
-`server.corsOrigin` | Value for the `Access-Control-Allow-Origin` header. If `null` CORS will not be allowed. | `*`
-`tts.threads` | Number of text-to-speech worker threads from 1 to the number of CPU cores. | `1`
-`tts.transformersModule` | Module name for the transformers.js module. | `"@huggingface/transformers"`
-`tts.model` | Timestamped Kokoro TTS ONNX model. | `"onnx-community/`<br>`Kokoro-82M-v1.0-ONNX-timestamped"`
-`tts.dtype` | Data type precision used for inference. Available options are `"fp32"`, `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`.  | `"fp32"`
-`tts.device` | Computation backend. Currently the only available option for Node.js server is `"cpu"`.  | `"cpu"`
-`tts.styleDim` | Style embedding dimension. | `256`
-`tts.audioSampleRate` | Audio sample rate in Hz. | `24000`
-`tts.frameRate` | Frame rate in FPS. | `40`
-`tts.languages` | Language modules to be pre-loaded. | [`"en-us"`]
-`tts.dictionaryPath` | Path for language modules. If `null`, do not use dictionaries. | `"./dictionaries"`
-`tts.voicePath` | Path for voice files. | `"./voices"`
-`tts.voices` | Arrays of voices to be pre-loaded, e.g. ["af_bella","am_fenrir"]. | `[]`
-`tts.deltaStart` | Delta for viseme starting times in milliseconds. | `-10`
-`tts.deltaEnd` | Delta for viseme ending times in milliseconds. | `10`
-`tts.defaults.voice` | Default voice. | `"af_bella"`
-`tts.defaults.language` | Default language. The supported options are `"en-us"` or `"en"`. | `"en-us"`
-`tts.defaults.speed` | Talking speed between [0.25,4]. | `1`
-`tts.defaults.audioEncoding` | Default audio encoding. The supported options are `"wav"` and `"pcm"` (PCM 16bit LE). | `"wav"`
-`trace` | Bitmask for tracing different subsystems, `0`=none, `255`=all:<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P, graphemes-to-phonemes</li><li>Bit 4 (16): Language modules</li></ul>  | `0`
+`server.port` | The port number the server listens on. | `8882`
+`server.certFile` | Path to the certificate file. | `null`
+`server.keyFile` | Path to the certificate key file. | `null`
+`server.websocket` | Enable the WebSocket server. | `true`
+`server.rest` | Enable the RESTful API server. | `true`
+`server.connectionTimeout` | Timeout duration for idle connections in milliseconds. | `20000`
+`server.corsOrigin` | Value for the `Access-Control-Allow-Origin` header. If `null`, CORS will not be enabled. | `*`
+`tts.threads` | Number of text-to-speech worker threads, ranging from 1 to the number of CPU cores. | `1`
+`tts.transformersModule` | Name of the transformers.js module to use. | `"@huggingface/transformers"`
+`tts.model` | The timestamped Kokoro TTS ONNX model. | `"onnx-community/`<br>`Kokoro-82M-v1.0-ONNX-timestamped"`
+`tts.dtype` | The data type precision used for inference. Available options: `"fp32"`, `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`.  | `"fp32"`
+`tts.device` | Computation backend to use. Currently, the only available option for Node.js server is `"cpu"`.  | `"cpu"`
+`tts.styleDim` | The embedding dimension for style. | `256`
+`tts.audioSampleRate` | Audio sample rate in Hertz (Hz). | `24000`
+`tts.frameRate` | Frame rate in frames per second (FPS). | `40`
+`tts.languages` | A list of languages to preload. | [`"en-us"`]
+`tts.dictionaryPath` | Path to the language modules. If `null`, dictionaries will not be used. | `"./dictionaries"`
+`tts.voicePath` | Path to the voice files. | `"./voices"`
+`tts.voices` | Array of voices to preload, e.g., `["af_bella","am_fenrir"]`. | `[]`
+`tts.deltaStart` | Adjustment (in ms) to viseme start times. | `-10`
+`tts.deltaEnd` | Adjustment (in ms) to viseme end times. | `10`
+`tts.defaults.voice` | Default voice to use. | `"af_bella"`
+`tts.defaults.language` | Default language to use. Supported options: `"en-us"`. | `"en-us"`
+`tts.defaults.speed` | Speaking speed. Range: 0.25–4. | `1`
+`tts.defaults.audioEncoding` | Default audio encoding format. Supported options are `"wav"` and `"pcm"` (PCM 16bit LE). | `"wav"`
+`trace` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul>  | `0`
 
 ---
 
@@ -227,8 +228,9 @@ Property|Description|Default
 
 ## WebSocket API
 
-Note: Every WS request must have a unique identifier, `id`. The server uses
-a web worker thread pool, and because work is done in parallel,
+> [!NOTE]  
+> Every WebSocket request must have a unique identifier, `id`. The server uses
+a Web Worker thread pool, and because work is done in parallel,
 the order of responses may vary. Therefore, each response includes
 a `ref` property that identifies the original request, allowing
 the order to be restored if necessary. The JS client class handles this
@@ -346,11 +348,11 @@ JSON|Description
 
 ### American English, `en-us`
 
-The American English dictionary is based on the
+The American English language module is based on the
 [CMU Pronunciation Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict)
 from Carnegie Mellon University, containing over 134,000 words and their
 pronunciations. The original dataset is provided under a simplified
-BSD license and it can be used freely for any research or commercial purpose.
+BSD license, allowing free use for any research or commercial purpose.
 
 In the [Kokoro](https://github.com/hexgrad/kokoro) TTS model,
 the American English language data was trained using the
@@ -372,10 +374,10 @@ and then to Misaki-compatible phonemes by applying the following mapping:
 Note: During the dataset conversion, some vowels were reduced to reflect
 casual speech since HeadTTS is primarily designed for conversational use.
 
-The final dictionary is a plain text file. Lines starting with `;;;` are
-comments. Each other line represents one word and its pronunciations.
-The word and its different possible pronunciations are separated
-by a tab character `\t`.
+The final dictionary is a plain text file with around 125,000 lines (2,8MB).
+Lines starting with `;;;` are comments. Each other line represents
+one word and its pronunciations. The word and its different possible
+pronunciations are separated by a tab character `\t`.
 
 ```text
 MERCHANDISE	mˈɜɹʧəndˌIz
@@ -383,11 +385,43 @@ MERCHANDISE	mˈɜɹʧəndˌIz
 
 Out-of-dictionary (OOD) words are converted using a rule-based algorithm based
 on NRL Report 7948, *Automatic Translation of English Text to Phonetics
-by Means of Letter-to-Sound Rules* (Elovitz et al., 1976). The original
-report is available [here](https://apps.dtic.mil/sti/pdfs/ADA021929.pdf).
+by Means of Letter-to-Sound Rules* (Elovitz et al., 1976). The report is
+available [here](https://apps.dtic.mil/sti/pdfs/ADA021929.pdf).
 
 You can find the list of supported English voices and samples
 [here](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped#voicessamples).
+
+
+### Finnish, `fi`
+
+> [!IMPORTANT]  
+> Finnish language is not officially supported as the Kokoro model
+doesn't support it.
+
+The phonemization of the Finnish language module is done by
+an in-built algorithm. The algorithm doesn't require a pronunciation
+dictionary, but it uses a compound word dictionary to get the secondary
+stress marks right for compound words.
+
+The dictionary used for compound words is based on
+[The Dictionary of Contemporary Finnish](https://en.kotus.fi/dictionaries/#Dictionary-of-Contemporary-Finnish)
+maintained by the Institute for the Languages of Finland. The original
+dataset contains more than 100,000 entries and is open-sourced
+under the CC BY 4.0 license.
+
+The pre-processed compound word dictionary is a plain text file with
+around 50,000 entries (~650kB). Lines starting with `;;;` are comments.
+Each other line represents the first part of a compound word and the
+first four letters of a possible next word, separated by a tab
+character `\t`.
+
+```text
+ALUMIINI	FOL
+```
+
+As of now, the Kokoro model doesn't offer Finnish voices. You can use
+the `fi` language code with the voices of other languages, but
+the pronunciation will sound rather weird.
 
 ---
 
@@ -405,10 +439,10 @@ Unofficial latency results using my own test app:
 
 TTS Engine | Setup |`FIL`|`FBL`|`RTF`
 ---|---|---|---|---
-HeadTTS, client | Chrome, WebGPU/fp32 | 9.4s | 958ms | 0.30
-HeadTTS, client | Edge, WebGPU/fp32 | 8.7s | 913ms | 0.28
-HeadTTS, client | Chrome, WASM/q4 | 88.4s | 8752ms | 2.87
-HeadTTS, client | Edge, WASM/q4 | 44.8s | 4437ms | 1.46
+HeadTTS, in-browser | Chrome, WebGPU/fp32 | 9.4s | 958ms | 0.30
+HeadTTS, in-browser | Edge, WebGPU/fp32 | 8.7s | 913ms | 0.28
+HeadTTS, in-browser | Chrome, WASM/q4 | 88.4s | 8752ms | 2.87
+HeadTTS, in-browser | Edge, WASM/q4 | 44.8s | 4437ms | 1.46
 HeadTTS, server | WebSocket, CPU/fp32, 1 thread | 6.8s | 712ms | 0.22
 HeadTTS, server | WebSocket, CPU/fp32, 4 threads | 6.0s | 2341ms | 0.20
 HeadTTS, server | REST, CPU/fp32, 1 thread | 7.0s | 793ms | 0.23

@@ -48,12 +48,11 @@ class LanguageBase {
     // Allowed letters in upper case
     // NOTE: Diacritics will be removed unless added to this object.
     this.normalizedLettersUpper = {
-      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'G', 'D': 'D',
-      'E': 'E', 'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K',
-      'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R',
-      'S': 'S', 'T': 'T', 'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y',
-      'Z': 'Z', 'ß': 'SS', 'Ø': 'O', 'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D',
-      'Þ': 'TH', 'Ł': 'L',
+      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G',
+      'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N',
+      'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U',
+      'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z', 'ß': 'SS', 'Ø': 'O',
+      'Æ': 'AE', 'Œ': 'OE', 'Ð': 'D', 'Þ': 'TH', 'Ł': 'L'
     };
 
     // Allowed punctuations
@@ -95,6 +94,21 @@ class LanguageBase {
   }
 
   /**
+  * Add one dictionary line.
+  *
+  * @param {string} s Line
+  */
+  addToDictionary(s) {
+    if ( s.startsWith(";;;") ) return; // Comment
+    const fields = s.split("\t");
+    if ( fields.length >= 2) {
+      const word = fields[0];
+      const phonemes = fields[1].split("");
+      this.dictionary[word] = phonemes;
+    }
+  }
+
+  /**
   * Load pronouncing dictionary.
   *
   * @param {string} [dictionary=null] Dictionary path/url. If null, do not use dictionaries
@@ -105,17 +119,6 @@ class LanguageBase {
     if ( this.dictionary && !force ) return;
     this.dictionary = null;
     if ( dictionary ) {
-
-      // Process one CSV line
-      const processLine = (s) => {
-        if ( s.startsWith(";;;") ) return; // Comment
-        const fields = s.split("\t");
-        if ( fields.length >= 2) {
-          const word = fields[0];
-          const phonemes = fields[1].split("");
-          this.dictionary[word] = phonemes;
-        }
-      };
 
       // Use stream to read the file
       if ( utils.isNode() ) {
@@ -128,7 +131,7 @@ class LanguageBase {
         });
         this.dictionary = {};
         for await (const line of rl) {
-          processLine(line);
+          this.addToDictionary(line);
         }
       } else {
         const response = await fetch(dictionary);
@@ -147,7 +150,7 @@ class LanguageBase {
             buffer = lines.pop(); // Save the incomplete line
           }
           for (const line of lines) {
-            processLine(line);
+            this.addToDictionary(line);
           }
           if ( done ) break;
         }

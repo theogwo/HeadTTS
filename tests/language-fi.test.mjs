@@ -7,19 +7,59 @@ let lang;
 
 beforeAll( async () => {
     lang = new Language();
-    // NOTE: The Finnish language module doesn't need a dictionary
     await lang.loadDictionary("./dictionaries/fi.txt");
 });
 
-describe('Word phonemization', () => {
+describe('Compound words', () => {
+      
+    test.each([
+        ['', ['']],
+        ['LUMIUKKO', ["LUMI","UKKO"]],
+        ['KUORMA-AUTO', ["KUORMA-","AUTO"]],
+        ['JÄÄHYAITIO', ["JÄÄHY","AITIO"]],
+        ['AINEENVAIHDUNTAHÄIRIÖ', ["AINEEN","VAIHDUNTA", "HÄIRIÖ"]],
+        ['LUMIKKO', ["LUMIKKO"]],
+    ])('splitOnCompoundWords("%s") ➝ %j', (input, expected) => {
+        expect(lang.splitOnCompoundWords(input)).toEqual(expected);
+    });
 
-    const lang = new Language();
+});
+
+describe('Syllabification', () => {
+      
+    test.each([
+        ['', []],
+        ['OJA', ["O", "JA"]],
+        ['LUMIKKO', ["LU", "MIK","KO"]],
+        ['JÄRJESTELMÄLLISTYTTÄMÄTTÖMYYDELLÄÄNSÄKÄÄN', ["JÄR", "JES", "TEL", "MÄL", "LIS", "TYT", "TÄ", "MÄT", "TÖ", "MYY", "DEL", "LÄÄN", "SÄ", "KÄÄN"]],
+    ])('splitOnSyllables("%s") ➝ %j', (input, expected) => {
+        expect(lang.splitOnSyllables(input)).toEqual(expected);
+    });
+
+});
+
+describe('Stress', () => {
+      
+    test.each([
+        ['', []],
+        ['OJA', ['OJA']],
+        ['LUMIKKO', ["LUMIKKO"]],
+        ['JÄRJESTELMÄLLISTYTTÄMÄTTÖMYYDELLÄÄNSÄKÄÄN', ["JÄRJES", "TELMÄL", "LISTYT", "TÄMÄT", "TÖMYY", "DELLÄÄN", "SÄKÄÄN"]],
+    ])('splitOnStress("%s") ➝ %j', (input, expected) => {
+        expect(lang.splitOnStress(input)).toEqual(expected);
+    });
+
+});
+
+describe('Word phonemization', () => {
       
     test.each([
         ['', ""],
         ['JA', "ˈjɑ"],
-        ['JÄÄHYAITIO', "ˈjæːhyɑitio"],
-        ['KEHITYSYHTEISTYÖ', "ˈkehitysyhteistyø"],
+        ['LUMIKKO', "ˈlumikːo"],
+        ['LUMIUKKO', "ˈlumiˌukːo"],
+        ['JÄÄHYAITIO', "ˈjæːhyˌɑitio"],
+        ['KEHITYSYHTEISTYÖ', "ˈkehitysˌyhteisˌtyø"],
     ])('phonemizeWord("%s") ➝ %s', (input, expected) => {
         expect(lang.phonemizeWord(input).join("")).toEqual(expected);
     });
@@ -27,8 +67,6 @@ describe('Word phonemization', () => {
 });
 
 describe('Number to words', () => {
-
-    const lang = new Language();
       
     test.each([
         ['-1', "MIINUS YKSI"],
@@ -44,12 +82,10 @@ describe('Number to words', () => {
 });
 
 describe('Generate data', () => {
-
-    const lang = new Language();
       
     test('Text input 1', () => {
         const result = lang.generate('Tämä on testilause.');
-        expect(result.phonemes).toEqual(["ˈ","t","æ","m","æ"," ","ˈ","o","n"," ","ˈ","t","e","s","t","i","l","ɑ","u","s","e",".",]);
+        expect(result.phonemes).toEqual(["ˈ","t","æ","m","æ"," ","ˈ","o","n"," ","ˈ","t","e","s","t","i","ˌ","l","ɑ","u","s","e",".",]);
         expect(result.metadata.words).toEqual(['Tämä ','on ','testilause.']);
         expect(result.metadata.wtimes).toEqual( Array(3).fill( expect.any(Number) ) );
         expect(result.metadata.wdurations).toEqual( Array(3).fill( expect.any(Number) ) );
