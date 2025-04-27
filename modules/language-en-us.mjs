@@ -394,7 +394,7 @@ class Language extends LanguageBase {
   * @param {number|string} num Number
   * @return {string} String
   */
-  convertNumberToWords(num){
+  convertNumberToWords(num) {
     const n = parseFloat(num);
     if (num == "0") {
       return "ZERO";
@@ -412,6 +412,32 @@ class Language extends LanguageBase {
     } else {
       return this.convertMillions(num).trim();
     }
+  }
+
+  /**
+  * Set the `text` to be spoken by analysing the part content.
+  *
+  * @param {Object} part Current part
+  * @param {number} i Index
+  * @param {Object[]} arr All the parts.
+  */
+  partSetText(part,i,arr) {
+
+    if ( !part.hasOwnProperty("type") ) {
+      const s = part.subtitles;
+      if ( s ) {
+        const num = s.replace(/,/g, '').trim();
+        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
+          part.text = this.convertNumberToWords(num);
+        } else {
+          part.type = "text";
+          part.text = s;
+        }
+      }
+    } else {
+      // TODO: Other types.
+    }
+
   }
 
   /**

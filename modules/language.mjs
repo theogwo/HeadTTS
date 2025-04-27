@@ -74,16 +74,6 @@ class LanguageBase {
   }
 
   /**
-  * Convert number to words.
-  *
-  * @param {number|string} num Number
-  * @return {string} String
-  */
-  convertNumberToWords(num){
-    throw new Error("The method convertNumberToWords not implemented.");
-  }
-
-  /**
   * Convert graphemes to phonemes.
   *
   * @param {string} s Word
@@ -235,29 +225,17 @@ class LanguageBase {
   }
 
   /**
-  * Set the text to be spoken by analysing the part content.
-  * NOTE: Only `text` type currently supported.
-  * TODO: Add support for other types.
+  * Set the `text` to be spoken by analysing the part content.
+  * NOTE: The language module should override this
+  * method and implement language specific conversions.
   *
-  * @param {Object} part Part object
+  * @param {Object} part Current part
+  * @param {number} i Index
+  * @param {Object[]} arr All the parts.
   */
-  partSetText(part) {
-
-    if ( !part.hasOwnProperty("type") ) {
-      const s = part.subtitles;
-      if ( s ) {
-        const num = s.replace(/,/g, '').trim();
-        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
-          part.text = this.convertNumberToWords(num);
-        } else {
-          part.type = "text";
-          part.text = s;
-        }
-      }
-    } else {
-      // TODO: Other types.
-    }
-
+  partSetText(part,i,arr) {
+    part.type = "text";
+    part.text = s.replace(/,/g, '').trim();
   }
 
 
@@ -366,10 +344,6 @@ class LanguageBase {
   */
   generate(input) {
 
-    if ( this.settings.trace ) {
-      utils.trace( 'Generate start, input=', input );
-    }
-
     // Output data
     let phonemes = [];
     const metadata = {
@@ -377,11 +351,32 @@ class LanguageBase {
       visemes: [], vtimes: [], vdurations: []
     };
 
-    // Add item to output
-    const addPart = (part) => {
+    if ( this.settings.trace ) {
+      utils.trace( 'Generate start, input=', input );
+    }
 
-      // Populate
-      this.partSetText(part);
+    // Break input into parts
+    let parts = [];
+    const inputs = Array.isArray(input) ? input : [input];
+    inputs.forEach( x => {
+      if ( typeof x === "string" ) {
+        const textParts = this.splitText(x);
+        textParts.forEach( text => {
+          const part = { subtitles: text };
+          parts.push( part );
+        });
+      } else {
+        parts.push(x);
+      }
+    });
+
+    // Set text to be spoken
+    parts.forEach( this.partSetText.bind(this) );
+
+    // Populate output
+    parts.forEach( part => {
+
+      // Phonemize and set visemes
       if ( part.hasOwnProperty("phonemes") ) {
         if ( typeof part.phonemes === "string" ) {
           part.phonemes = [...part.phonemes];
@@ -390,13 +385,15 @@ class LanguageBase {
         this.partSetSpeak(part);
         this.partSetPhonemes(part);
       }
+
+      // Set visemes
       this.partSetVisemes(part);
 
       if ( this.settings.trace ) {
         utils.trace( 'Generate, part=', part );
       }
 
-      // Create output
+      // Set output
       metadata.words.push( part.subtitles );
       metadata.wtimes.push( phonemes.length );
       const len = part.phonemes.length
@@ -432,19 +429,7 @@ class LanguageBase {
         }
       }
       metadata.wdurations.push( phonemes.length );
-    };
 
-    // Break into parts
-    const inputs = Array.isArray(input) ? input : [input];
-    inputs.forEach( x => {
-      if ( typeof x === "string" ) {
-        const parts = this.splitText(x);
-        parts.forEach( y => {
-          addPart({ subtitles: y });
-        });
-      } else {
-        addPart(x);
-      }
     });
 
     if ( this.settings.trace ) {
