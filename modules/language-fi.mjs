@@ -26,29 +26,34 @@ class Language extends LanguageBase {
       "Ö": "Ö", "Å": "Å"
     };
 
+    // Finnish vowels
     this.fiVowels = {
       'A': 'A', 'E': 'E', 'I': 'I', 'O': 'O', 'U': 'U', 'Y': 'Y',
       "Ä": "Ä", "Ö": "Ö", "Å": "Å"
     };
 
+    // Finnish consonants
     this.fiConsonants = {
       'B': 'B', 'C': 'C', 'D': 'D', 'F': 'F', 'G': 'G', 'H': 'H', 'J': 'J',
       'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'P': 'P', 'Q': 'Q', 'R': 'R',
       'S': 'S', 'T': 'T', 'V': 'V', 'W': 'W', 'X': 'X', 'Z': 'Z'
     };
 
+    // Diphthongs in the first syllable that we do not hyphenate
     this.fiDiphthongFirst = {
       "AI": "AI", "EI": "EI", "OI": "OI", "YI": "YI", "ÄI": "ÄI", "ÖI": "ÖI",
       "EY": "EY", "IY": "IY", "ÄY": "ÄY", "ÖY": "ÖY", "AU": "AU", "EU": "EU",
       "IU": "IU", "OU": "OU", "IE": "IE", "UO": "UO", "YÖ": "YÖ"
     };
 
+    // Diphthongs after the first syllable that we do not hyphenate
     this.fiDiphthongEnd = {
       "AI": "AI", "EI": "EI", "OI": "OI", "YI": "YI", "ÄI": "ÄI", "ÖI": "ÖI",
       "EY": "EY", "IY": "IY", "ÄY": "ÄY", "ÖY": "ÖY", "AU": "AU", "EU": "EU",
       "IU": "IU", "OU": "OU", "UO": "UO", "YÖ": "YÖ"
     };
 
+    // Pronounciation rules for Finnish
     this.rules = {
       'A': [ "AUSTR[A]=ɑ ː", "A[A]=ː", "[A]=ɑ" ],
       'B': [ "B[B]=ː", "[B]=b" ],
@@ -150,8 +155,8 @@ class Language extends LanguageBase {
     // Symbols to Finnish
     // TODO: Implement these
     this.symbols = {
-      '%': 'prosenttia', '€': 'euroa', '&': 'ja', '+': 'plus',
-      '$': 'dollaria'
+      '%': 'PROSENTTIA', '€': 'EUROA', '&': 'JA', '+': 'PLUS',
+      '$': 'DOLLARIA'
     };
 
     this.symbolsReg = /[%€&\+\$]/g;
@@ -173,11 +178,16 @@ class Language extends LanguageBase {
   addToDictionary(s) {
     if ( s.startsWith(";;;") ) return; // Ignore comment line
     const parts = s.split("\t");
-    if ( parts.length === 2 ) {
+    const len = parts.length;
+    if ( len >= 2 ) {
+      const first = parts[0];
       if ( !this.dictionary.hasOwnProperty(parts[0]) ) {
-        this.dictionary[parts[0]] = {};
+        this.dictionary[first] = {};
       }
-      this.dictionary[parts[0]][parts[1]] = null;
+      for( let i=1; i<len; i++ ) {
+        const second = parts[i];
+        this.dictionary[first][second] = null;
+      }
     }
   }  
 
@@ -225,6 +235,32 @@ class Language extends LanguageBase {
     return w.join('').trim();
   }
 
+
+  /**
+  * Set the `text` to be spoken by analysing the part content.
+  *
+  * @param {Object} part Current part
+  * @param {number} i Index
+  * @param {Object[]} arr All the parts.
+  */
+  partSetText(part,i,arr) {
+
+    if ( !part.hasOwnProperty("type") ) {
+      const s = part.subtitles;
+      if ( s ) {
+        const num = s.replace(/,/g, '').trim();
+        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
+          part.text = this.convertNumberToWords(num);
+        } else {
+          part.type = "text";
+          part.text = s;
+        }
+      }
+    } else {
+      // TODO: Other types.
+    }
+
+  }
   
 
   /**
@@ -417,6 +453,18 @@ class Language extends LanguageBase {
     }
 
     return phonemes;
+  }
+
+  /**
+  * Post process the parts to be spoken.
+  *
+  * @param {Object[]} parts Parts
+  */
+  postProcessSpeak(parts) {
+    parts.forEach( x => {
+
+    });
+    return parts;
   }
 
 }

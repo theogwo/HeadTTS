@@ -410,13 +410,13 @@ dataset contains more than 100,000 entries and is open-sourced
 under the CC BY 4.0 license.
 
 The pre-processed compound word dictionary is a plain text file with
-around 50,000 entries (~650kB). Lines starting with `;;;` are comments.
-Each other line represents the first part of a compound word and the
-first four letters of a possible next word, separated by a tab
-character `\t`.
+around 50,000 entries in 10,000 lines (~350kB). Lines starting
+with `;;;` are comments. Each other line represents the first part
+of a compound word and the first four letters of all possible
+next words, all separated by a tab character `\t`.
 
 ```text
-ALUMIINI	FOL
+ALUMIINI	FOLI	KATT	OKSI	PAPE	SEOS	VENE	VUOK
 ```
 
 As of now, the Kokoro model doesn't offer Finnish voices. You can use
