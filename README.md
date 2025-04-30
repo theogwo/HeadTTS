@@ -4,24 +4,27 @@
 > This project is **UNDER CONSTRUCTION** and not yet fully tested.
 Specifications and used technologies and libraries may change without notice.
 
-**HeadTTS** is an JavaScript text-to-speech (TTS) solution
-that provides word-level timestamps and visemes as well as the audio.
-Inference can run entirely in a browser (via WebGPU/WASM), or alternatively
-on a Node.js WebSocket/RESTful server (CPU-based).
+**HeadTTS** is a free JavaScript text-to-speech (TTS) solution that
+provides timestamps and Oculus visemes for lip-sync, in addition
+to audio output. It uses neural voices, and inference can run
+entirely in the browser (via WebGPU or WASM), or alternatively
+on a CPU-based Node.js WebSocket/RESTful server.
 
-- **Pros**: Free. Doesn't require a server. WebGPU support.
-Uses neural voices with
+- **Pros**: Free. Doesn't require a server in in-browser mode.
+WebGPU support. Uses neural voices with
 [Kokoro](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
-TTS model. Fully compatible with the
+StyleTTS 2 model. Great for lip-sync apps, fully compatible with the
 [TalkingHead](https://github.com/met4citizen/TalkingHead) project.
 MIT licensed, doesn't use eSpeak NG or any other GPL-licensed
 module.
 
 - **Cons**: WebGPU is only supported by default in Chrome and Edge
-desktop browsers. No WebGPU support in Node.js yet, so inference on
-server (CPU) is rather slow. English is currently the only supported language.
+desktop browsers. No WebGPU support in Node.js yet<sup>\[1]</sup>, so
+if used in client-server mode, inference is rather slow.
+English is currently the only supported language.
 
-If you're using a Chrome or Edge desktop browser, check out the
+> [!TIP]
+> If you're using a Chrome or Edge desktop browser, check out the
 in-browser [DEMO](https://met4citizen.github.io/HeadTTS/)!
 
 The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License),
@@ -32,6 +35,11 @@ The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License)
 language modules and dictionaries, see Appendix B. Using
 [jest](https://jestjs.io) for testing.
 
+You can find the list of supported English voices and voice samples
+[here](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped#voicessamples).
+
+- \[1]: WebGPU support on onnx-runtime-node is currently experimental.
+
 ---
 
 # JS Browser Module: `headtts.mjs`
@@ -41,6 +49,9 @@ using Module Web Workers and WebGPU/WASM inference. Alternatively, it can
 connect to and use the HeadTTS Node.js WebSocket/RESTful server.
 
 ## Create instance and connect
+
+An example of how to create the class instance and connect to
+the first supported/available endpoint:
 
 ```javascript
 import { HeadTTS } from "./modules/headtts.mjs";
@@ -58,7 +69,7 @@ try {
 }
 ```
 
-Available options for the constructor and `connect`:
+Available options:
 
 Name | Description | Default value
 --- | --- | ---
@@ -85,18 +96,11 @@ Name | Description | Default value
 `defaultAudioEncoding` | Default audio format: `"wav"` or `"pcm"` (PCM 16-bit LE). | `"wav"`
 `trace` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
-Note: Model related options apply only to browser-based inference.
+Note: Model related options apply only to in-browser inference.
 If inference is performed on a server, server-specific
 settings will apply instead.
 
-## Events
-
-Event handler | Description
---- | ---
-`onstart` | Triggered when the first message is added and all message queues were previously empty.
-`onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
-`onend` | Triggered when all message queues become empty.
-`onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
+## Handle Events
 
 An example of using the `onmessage` event handler with the
 [TalkingHead](https://github.com/met4citizen/TalkingHead) instance `head`.
@@ -118,9 +122,17 @@ headtts.onmessage = (message) => {
 }
 ```
 
+Event handler | Description
+--- | ---
+`onstart` | Triggered when the first message is added and all message queues were previously empty.
+`onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
+`onend` | Triggered when all message queues become empty.
+`onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
+
 ## Synthesize speech
 
-Setup the used voice:
+An example of how to setup the used voice only once and then
+synthesize speech:
 
 ```javascript
 headtts.setup({
@@ -129,18 +141,15 @@ headtts.setup({
   speed: 1,
   audioEncoding: "wav"
 });
-```
 
-Synthesize speech:
-
-```javascript
 headtts.synthesize({
   input: "Test sentence."
 });
 ```
 
-Using events with `synthesize` is often the best approach
-for real-time use cases. However, you can alternatively
+The above approach relies on `onmessage` event handler to
+receive and handle response messages. It is the recommended
+approach for real-time use cases. However, you can alternatively
 use `await` to wait for all the related audio messages to arrive:
 
 ```javascript
@@ -178,10 +187,12 @@ cd HeadTTS
 npm install
 ```
 
+Requires Node.js v20+.
+
 ## Start server
 
 ```bash
-node ./modules/headtts-node.mjs
+node start
 ```
 
 Command line options:
@@ -387,9 +398,6 @@ Out-of-dictionary (OOD) words are converted using a rule-based algorithm based
 on NRL Report 7948, *Automatic Translation of English Text to Phonetics
 by Means of Letter-to-Sound Rules* (Elovitz et al., 1976). The report is
 available [here](https://apps.dtic.mil/sti/pdfs/ADA021929.pdf).
-
-You can find the list of supported English voices and samples
-[here](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped#voicessamples).
 
 
 ### Finnish, `fi`
