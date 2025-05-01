@@ -1,4 +1,4 @@
-# HeadTTS
+# <img src="logo.png" width="100"/>&nbsp; HeadTTS
 
 > [!IMPORTANT]
 > This project is **UNDER CONSTRUCTION** and not yet fully tested.
@@ -19,12 +19,12 @@ MIT licensed, doesn't use eSpeak NG or any other GPL-licensed
 module.
 
 - **Cons**: WebGPU is only supported by default in Chrome and Edge
-desktop browsers. No WebGPU support in Node.js yet<sup>\[1]</sup>, so
-if used in client-server mode, inference is rather slow.
-English is currently the only supported language.
+desktop browsers. WebGPU support in onnx-runtime-node is still
+experimental and not released, so the inference in
+client-server mode is rather slow. English is currently the
+only supported language.
 
-> [!TIP]
-> If you're using a Chrome or Edge desktop browser, check out the
+If you're using a Chrome or Edge desktop browser, check out the
 in-browser [DEMO](https://met4citizen.github.io/HeadTTS/)!
 
 The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License),
@@ -37,8 +37,6 @@ language modules and dictionaries, see Appendix B. Using
 
 You can find the list of supported English voices and voice samples
 [here](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped#voicessamples).
-
-- \[1]: WebGPU support on onnx-runtime-node is currently experimental.
 
 ---
 
@@ -490,5 +488,5 @@ A large size in stockings is hard to sell.
 ```
 
 **Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
-macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300 Mbit/s internet connection.
+macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
 The latest Google Chrome/Edge desktop browsers.
