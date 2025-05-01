@@ -40,7 +40,7 @@ You can find the list of supported English voices and voice samples
 
 ---
 
-# JS Browser Module: `headtts.mjs`
+# In-browser Module: `headtts.mjs`
 
 The HeadTTS JavaScript module enables in-browser text-to-speech
 using Module Web Workers and WebGPU/WASM inference. Alternatively, it can
@@ -67,9 +67,10 @@ try {
 }
 ```
 
-Available options:
+<details>
+  <summary>Click here to see the supported options.</summary>
 
-Name | Description | Default value
+Option | Description | Default value
 --- | --- | ---
 `endpoints` | List of WebSocket/RESTful servers or backends `webgpu` or `wasm`, in order of priority. If one fails, the next is used.  | `["webgpu",`<br>` "wasm"]`
 `audioCtx` | Audio context for creating audio buffers. If `null`, a new one is created. | `null`
@@ -97,6 +98,7 @@ Name | Description | Default value
 Note: Model related options apply only to in-browser inference.
 If inference is performed on a server, server-specific
 settings will apply instead.
+</details>
 
 ## Handle Events
 
@@ -120,12 +122,16 @@ headtts.onmessage = (message) => {
 }
 ```
 
+<details>
+  <summary>Click here to see the available event handlers.</summary>
+  
 Event handler | Description
 --- | ---
 `onstart` | Triggered when the first message is added and all message queues were previously empty.
 `onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
 `onend` | Triggered when all message queues become empty.
 `onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
+</details>
 
 ## Synthesize speech
 
@@ -193,14 +199,18 @@ Requires Node.js v20+.
 node start
 ```
 
-Command line options:
+<details>
+  <summary>Click here to see the command line options.</summary>
 
 Option|Description|Default
 ---|---|---
 `--config [file]` | JSON configuration file name. | `./headtts-node.json`
 `--trace [0-255]` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
-JSON configuration file properties:
+</details>
+
+<details>
+  <summary>Click here to see the JSON configuration file options</summary>
 
 Property|Description|Default
 ---|---|---
@@ -230,6 +240,8 @@ Property|Description|Default
 `tts.defaults.speed` | Speaking speed. Range: 0.25–4. | `1`
 `tts.defaults.audioEncoding` | Default audio encoding format. Supported options are `"wav"` and `"pcm"` (PCM 16bit LE). | `"wav"`
 `trace` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul>  | `0`
+
+</details>
 
 ---
 
@@ -471,6 +483,9 @@ solutions use streaming, some not.
 `RTF`: *Real-time factor* = Time to generate full audio / Duration of the full
 audio. If RTF < 1, synthesis is faster than real-time (i.e., good).
 
+<details>
+  <summary>Click here to see the test setup.</summary>
+
 All test cases use WAV or raw PCM 16bit LE format and the "List 1" of the
 [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html):
 
@@ -490,3 +505,5 @@ A large size in stockings is hard to sell.
 **Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
 macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
 The latest Google Chrome/Edge desktop browsers.
+
+</details>
