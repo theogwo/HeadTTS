@@ -170,15 +170,16 @@ export function encodeAudio(samples, sampleRate, header=true) {
 * @return {ArrayBuffer} Concatenated ArrayBuffer
 */
 export function concatArrayBuffers(bufs) {
-  if ( bufs.length === 1 ) return bufs[0];
-  let len = 0;
-  for( let i=0; i<bufs.length; i++ ) {
-    len += bufs[i].byteLength;
+  const len = bufs.length;
+  if ( len === 1 ) return bufs[0];
+  let byteLen = 0;
+  for( let i=0; i<len; i++ ) {
+    byteLen += bufs[i].byteLength;
   }
-  let buf = new ArrayBuffer(len);
-  let arr = new Uint8Array(buf);
+  const buf = new ArrayBuffer(byteLen);
+  const arr = new Uint8Array(buf);
   let p = 0;
-  for( let i=0; i<bufs.length; i++ ) {
+  for( let i=0; i<len; i++ ) {
     arr.set( new Uint8Array(bufs[i]), p);
     p += bufs[i].byteLength;
   }
@@ -195,7 +196,8 @@ export function concatArrayBuffers(bufs) {
 export function pcmToAudioBuffer(buf,samplerate,ctx) {
   const arr = new Int16Array(buf);
   const floats = new Float32Array(arr.length);
-  for( let i=0; i<arr.length; i++ ) {
+  const len = arr.length;
+  for( let i=0; i<len; i++ ) {
     floats[i] = (arr[i] >= 0x8000) ? -(0x10000 - arr[i]) / 0x8000 : arr[i] / 0x7FFF;
   }
   const audio = ctx.createBuffer(1, floats.length, samplerate );

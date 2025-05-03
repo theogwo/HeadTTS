@@ -12,7 +12,7 @@
     "dictionaries/"
   ],
   "dependencies": {
-    "@huggingface/transformers": "^3.4.2",
+    "@huggingface/transformers": "^3.5.0",
     "ws": "^8.18.1"
   },
   "scripts": {
@@ -27,7 +27,10 @@
   "keywords": [
     "talkinghead",
     "lip-sync",
-    "text-to-speech"
+    "text-to-speech",
+    "timestamps",
+    "visemes",
+    "kokoro"
   ],
   "author": "Mika Suominen",
   "license": "MIT",

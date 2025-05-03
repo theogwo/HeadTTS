@@ -13,7 +13,6 @@
     "threads": 1,
 
     "transformersModule": "@huggingface/transformers",
-    "phonemizerModule": "phonemizer",
 
     "model": "onnx-community/Kokoro-82M-v1.0-ONNX-timestamped",
     "dtype": "fp32",

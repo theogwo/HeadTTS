@@ -279,11 +279,40 @@ class Language extends LanguageBase {
       });
     });
 
+    // Characters to phonemes
+    this.charactersToPhonemes = {
+      '!':	"ˌɛkskləmˈAʃənpˌYnt", '"': "kwˈOt", '#': "pˈWndsˌIn", '%': "pɜɹsˈɛnt",
+      '&': "ˈæmpɜɹsˌænd", "'": "əpˈɑstɹəfi", '(': "ˈOpənpɜɹˈɛnθəsˌiz",
+      ')': "klˈOzpɜɹˈɛnθəsˌiz", '+': "plˈʊs", '-': 'dˈæʃ', '—': 'dˈæʃ', ',': "kˈɑmə",
+      '.': "dˈɑt", '/': "slˈæʃ", ':': "kˈOlən", ';': "sˈɛmikˈOlən", '?': "kwˈɛsʧənmˈɑɹk",
+      'A': "ˈə", 'B': "bˈi", 'C': "sˈi", 'D': "dˈi", 'E': "ˈi", 'F': "ˈɛf",
+      'G': "ʤˈi", 'H': "ˈAʧ", 'I': "I", 'J': "ʤˈA", 'K': "kˈA", 'L': "ˈɛl",
+      'M': "ˈɛm", 'N': "ˈɛn", 'O': "ˈO", 'P': "pˈi", 'Q': "kjˈu", 'R': "ˈɑɹ",
+      'S': "ˈɛs", 'T': "tˈi", 'U': "jˈu", 'V': "vˈi", 'W': "dˈʌbəlju",
+      'X': "ˈɛks", 'Y': "wˈI", 'Z': "zˈi", '1': "wˈʌn", '2': "tˈu", '3': "θɹˈi",
+      '4': "fˈɔɹ", '5': "fˈIv", '6': "sˈɪks", '7': "sˈɛvən", '8': "ˈAt",
+      '9': "nˈIn", '0': "zˈiɹO", '{': "ˈOpɛnbɹˈAs", '}': "klˈOzbɹˈAs",
+      '$': "dˈɑlɜɹ", '€': "jˈuɹO"
+    };
+
     // English number words
     this.digits = ['OH', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE'];
     this.ones = ['','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE'];
     this.tens = ['','','TWENTY','THIRTY','FORTY','FIFTY','SIXTY','SEVENTY','EIGHTY','NINETY'];
     this.teens = ['TEN','ELEVEN','TWELVE','THIRTEEN','FOURTEEN','FIFTEEN','SIXTEEN','SEVENTEEN','EIGHTEEN','NINETEEN'];
+
+    // Date & Time
+    this.months = [
+      "", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
+      "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+    ];
+    this.days = [
+      "", "FIRST", "SECOND", "THIRD", "FOURTH", "FIFTH", "SIXTH", "SEVENTH", "EIGHT", "NINTH", "TENTH",
+      "ELEVENTH", "TWELFTH", "THIRTEENTH", "FOURTEENTH", "FIFTEENTH", "SIXTEENTH", "SEVENTEETH",
+      "EIGHTEENTH", "NINETEENTH", "TWENTIETH", "TWENTY-FIRST", "TWENTY-SECOND", "TWENTY-THIRD",
+      "TWENTY-FOURTH", "TWENTY-FIFTH", "TWENTY-SIXTH", "TWENTY-SEVENTH", "TWENTY-EIGHT", "TWENTY-NINTH", "THIRTIETH",
+      "THIRTY-FIRST"
+    ];
 
     // Symbols to English
     // TODO: Implement
@@ -422,20 +451,62 @@ class Language extends LanguageBase {
   * @param {Object[]} arr All the parts.
   */
   partSetText(part,i,arr) {
+    
+    // Call super to pre-populate
+    super.partSetText(part,i,arr);
 
-    if ( !part.hasOwnProperty("type") ) {
-      const s = part.subtitles;
-      if ( s ) {
-        const num = s.replace(/,/g, '').trim();
-        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
-          part.text = this.convertNumberToWords(num);
-        } else {
-          part.type = "text";
-          part.text = s;
+    // Language specific implementation
+    switch( part.type ) {
+
+      case "text":
+        // Check if this is actually a number
+        const s = part.text;
+        if ( s ) {
+          const num = s.replace(/,/g, '').trim();
+          if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
+            part.text = this.convertNumberToWords(num) + " ";
+          }
         }
-      }
-    } else {
-      // TODO: Other types.
+        break;
+
+      case "characters":
+        const phonetic = [];
+        const chars = [...part.value.toUpperCase()];
+        const len = chars.length;
+        for( let i=0; i<len; i++ ) {
+          const c = chars[i];
+          if ( this.charactersToPhonemes.hasOwnProperty(c) ) {
+            phonetic.push( this.charactersToPhonemes[c] );
+          } else {
+            phonetic.push(""); // Generates a space for unknown characters
+          }
+        }
+        part.phonemes = phonetic.join(" ") + " ";
+        break;
+
+      case "number":
+        part.text = this.convertNumberToWords(part.value) + " ";
+        break;
+
+      case "date":
+        const date = new Date(part.value);
+        const month = this.months[date.getMonth()];
+        const day = this.days[date.getDate()];
+        const year = this.convertSetsOfTwo(date.getFullYear());
+        part.text = month + " " + day + ", " + year + " ";
+        break;
+
+      case "time":
+        const time = new Date(part.value);
+        let hours = time.getHours(); // 0–23
+        const minutes = time.getMinutes(); // 0–59
+        const ampm = hours >= 12 ? 'P M' : 'A M';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // 0 becomes 12
+        part.text = this.convertNumberToWords(hours) + " ";
+        part.text += this.convertNumberToWords(minutes) + " ";
+        part.text += ampm;
+        break;
     }
 
   }

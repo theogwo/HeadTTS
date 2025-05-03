@@ -58,8 +58,8 @@ class LanguageBase {
     // Allowed punctuations
     this.punctuations = {
       ";": ";", ":": ":", ",": ",", ".": ".", "!": "!", "?": "?", "¡": "!",
-      "¿": "?", "—": "—", '"': '"', "…": "…", "«": '"', "»": '"', "“": "“",
-      "”": "”", "(": "(", ")": ")", "{": "(", "}": ")", "[": "(", "]": ")",
+      "¿": "?", "—": "—", '"': '"', "…": "…", "«": '"', "»": '"', "“": '"',
+      "”": '"', "(": "(", ")": ")", "{": "(", "}": ")", "[": "(", "]": ")",
       " ": " ", "-": "-", "'": "'"
     };
 
@@ -234,8 +234,31 @@ class LanguageBase {
   * @param {Object[]} arr All the parts.
   */
   partSetText(part,i,arr) {
-    part.type = "text";
-    part.text = s.replace(/,/g, '').trim();
+
+    switch( part.type ) {
+      case "text":
+        part.text = part.value;
+        part.subtitles = part.value;
+        break;
+
+      case "speech":
+        part.text = part.value;
+        break;
+
+      case "phonetic":
+        part.phonemes = part.value;
+        break;
+
+      case "break":
+        // TODO: Figure out better way to add breaks
+        let cnt = Math.max(2, Math.min( part.value / 500, 10 ));
+        part.phonemes = Array(cnt).fill(".").join("") + " ";
+        break;
+
+      // Leave other types to language specific implementation
+    }
+    part.subtitles = part.subtitles || "";
+
   }
 
 
@@ -361,8 +384,8 @@ class LanguageBase {
     inputs.forEach( x => {
       if ( typeof x === "string" ) {
         const textParts = this.splitText(x);
-        textParts.forEach( text => {
-          const part = { subtitles: text };
+        textParts.forEach( y => {
+          const part = { type: "text", value: y };
           parts.push( part );
         });
       } else {

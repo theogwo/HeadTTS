@@ -108,6 +108,47 @@ class HeadTTS {
     this.rest = null; // RESTful server
   }
 
+  /**
+  * Divide the given text into parts
+  * 
+  * @param {string} text Text
+  * @param {number} [initialLen=0] Initial length
+  * @return {string[]} Array of text parts.
+  */
+  divideToParts(text, initialLen=0) {
+    const parts = [];
+    const textLen = text.length;
+    const letters = [...text];
+    let lastSpace = 0;
+    let part = "";
+    for( let i=0; i<textLen; i++ ) {
+      const letter = letters[i];
+      const isLast = i === (textLen-1);
+      const letterTwo = isLast ? null : (letter + letters[i+1]);
+      const isDivider = isLast ? false : this.dividers.hasOwnProperty(letterTwo);
+      if ( letter === ' ' ) lastSpace = i;
+      const isMax = i >= (this.settings.splitLength - initialLen);
+
+      part += letter;
+
+      let s = null;
+      if ( isMax ) {
+        if ( lastSpace === 0 ) lastSpace = i;
+        parts.push( part.slice(0,lastSpace) );
+        part = part.slice(lastSpace+1);
+        lastSpace = 0;
+        initialLen = 0;
+      } else if ( isLast || isDivider ) {
+        parts.push( part );
+        part = "";
+        lastSpace = 0;
+        initialLen = 0;
+      }
+
+    }
+    return parts;
+  }
+
 
   /**
   * Emit message to event handlers. If no event handler was called and
@@ -566,6 +607,14 @@ class HeadTTS {
       return;
     }
 
+    // Setup input items
+    let inputItems;
+    if ( typeof data.input === 'string' ) {
+      inputItems = [ { type: "text", value: data.input } ];
+    } else {
+      inputItems = data.input.map( x => (typeof x === 'string' ? { type: "text", value: x } : x) );
+    }
+
     // Generated messages
     const messages = [];
     const addMessage = (input) => {
@@ -589,45 +638,83 @@ class HeadTTS {
       messages.push(message);
     }
 
-    if ( typeof data.input === 'string' ) {
+    // Process input items
+    const len = inputItems.length;
+    let outputItems = [];
+    let outputTextLen = 0;
+    for( let i=0; i<len; i++ ) {
+      const item = inputItems[i];
 
-      if ( data.input.length === 0 ) {
-        this.emit("error", new Error("Input string is empty."), events, true );
+      // Chech input item
+      if ( !item.hasOwnProperty("type") ) {
+        this.emit("error", new Error("Input item has no type."), events, true );
+        return;
+      }
+      if ( !item.hasOwnProperty("value") ) {
+        this.emit("error", new Error("Input item has no value."), events, true );
+        return;
+      }
+      if ( item.hasOwnProperty("subtitles") && typeof item.subtitles !== "string" ) {
+        this.emit("error", new Error("Subtitles must be a string, if set for an input item."), events, true );
         return;
       }
 
-      // Divide text to parts
-      const textLen = data.input.length;
-      const letters = [...data.input];
-      let lastSpace = 0;
-      let part = "";
-      for( let i=0; i<textLen; i++ ) {
-        const letter = letters[i];
-        const isLast = i === (textLen-1);
-        const letterTwo = isLast ? null : (letter + letters[i+1]);
-        const isDivider = isLast ? false : this.dividers.hasOwnProperty(letterTwo);
-        if ( letter === ' ' ) lastSpace = i;
-        const isMax = i === this.settings.splitLength;
+      switch( item.type ) {
 
-        part += letter;
+        case "text":
+          const parts = this.divideToParts( item.value, outputTextLen );
+          const partsLen = parts.length;
+          for( let j=0; j<partsLen-1; j++ ) {
+            const part = parts[j];
+            outputItems.push(part);
+            addMessage(outputItems);
+            outputItems = [];
+          }
+          outputItems.push(parts[ partsLen-1 ]);
+          outputTextLen = parts[ partsLen-1 ];
+          break;
 
-        let s = null;
-        if ( isMax ) {
-          if ( lastSpace === 0 ) lastSpace = i;
-          s = part.slice(0,lastSpace);
-          part = part.slice(lastSpace+1);
-        } else if ( isLast || isDivider ) {
-          s = part;
-          part = "";
-        }
-        if ( s ) {
-          addMessage(s);
-          lastSpace = 0;
-        }
+        case "speech":
+        case "phonetic":
+        case "characters":
+        case "number":
+          if ( typeof item.value !== 'string' ) {
+            this.emit("error", new Error('Input item of type "' + item.type + '" must have a non-empty string value.'), events, true );
+            return;
+          }
 
+          if ( (outputTextLen + item.value.length)  >= this.settings.splitLength ) {
+            addMessage(outputItems);
+            outputItems = [ item ];
+            outputTextLen = item.value.length;
+          } else {
+            outputItems.push(item);
+            outputTextLen += item.value.length;
+          }
+          break;
+
+        case "date":
+        case "time":
+        case "break":
+          if ( Number.isNaN(item.value) || item.value < 0 ) {
+            this.emit("error", new Error('Input item of type "' + item.type + '" must have a valid number value.'), events, true );
+            return;
+          }
+          outputItems.push(item);
+          outputTextLen += 10;
+          break;
+
+        default:
+          this.emit("error", new Error('Unknown item type: "' + item.type + '".'), events, true );
+          return;
       }
-    } else {
-      addMessage(data.input);
+
+      
+    }
+
+    // Add the remaining part
+    if ( outputItems.length ) {
+      addMessage(outputItems);
     }
 
     // Add items to queue in order

@@ -144,6 +144,22 @@ class Language extends LanguageBase {
       });
     });
 
+    // Characters to Finnish words
+    this.charactersToWords = {
+      '!':	"HUUTOMERKKI", '"': "LAINAUSMERKKI", '#': "RISUAITA", '%': "PROSENTTI",
+      '&': "ET-MERKKI", "'": "HIPSUKKA", '(': "SULKU AUKI",
+      ')': "SULKU KIINNI", '+': "PLUS", '-': 'VÄLIVIIVA', '—': 'VÄLIVIIVA', ',': "PILKKU",
+      '.': "PISTE", '/': "KAUTTAVIIVA", ':': "KAKSOISPISTE", ';': "PUOLIPISTE", '?': "KYSYMYSMERKKI",
+      'A': "AA", 'B': "BEE", 'C': "CEE", 'D': "DEE", 'E': "EE", 'F': "ÄF",
+      'G': "GEE", 'H': "HOO", 'I': "II", 'J': "JII", 'K': "KOO", 'L': "ÄL",
+      'M': "ÄM", 'N': "ÄN", 'O': "OO", 'P': "PEE", 'Q': "KUU", 'R': "ÄR",
+      'S': "ÄS", 'T': "TEE", 'U': "UU", 'V': "VEE", 'W': "KAKSOISVEE",
+      'X': "ÄKS", 'Y': "YY", 'Z': "TSET", '1': "YKSI", '2': "KAKSI", '3': "KOLME",
+      '4': "NELJÄ", '5': "VIISI", '6': "KUUSI", '7': "SEITSEMÄN", '8': "KAHDEKSAN",
+      '9': "YHDEKSÄN", '0': "NOLLAO", '{': "AALTOSULKU AUKI", '}': "AALTOSULKU KIINNI",
+      '$': "DOLLARI", '€': "EURO"
+    };
+
     // Finnish number words
     this.numbers = [
       'NOLLA', 'YKSI', 'KAKSI', 'KOLME', 'NELJÄ', 'VIISI', 'KUUSI',
@@ -152,6 +168,22 @@ class Language extends LanguageBase {
       "KUUSITOISTA", 'SEITSEMÄNTOISTA', 'KAHDEKSANTOISTA', 'YHDEKSÄNTOISTA'
     ];
 
+    // Date & Time
+    this.days = [
+      "", "ENSIMMÄINEN", "TOINEN", "KOLMAS", "NELJÄS", "VIIDES", "KUUDES",
+      "SEITSEMÄS", "KAHDEKSAS", "YHDEKSÄS", "KYMMENES", "YHDESTOISTA",
+      "KAHDESTOISTA", "KOLMASTOISTA", "NELJÄSTOISTA", "VIIDESTOISTA",
+      "KUUDESTOISTA", "SEITSEMÄSTOISTA", "KAHDEKSASTOISTA", "YHDEKSÄSTOISTA",
+      "KAHDESKYMMENES", "KAHDESKYMMENES-ENSIMMÄINEN", "KAHDESKYMMENES-TOINEN",
+      "KAHDESKYMMENES-KOLMAS", "KAHDESKYMMENES-NELJÄS", "KAHDESKYMMENES-VIIDES",
+      "KAHDESKYMMENES-KUUDES", "KAHDESKYMMENES-SEITSEMÄS", "KAHDESKYMMENES-KAHDEKSAS",
+      "KAHDESKYMMENES-YHDEKSÄS", "KOLMASKYMMENES", "KOLMASKYMMENES-ENSIMMÄINEN"
+    ];
+    this.months = [
+      "", "TAMMIKUUTA", "HELMIKUUTA", "MAALISKUUTA", "HUHTIKUUTA", "TOUKOKUUTA", "KESÄKUUTA", "HEINÄKUUTA",
+      "ELOKUUTA", "SYYSKUUTA", "LOKAKUUTA", "MARRASKUUTA", "JOULUKUUTA"
+    ];
+    
     // Symbols to Finnish
     // TODO: Implement these
     this.symbols = {
@@ -244,20 +276,58 @@ class Language extends LanguageBase {
   * @param {Object[]} arr All the parts.
   */
   partSetText(part,i,arr) {
+    
+    // Call super to pre-populate
+    super.partSetText(part,i,arr);
 
-    if ( !part.hasOwnProperty("type") ) {
-      const s = part.subtitles;
-      if ( s ) {
-        const num = s.replace(/,/g, '').trim();
-        if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
-          part.text = this.convertNumberToWords(num);
-        } else {
-          part.type = "text";
-          part.text = s;
+    // Language specific implementation
+    switch( part.type ) {
+
+      case "text":
+        // Check if this is actually a number
+        const s = part.text;
+        if ( s ) {
+          const num = s.replace(/,/g, '').trim();
+          if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
+            part.text = this.convertNumberToWords(num) + " ";
+          }
         }
-      }
-    } else {
-      // TODO: Other types.
+        break;
+
+      case "characters":
+        const t = [];
+        const chars = [...part.value.toUpperCase()];
+        const len = chars.length;
+        for( let i=0; i<len; i++ ) {
+          const c = chars[i];
+          if ( this.charactersToWords.hasOwnProperty(c) ) {
+            t.push( this.charactersToWords[c] );
+          } else {
+            t.push(""); // Generates a space for unknown characters
+          }
+        }
+        part.text = t.join(" ") + " ";
+        break;
+
+      case "number":
+        part.text = this.convertNumberToWords(part.value) + " ";
+        break;
+
+      case "date":
+        const date = new Date(part.value);
+        const month = this.months[date.getMonth()];
+        const day = this.days[date.getDate()];
+        const year = this.convertNumberToWords(date.getFullYear());
+        part.text = day + " " + month + " " + year + " ";
+        break;
+
+      case "time":
+        const time = new Date(part.value);
+        let hours = time.getHours(); // 0–23
+        const minutes = time.getMinutes(); // 0–59
+        part.text = this.convertNumberToWords(hours) + " ";
+        part.text += this.convertNumberToWords(minutes) + " ";
+        break;
     }
 
   }

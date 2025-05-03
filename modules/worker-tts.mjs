@@ -314,7 +314,18 @@ async function process() {
     }
     const { phonemes, metadata } = language.generate(d.input);
     if ( isTraceG2P ) {
-      utils.trace( "G2P: " + d.input + " => " + phonemes.join("") + ", data=", metadata );
+      if ( typeof d.input === "string" ) {
+        utils.trace( "G2P: " + d.input );
+      } else if ( Array.isArray(d.input) ) {
+        d.input.forEach( x => {
+          if ( typeof x === "string" ) {
+            utils.trace( "G2P: " + x );
+          } else {
+            utils.trace( "G2P: { type=" + x.type + ", value=" + x.value + " }" );
+          }
+        });
+      }
+      utils.trace( "G2P: => " + phonemes.join("") + ", metadata=", metadata );
     }
 
     // Generate input IDs and run the model

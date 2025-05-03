@@ -6,14 +6,15 @@ Specifications and used technologies and libraries may change without notice.
 
 **HeadTTS** is a free JavaScript text-to-speech (TTS) solution that
 provides timestamps and Oculus visemes for lip-sync, in addition
-to audio output. It uses neural voices, and inference can run
-entirely in the browser (via WebGPU or WASM), or alternatively
+to audio output. It uses
+[Kokoro](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
+neural voices, and inference can run entirely in
+the browser (via WebGPU or WASM), or alternatively
 on a CPU-based Node.js WebSocket/RESTful server.
 
 - **Pros**: Free. Doesn't require a server in in-browser mode.
-WebGPU support. Uses neural voices with
-[Kokoro](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
-StyleTTS 2 model. Great for lip-sync apps, fully compatible with the
+WebGPU support. Uses neural voices with a StyleTTS 2 model.
+Great for lip-sync use cases and fully compatible with the
 [TalkingHead](https://github.com/met4citizen/TalkingHead) project.
 MIT licensed, doesn't use eSpeak NG or any other GPL-licensed
 module.
@@ -46,10 +47,7 @@ The HeadTTS JavaScript module enables in-browser text-to-speech
 using Module Web Workers and WebGPU/WASM inference. Alternatively, it can
 connect to and use the HeadTTS Node.js WebSocket/RESTful server.
 
-## Create instance and connect
-
-An example of how to create the class instance and connect to
-the first supported/available endpoint:
+Create a new `HeadTTS` class instance:
 
 ```javascript
 import { HeadTTS } from "./modules/headtts.mjs";
@@ -59,16 +57,10 @@ const headtts = new HeadTTS({
   languages: ['en-us'], // Language modules to pre-load (in-browser)
   voices: ["af_bella", "am_fenrir"] // Voices to pre-load (in-browser)
 });
-
-try {
-  await headtts.connect();
-} catch(error) {
-  console.error(error);
-}
 ```
 
 <details>
-  <summary>Click here to see the supported options.</summary>
+  <summary>Click to see the options.</summary>
 
 Option | Description | Default value
 --- | --- | ---
@@ -98,12 +90,23 @@ Option | Description | Default value
 Note: Model related options apply only to in-browser inference.
 If inference is performed on a server, server-specific
 settings will apply instead.
+
 </details>
 
-## Handle Events
+Connect to the first supported/available endpoint:
 
-An example of using the `onmessage` event handler with the
-[TalkingHead](https://github.com/met4citizen/TalkingHead) instance `head`.
+```javascript
+try {
+  await headtts.connect();
+} catch(error) {
+  console.error(error);
+}
+```
+
+Make an `onmessage` event handler to handle response messages. In this
+example, we use
+[TalkingHead](https://github.com/met4citizen/TalkingHead) instance `head`
+to play the incoming audio and lip-sync data:
 
 ```javascript
 // Speak and lipsync
@@ -123,7 +126,7 @@ headtts.onmessage = (message) => {
 ```
 
 <details>
-  <summary>Click here to see the available event handlers.</summary>
+  <summary>Click to see all the available class events.</summary>
   
 Event handler | Description
 --- | ---
@@ -131,12 +134,10 @@ Event handler | Description
 `onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
 `onend` | Triggered when all message queues become empty.
 `onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
+
 </details>
 
-## Synthesize speech
-
-An example of how to setup the used voice only once and then
-synthesize speech:
+Setup the voice only when you need it to change:
 
 ```javascript
 headtts.setup({
@@ -145,16 +146,20 @@ headtts.setup({
   speed: 1,
   audioEncoding: "wav"
 });
+```
 
+Synthesize speech:
+
+```javascript
 headtts.synthesize({
   input: "Test sentence."
 });
 ```
 
 The above approach relies on `onmessage` event handler to
-receive and handle response messages. It is the recommended
-approach for real-time use cases. However, you can alternatively
-use `await` to wait for all the related audio messages to arrive:
+receive and handle response messages and it is the recommended
+approach for real-time use cases. An alternative approach is to
+`await` for all the related audio messages:
 
 ```javascript
 try {
@@ -167,23 +172,63 @@ try {
 }
 ```
 
-## JS Class Methods
+<details>
+  <summary>Click to see all the class method.</summary>
 
 Method | Description
 --- | ---
 `connect( settings=null, onprogress=null, onerror=null )` | Connects to the specified set of `endpoints` set in constructor or within the optinal `settings` object. If the `settings` parameter is provided, it forces a reconnection. The `onprogress` callback handles `ProgressEvent` events, while the `onerror` callback handles system-level error events. Returns a promise. **Note:** When connecting to a RESTful server, the method sends a hello message and considers the connection established only if a text response starting with `HeadTTS` is received.
 `clear()` | Clears all work queues and resolves all promises.
 `setup( data, onerror=null )` | Adds a new setup request to the work queue. See the API section for the supported `data` properties. Returns a promise.
-`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. See the API section for supported `data` properties. Returns a promise that resolves with a sorted array of related `audio` or `error` messages.
+`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with a sorted array of related `audio` or `error` messages.
+
+</details>
+
+<details>
+  <summary>Click to see the available input types for synthesize request.</summary>
+
+The `input` parameter can be a string or, alternatively, an array
+of strings or inputs items.
+
+Type | Description | Example
+---|---|---
+`text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre><code>{<br>  type: "text",<br>  value: "This is an example."<br>}</code></pre>
+`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre><code>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</code></pre>
+`phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</code></pre>
+`characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre><code>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</code></pre>
+`number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre><code>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</code></pre>
+`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre><code>{<br>  type: "date",<br>  value: Date.now(),<br>  subtitles: "02/05/2025"<br>}</code></pre>
+`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre><code>{<br>  type: "time",<br>  value: Date.now(),<br>  subtitles: "6:45 PM"<br>}</code></pre>
+`break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</code></pre>
+
+*TODO: Add support for `audio` type.*
+
+An example using an array of input items:
+
+```javascript
+{
+  type: "synthesize",
+  id: 14, // Unique request identifier.
+  data: {
+    input: [
+      "There were ",
+      { type: "speech", value: "over two hundred ", subtitles: ">200 " },
+      "items of",
+      { type: "phonetic", value: "mˈɜɹʧəndˌIz ", subtitles: "merchandise " },
+      "on sale."
+    ]
+  }
+}
+```
+
+</details>
 
 ---
 
 # NodeJS WebSocket/RESTful Server: `headtts-node.mjs`
 
-## Install
-
 The HeadTTS project is not yet added to NPM, so use git clone
-and install:
+and install (requires Node.js v20+):
 
 ```bash
 git clone https://github.com/met4citizen/HeadTTS
@@ -191,26 +236,30 @@ cd HeadTTS
 npm install
 ```
 
-Requires Node.js v20+.
-
-## Start server
+Start the server:
 
 ```bash
 node start
 ```
 
 <details>
-  <summary>Click here to see the command line options.</summary>
+  <summary>Click to see the command line options.</summary>
 
 Option|Description|Default
 ---|---|---
 `--config [file]` | JSON configuration file name. | `./headtts-node.json`
 `--trace [0-255]` | Bitmask for debugging subsystems (`0`=none, `255`=all):<br><ul><li>Bit 0 (1): Connection</li><li>Bit 1 (2): Messages</li><li>Bit 2 (4): Events</li><li>Bit 3 (8): G2P</li><li>Bit 4 (16): Language modules</li></ul> | `0`
 
+An example:
+
+```bash
+node ./modules/headtts-node.mjs --trace 16
+```
+
 </details>
 
 <details>
-  <summary>Click here to see the JSON configuration file options</summary>
+  <summary>Click to see the configuration file options</summary>
 
 Property|Description|Default
 ---|---|---
@@ -279,12 +328,10 @@ automatically.
   type: "synthesize",
   id: 13, // Unique request identifier.
   data: {
-    input: "This is an example."
+    input: "This is an example." // String or array of input items
   }
 }
 ```
-
-*TODO: Add support for other data formats.*
 
 The response message for `synthesize` request is either `error` or `audio`.
 
@@ -338,7 +385,7 @@ RESTful server API is a more simple alternative for WebSocket API.
 
 JSON | Description
 ---|---
-`input` | Input to synthesize. For a string of text, maximum 500 characters.
+`input` | Input to synthesize. String or an array of input items. For a string of text, maximum 500 characters.
 `voice` | Voice name.
 `language` | Language code.
 `speed` | Speed of speech.
@@ -398,7 +445,7 @@ casual speech since HeadTTS is primarily designed for conversational use.
 The final dictionary is a plain text file with around 125,000 lines (2,8MB).
 Lines starting with `;;;` are comments. Each other line represents
 one word and its pronunciations. The word and its different possible
-pronunciations are separated by a tab character `\t`.
+pronunciations are separated by a tab character `\t`. An example entry:
 
 ```text
 MERCHANDISE	mˈɜɹʧəndˌIz
@@ -413,8 +460,9 @@ available [here](https://apps.dtic.mil/sti/pdfs/ADA021929.pdf).
 ### Finnish, `fi`
 
 > [!IMPORTANT]  
-> Finnish language is not officially supported as the Kokoro model
-doesn't support it.
+> As of now, Finnish language is not supported by the Kokoro model.
+You can use the `fi` language code with the English voices, but
+the pronunciation will sound rather weird.
 
 The phonemization of the Finnish language module is done by
 an in-built algorithm. The algorithm doesn't require a pronunciation
@@ -431,21 +479,17 @@ The pre-processed compound word dictionary is a plain text file with
 around 50,000 entries in 10,000 lines (~350kB). Lines starting
 with `;;;` are comments. Each other line represents the first part
 of a compound word and the first four letters of all possible
-next words, all separated by a tab character `\t`.
+next words, all separated by a tab character `\t`. An example entry:
 
 ```text
 ALUMIINI	FOLI	KATT	OKSI	PAPE	SEOS	VENE	VUOK
 ```
 
-As of now, the Kokoro model doesn't offer Finnish voices. You can use
-the `fi` language code with the voices of other languages, but
-the pronunciation will sound rather weird.
-
 ---
 
 # Appendix C: Latency
 
-**Summary for HeadTTS:** In-browser TTS on WebGPU is 3x times faster than
+**Summary:** In-browser TTS on WebGPU is 3x times faster than
 real-time and approximately 10x faster than WASM. CPU inference on
 a Node.js server performs surprisingly well, but increasing the thread
 pool size worsens performance, so we need to wait for WebGPU support.
@@ -453,9 +497,10 @@ Quantization makes no significant difference, so I recommend using 32-bit
 floating point precision (fp32) for the best audio quality unless
 memory consumption becomes a concern.
 
-Unofficial latency results using my own test app:
+Unofficial latency results using my own
+[latency test app](https://github.com/met4citizen/HeadTTS/blob/main/tests/latency.html):
 
-TTS Engine | Setup |`FIL`|`FBL`|`RTF`
+TTS Engine | Setup |`FIL`<sup>\[1]</sup>|`FBL`<sup>\[2]</sup>|`RTF`<sup>\[3]</sup>
 ---|---|---|---|---
 HeadTTS, in-browser | Chrome, WebGPU/fp32 | 9.4s | 958ms | 0.30
 HeadTTS, in-browser | Edge, WebGPU/fp32 | 8.7s | 913ms | 0.28
@@ -472,19 +517,23 @@ Microsoft Azure TTS | Speech SDK, WebSocket | 1.1s | 274ms | 0.04
 Google TTS | REST | 0.79s | 67ms | 0.03
 
 
-`FIL`: *Finish latency*. Total time from sending text input to receiving
+<sup>\[1]</sup>: *Finish latency*. Total time from sending text input to receiving
 the full audio.
 
-`FBL`: *First byte/part/sentence latency*. Time from sending the text input
+<sup>\[2]</sup>: *First byte/part/sentence latency*. Time from sending the text input
 to receiving the first playable byte/part/sentence of audio.
 Note: This measure is not comparable across all models, since some
 solutions use streaming, some not.
 
-`RTF`: *Real-time factor* = Time to generate full audio / Duration of the full
+<sup>\[3]</sup>: *Real-time factor* = Time to generate full audio / Duration of the full
 audio. If RTF < 1, synthesis is faster than real-time (i.e., good).
 
 <details>
   <summary>Click here to see the test setup.</summary>
+
+**Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
+macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
+The latest Google Chrome/Edge desktop browsers.
 
 All test cases use WAV or raw PCM 16bit LE format and the "List 1" of the
 [Harvard Sentences](https://www.cs.columbia.edu/~hgs/audio/harvard.html):
@@ -501,9 +550,5 @@ The hogs were fed chopped corn and garbage.
 Four hours of steady work faced us.
 A large size in stockings is hard to sell.
 ```
-
-**Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
-macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
-The latest Google Chrome/Edge desktop browsers.
 
 </details>
