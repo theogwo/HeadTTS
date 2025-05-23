@@ -188,14 +188,14 @@ of strings or inputs items.
 
 Type | Description | Example
 ---|---|---
-`text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre><code>{<br>  type: "text",<br>  value: "This is an example."<br>}</code></pre>
-`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre><code>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</code></pre>
-`phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</code></pre>
-`characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre><code>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</code></pre>
-`number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre><code>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</code></pre>
-`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre><code>{<br>  type: "date",<br>  value: Date.now(),<br>  subtitles: "02/05/2025"<br>}</code></pre>
-`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre><code>{<br>  type: "time",<br>  value: Date.now(),<br>  subtitles: "6:45 PM"<br>}</code></pre>
-`break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</code></pre>
+`text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre>{<br>  type: "text",<br>  value: "This is an example."<br>}</pre>
+`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</pre>
+`phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</pre>
+`characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</pre>
+`number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</pre>
+`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre>{<br>  type: "date",<br>  value: Date.now(),<br>  subtitles: "02/05/2025"<br>}</pre>
+`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre>{<br>  type: "time",<br>  value: Date.now(),<br>  subtitles: "6:45 PM"<br>}</pre>
+`break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</pre>
 
 *TODO: Add support for `audio` type.*
 
@@ -223,10 +223,12 @@ An example using an array of input items:
 
 # NodeJS WebSocket/RESTful Server: `headtts-node.mjs`
 
-Install using NPM (requires Node.js v20+):
+Install (requires Node.js v20+):
 
 ```bash
-npm install @met4citizen/headtts
+git clone https://github.com/met4citizen/HeadTTS
+cd HeadTTS
+npm install
 ```
 
 Start the server:
