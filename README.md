@@ -1,32 +1,28 @@
-> [!IMPORTANT]
-> This project is **UNDER CONSTRUCTION** and not yet fully tested.
-Specifications and used technologies and libraries may change without notice.
-
 # <img src="logo.png" width="100"/>&nbsp; HeadTTS
 
 **HeadTTS** is a free JavaScript text-to-speech (TTS) solution that
 provides timestamps and Oculus visemes for lip-sync, in addition
-to audio output. It uses
+to audio output (WAV/PCM). It uses
 [Kokoro](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
-neural voices, and inference can run entirely in
+neural model and voices, and inference can run entirely in
 the browser (via WebGPU or WASM), or alternatively
-on a CPU-based Node.js WebSocket/RESTful server.
+on a Node.js WebSocket/RESTful server (CPU-based).
 
 - **Pros**: Free. Doesn't require a server in in-browser mode.
 WebGPU support. Uses neural voices with a StyleTTS 2 model.
 Great for lip-sync use cases and fully compatible with the
-[TalkingHead](https://github.com/met4citizen/TalkingHead) project.
+[TalkingHead](https://github.com/met4citizen/TalkingHead).
 MIT licensed, doesn't use eSpeak NG or any other GPL-licensed
 module.
 
 - **Cons**: WebGPU is only supported by default in Chrome and Edge
-desktop browsers. WebGPU support in onnx-runtime-node is still
-experimental and not released, so the inference in
-client-server mode is rather slow. English is currently the
-only supported language.
+desktop browsers. Takes time to load (the first time) and uses
+a lot of memory. WebGPU support in onnxruntime-node is still experimental
+and not released, so server-side inference is relatively slow. English
+is currently the only supported language.
 
-If you're using a Chrome or Edge desktop browser, check out the
-in-browser [DEMO](https://met4citizen.github.io/HeadTTS/)!
+**If you're using a Chrome or Edge desktop browser, check out the
+[In-browser Demo](https://met4citizen.github.io/HeadTTS/)!**
 
 The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License),
 [hugginface/transformers.js](https://github.com/huggingface/transformers.js/)
@@ -192,14 +188,14 @@ of strings or inputs items.
 
 Type | Description | Example
 ---|---|---
-`text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre>{<br>  type: "text",<br>  value: "This is an example."<br>}</pre>
-`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</pre>
-`phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</pre>
-`characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</pre>
-`number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</pre>
-`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre>{<br>  type: "date",<br>  value: Date.now(),<br>  subtitles: "02/05/2025"<br>}</pre>
-`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre>{<br>  type: "time",<br>  value: Date.now(),<br>  subtitles: "6:45 PM"<br>}</pre>
-`break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</pre>
+`text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre><code>{<br>  type: "text",<br>  value: "This is an example."<br>}</code></pre>
+`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre><code>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</code></pre>
+`phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</code></pre>
+`characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre><code>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</code></pre>
+`number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre><code>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</code></pre>
+`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre><code>{<br>  type: "date",<br>  value: Date.now()<br>}</code></pre>
+`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre><code>{<br>  type: "time",<br>  value: Date.now()<br>}</code></pre>
+`break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</code></pre>
 
 *TODO: Add support for `audio` type.*
 
@@ -227,19 +223,16 @@ An example using an array of input items:
 
 # NodeJS WebSocket/RESTful Server: `headtts-node.mjs`
 
-The HeadTTS project is not yet added to NPM, so use git clone
-and install (requires Node.js v20+):
+Install using NPM (requires Node.js v20+):
 
 ```bash
-git clone https://github.com/met4citizen/HeadTTS
-cd HeadTTS
-npm install
+npm install @met4citizen/headtts
 ```
 
 Start the server:
 
 ```bash
-node start
+npm start
 ```
 
 <details>
@@ -298,8 +291,7 @@ Property|Description|Default
 
 ## WebSocket API
 
-> [!NOTE]  
-> Every WebSocket request must have a unique identifier, `id`. The server uses
+Every WebSocket request must have a unique identifier, `id`. The server uses
 a Web Worker thread pool, and because work is done in parallel,
 the order of responses may vary. Therefore, each response includes
 a `ref` property that identifies the original request, allowing
@@ -489,7 +481,7 @@ ALUMIINI	FOLI	KATT	OKSI	PAPE	SEOS	VENE	VUOK
 
 # Appendix C: Latency
 
-**Summary:** In-browser TTS on WebGPU is 3x times faster than
+In-browser TTS on WebGPU is 3x times faster than
 real-time and approximately 10x faster than WASM. CPU inference on
 a Node.js server performs surprisingly well, but increasing the thread
 pool size worsens performance, so we need to wait for WebGPU support.
@@ -517,15 +509,15 @@ Microsoft Azure TTS | Speech SDK, WebSocket | 1.1s | 274ms | 0.04
 Google TTS | REST | 0.79s | 67ms | 0.03
 
 
-<sup>\[1]</sup>: *Finish latency*. Total time from sending text input to receiving
+<sup>\[1]</sup> *Finish latency*: Total time from sending text input to receiving
 the full audio.
 
-<sup>\[2]</sup>: *First byte/part/sentence latency*. Time from sending the text input
+<sup>\[2]</sup> *First byte/part/sentence latency*: Time from sending the text input
 to receiving the first playable byte/part/sentence of audio.
 Note: This measure is not comparable across all models, since some
 solutions use streaming, some not.
 
-<sup>\[3]</sup>: *Real-time factor* = Time to generate full audio / Duration of the full
+<sup>\[3]</sup> *Real-time factor* = Time to generate full audio / Duration of the full
 audio. If RTF < 1, synthesis is faster than real-time (i.e., good).
 
 <details>
