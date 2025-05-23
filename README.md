@@ -193,8 +193,8 @@ Type | Description | Example
 `phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</code></pre>
 `characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre><code>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</code></pre>
 `number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre><code>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</code></pre>
-`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre><code>{<br>  type: "date",<br>  value: Date.now()<br>}</code></pre>
-`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre><code>{<br>  type: "time",<br>  value: Date.now()<br>}</code></pre>
+`date` | Speak the date in `value` with corresponding `subtitles` (optional). The date is presented as milliseconds from epoch. | <pre><code>{<br>  type: "date",<br>  value: Date.now(),<br>  subtitles: "02/05/2025"<br>}</code></pre>
+`time` | Speak the time in `value` with corresponding `subtitles` (optional). The time is presented as milliseconds from epoch. | <pre><code>{<br>  type: "time",<br>  value: Date.now(),<br>  subtitles: "6:45 PM"<br>}</code></pre>
 `break` | The length of the break in milliseconds in `value` with corresponding `subtitles` (optional). | <pre><code>{<br>  type: "break",<br>  value: 2000,<br>  subtitles: "..."<br>}</code></pre>
 
 *TODO: Add support for `audio` type.*
