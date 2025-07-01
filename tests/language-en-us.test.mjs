@@ -32,6 +32,10 @@ describe('Number to words', () => {
         ['1000', "ONE THOUSAND"],
         ['-463', "MINUS FOUR SIX THREE"],
         ['12.532', "TWELVE POINT FIVE THREE TWO"],
+        ['100', "ONE HUNDRED"],
+        ['300', "THREE HUNDRED"],
+        ['0.5', "ZERO POINT FIVE"],
+        ['-0.25', "MINUS ZERO POINT TWO FIVE"]
     ])('convertNumberToWords("%s") ➝ %s', (input, expected) => {
         expect(lang.convertNumberToWords(input)).toEqual(expected);
     });
