@@ -300,6 +300,19 @@ class Language extends LanguageBase {
     this.ones = ['','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE'];
     this.tens = ['','','TWENTY','THIRTY','FORTY','FIFTY','SIXTY','SEVENTY','EIGHTY','NINETY'];
     this.teens = ['TEN','ELEVEN','TWELVE','THIRTEEN','FOURTEEN','FIFTEEN','SIXTEEN','SEVENTEEN','EIGHTEEN','NINETEEN'];
+    this.decades = {
+      20: "TWENTIES", 30: "THIRTIES", 40: "FORTIES", 50: "FIFTIES",
+      60: "SIXTIES", 70: "SEVENTIES", 80: "EIGHTIES", 90: "NINETIES"
+    };
+    this.ordinals = {
+      1: "FIRST", 2: "SECOND", 3: "THIRD", 4: "FOURTH", 5: "FIFTH",
+      6: "SIXTH", 7: "SEVENTH", 8: "EIGHTH", 9: "NINTH", 10: "TENTH",
+      11: "ELEVENTH", 12: "TWELFTH", 13: "THIRTEENTH", 14: "FOURTEENTH",
+      15: "FIFTEENTH", 16: "SIXTEENTH", 17: "SEVENTEETH", 18: "EIGHTEENTH",
+      19: "NINETEENTH", 20: "TWENTIETH", 30: "THIRTIETH", 40: "FORTIETH",
+      50: "FIFTIETH", 60: "SIXTIETH",70: "SEVENTIETH", 80: "EIGHTIETH",
+      90: "NINETIETH"
+    };
 
     // Date & Time
     this.months = [
@@ -421,26 +434,102 @@ class Language extends LanguageBase {
   * Convert number to words. Try to decide how to read it.
   *
   * @param {number|string} num Number
+  * @param {boolean} [isNotSpecial=false] If true, this is not a special number (e.g. year, zip code)
   * @return {string} String
   */
-  convertNumberToWords(num) {
+  convertNumberToWords(num, isNotSpecial=false) {
     const n = parseFloat(num);
     if (num == "0") {
       return "ZERO";
     } else if (num < 0 ) {
-      return "MINUS " + this.convertNumberToWords( Math.abs(num).toString() ).trim();
+      return "MINUS " + this.convertNumberToWords( Math.abs(num).toString(), isNotSpecial ).trim();
     } else if ( n && !Number.isInteger(n) ) {
       const parts = n.toString().split('.');
-      return this.convertNumberToWords(parts[0]).trim() + " POINT " + this.convertDigitByDigit(parts[1]).trim();
+      return this.convertNumberToWords(parts[0], isNotSpecial).trim() + " POINT " + this.convertDigitByDigit(parts[1]).trim();
     } else if(num.toString().startsWith('0')){
       return this.convertDigitByDigit(num).trim();
-    } else if ((num<1000 && num>99 && (num % 100) !== 0) || (num>10000&&num<1000000)) { //read area and zip codes digit by digit
+    } else if (!isNotSpecial && ((num<1000 && num>99 && (num % 100) !== 0) || (num>10000&&num<1000000))) { //read area and zip codes digit by digit
       return this.convertDigitByDigit(num).trim();
-    } else if ((num > 1000 && num < 2000)||(num>2009&&num<3000)) { //read years as two sets of two digits
+    } else if (!isNotSpecial && ((num > 1000 && num < 2000)||(num>2009&&num<3000))) { //read years as two sets of two digits
       return (num % 100 != 0 ? this.convertSetsOfTwo(num).trim() : this.convertTens(num.toString().substring(0, 2)).trim() + " HUNDRED");
     } else {
       return this.convertMillions(num).trim();
     }
+  }
+
+  /**
+  * Expand decade to text.
+  *
+  * @param {string} decade Decade
+  * @return {string} Normalized text
+  */
+  convertDecade(decade) {
+    const num = parseInt(decade);
+    const isShort = !isNaN(num) && decade.length === 2;
+    const isLong = !isNaN(num) && decade.length > 2 && num > 0 && num <= 3000;
+    const thousands = (isLong && (num % 1000) === 0 ) ? Math.floor(num / 1000) : null;
+    const hundreds = (isLong && !thousands) ?  Math.floor(num / 100) : null;
+    const tens = (isShort || isLong) ? Math.floor((num % 100) / 10) * 10 : null;
+
+    let s = [];
+    if ( thousands ) {
+      s.push( this.convertNumberToWords(thousands).trim(), "THOUSANDS" );
+    } else {
+      if ( hundreds ) {
+        s.push( this.convertNumberToWords(hundreds).trim() );
+      }
+      if ( tens ) {
+        s.push( this.decades[tens] || (this.convertNumberToWords(tens).trim() + 'S') );
+      } else if ( hundreds ) {
+        s.push( "HUNDREDS" );
+      } else {
+        s.push( decade );
+      }
+    }
+
+    return s.join(" ");
+  }
+
+  /**
+  * Convert ordinal number to text.
+  *
+  * @param {number} num Ordinal number
+  * @return {string} Normalized text
+  */
+  convertOrdinal(num) {
+
+    // Return immediately, if we have the number in our map
+    if ( this.ordinals.hasOwnProperty(num) ) {
+      return this.ordinals[num];
+    }
+
+    const hundreds = Math.floor(num / 100);
+    const tens = Math.floor( (num % 100) / 10) * 10;
+    const ones = num % 10;
+
+    let s = [];
+    if ( hundreds ) {
+      s.push( this.convertNumberToWords(hundreds).trim() );
+      if ( tens || ones ) {
+        s.push( "HUNDRED" );
+      } else {
+        s.push( "HUNDREDTH" );
+      }
+    }
+
+    if ( tens ) {
+      if ( ones ) {
+        s.push( this.convertNumberToWords(tens).trim() );
+      } else {
+        s.push( this.ordinals[tens] );
+      }
+    }
+
+    if ( ones ) {
+      s.push( this.ordinals[ones] );
+    }
+
+    return s.join(" ");
   }
 
   /**
@@ -459,14 +548,48 @@ class Language extends LanguageBase {
     switch( part.type ) {
 
       case "text":
-        // Check if this is actually a number
-        const s = part.text;
-        if ( s ) {
-          const num = s.replace(/,/g, '').trim();
-          if ( !isNaN(num) && !isNaN(parseFloat(num)) ) {
-            part.text = this.convertNumberToWords(num) + " ";
-          }
+
+        // Process numbers, if any
+        if ( /\d/.test(part.text) ) {
+
+          // Decades: 70s, 1970s -> SEVENTIES, NINETEEN SEVENTIES  
+          part.text = part.text.replace(/\b(\d{2,4})[''']?\s?[sS](?=\s|[.,!?;:]|$)/g, (match, decade) => {
+            const result = this.convertDecade(decade);
+            return result === decade ? match : result;
+          });
+
+          // Ordinals: 1st, 22nd -> FIRST, TWENTY SECOND
+          part.text = part.text.replace(/\b(\d+)\s*(st|nd|rd|th)(?=\s|[.,!?;:]|$)/gi, (match, number) => {
+            return this.convertOrdinal(Number(number));
+          });
+          
+          // Handle mixed alphanumeric sequences
+          part.text = part.text.replace(/\b(\w*?)(\d+)([A-Za-z]+)\b/g, (match, prefix, numbers, letters) => {
+            const processedNumber = this.convertNumberToWords(numbers);
+            return `${prefix}${processedNumber} ${letters}`;
+          }).replace(/\b([A-Za-z]+)(\d+)(\w*?)\b/g, (match, letters, numbers, suffix) => {
+            const processedNumber = this.convertNumberToWords(numbers);
+            return `${letters} ${processedNumber}${suffix}`;
+          });
+
+          // Process the remaining numbers
+          // Note: If there are thousand separators or a decimal part, we know
+          // that this is not a special number e.g. phone number, zip code or year
+          part.text = part.text.replace(/-?(?:\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?/g, (match, decimal) => {
+            let s = match;
+            let isNotSpecial = false;
+            if ( /,/.test(s) ) {
+              s = s.replace( /,/g, "" );
+              isNotSpecial = true;
+            }
+            if ( decimal ) {
+              isNotSpecial = true;
+            }
+            return this.convertNumberToWords(s, isNotSpecial);
+          });
+
         }
+
         break;
 
       case "characters":
@@ -485,7 +608,7 @@ class Language extends LanguageBase {
         break;
 
       case "number":
-        part.text = this.convertNumberToWords(part.value) + " ";
+        part.text = this.convertRegexNumberToWords(part.value) + " ";
         break;
 
       case "date":

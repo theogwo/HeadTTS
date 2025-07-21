@@ -42,6 +42,33 @@ describe('Number to words', () => {
 
 });
 
+describe('Part set text', () => {
+  
+    test.each([
+        [
+            "THE NUMBER WAS -1,234,567.89.",
+            "THE NUMBER WAS MINUS ONE MILLION TWO HUNDRED THIRTY FOUR THOUSAND FIVE HUNDRED SIXTY SEVEN POINT EIGHT NINE."
+        ], [
+            "I WAS A KID IN THE 70S, A TEENAGER IN THE 1980'S, GOT MARRIED ON THE 1ST OF JUNE.",
+            "I WAS A KID IN THE SEVENTIES, A TEENAGER IN THE NINETEEN EIGHTIES, GOT MARRIED ON THE FIRST OF JUNE."
+        ], [
+            "I CELEBRATED MY 22ND BIRTHDAY IN THE NINETIES, BOUGHT MY HOUSE IN THE 2000S, HAD MY 3RD CHILD ON THE 123RD DAY OF THE YEAR.",
+            "I CELEBRATED MY TWENTY SECOND BIRTHDAY IN THE NINETIES, BOUGHT MY HOUSE IN THE TWO THOUSANDS, HAD MY THIRD CHILD ON THE ONE HUNDRED TWENTY THIRD DAY OF THE YEAR."
+        ], [
+            "I RETIRED ON MY 65TH BIRTHDAY, AND NOW I USE MY IPHONE15 WHILE REMEMBERING THE 1970SWA COMPANY I USED TO WORK FOR.",
+            "I RETIRED ON MY SIXTY FIFTH BIRTHDAY, AND NOW I USE MY IPHONE FIFTEEN WHILE REMEMBERING THE NINETEEN SEVENTY SWA COMPANY I USED TO WORK FOR."
+        ], [
+            "SOME OTHER CASES ARE 1900S, 1800S, 2000S, 2040S, 245TH.",
+            "SOME OTHER CASES ARE NINETEEN HUNDREDS, EIGHTEEN HUNDREDS, TWO THOUSANDS, TWENTY FORTIES, TWO HUNDRED FORTY FIFTH."
+        ]
+    ])('partSetText("%s") ➝ %s', (input, expected) => {
+        const part = { type: "text", value: input };
+        lang.partSetText( part, 0, [part]);
+        expect(part.text).toEqual(expected);
+    });
+
+});
+
 describe('Generate data', () => {
  
     test('Text input 1', async () => {
