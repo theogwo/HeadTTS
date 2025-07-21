@@ -56,7 +56,7 @@ const headtts = new HeadTTS({
 ```
 
 <details>
-  <summary>Click to see the options.</summary>
+  <summary>CLICK HERE to see all the options.</summary>
 
 Option | Description | Default value
 --- | --- | ---
@@ -122,7 +122,7 @@ headtts.onmessage = (message) => {
 ```
 
 <details>
-  <summary>Click to see all the available class events.</summary>
+  <summary>CLICK HERE to see all the available class events.</summary>
   
 Event handler | Description
 --- | ---
@@ -169,7 +169,7 @@ try {
 ```
 
 <details>
-  <summary>Click to see all the class method.</summary>
+  <summary>CLICK HERE to see all the class method.</summary>
 
 Method | Description
 --- | ---
@@ -181,7 +181,7 @@ Method | Description
 </details>
 
 <details>
-  <summary>Click to see the available input types for synthesize request.</summary>
+  <summary>CLICK HERE to see the available input types for synthesize request.</summary>
 
 The `input` parameter can be a string or, alternatively, an array
 of strings or inputs items.
@@ -238,7 +238,7 @@ npm start
 ```
 
 <details>
-  <summary>Click to see the command line options.</summary>
+  <summary>CLICK HERE to see the command line options.</summary>
 
 Option|Description|Default
 ---|---|---
@@ -254,7 +254,7 @@ node ./modules/headtts-node.mjs --trace 16
 </details>
 
 <details>
-  <summary>Click to see the configuration file options</summary>
+  <summary>CLICK HERE to see the configuration file options</summary>
 
 Property|Description|Default
 ---|---|---
@@ -523,7 +523,7 @@ solutions use streaming, some not.
 audio. If RTF < 1, synthesis is faster than real-time (i.e., good).
 
 <details>
-  <summary>Click here to see the test setup.</summary>
+  <summary>CLICK HERE here to see the test setup.</summary>
 
 **Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
 macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
