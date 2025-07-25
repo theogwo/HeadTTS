@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="data:,">
+
   <title>HeadTTS - TalkingHead Demo</title>
 
   <style>
-    body, html { width:100%; height:100%; max-width: 800px; margin: auto; position: relative; background-color: #202020; color: white; }
-    #avatar { display: block; width:100%; height:100%; }
-    #controls { display: block; position: absolute; top: 10px; left: 10px; right: 10px; height: 40px; }
-    #text { position: absolute; width: Calc(100% - 280px ); height: 40px; top: 0; left: 0; padding: 0 10px; font-family: Arial; font-size: 20px; }
-    #person { position: absolute; appearance: none; width: 130px; height: 40px; top: 0; right: 120px; margin: 2px 0; padding: 0 10px; font-family: Arial; font-size: 20px; }
-    #speak { display: block; position: absolute; box-sizing: content-box; top: 0; bottom: 0; right: 10px; height: 40px; width: 85px; font-family: Arial; font-size: 20px; }
+    body, html { width:100%; height:100%; height:100dvh; margin: 0; padding: 0; position: relative; background-color: #202020; color: white; overflow: hidden; }
+    #avatar { display: block; width:100%; height: 100%;  height:100dvh; margin: 0; padding: 0; }
+    #controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; position: absolute; top: 10px; left: 10px; right: 10px; max-height: Calc( 100% - 40px ); }
+    #text { display: block; flex: 1 1; max-width: 500px; min-width: min( Calc( 100vw - 40px ), 300px ); height: 30px; font-family: Arial; font-size: 20px; padding-left: 10px; }
+    #person { display: block; appearance: none; width: 85px; height: 36px; font-family: Arial; font-size: 20px; text-align-last: center; }
+    #speak { display: block; box-sizing: content-box; height: 30px; width: 70px; font-family: Arial; font-size: 20px; }
     #info { display: block; position: absolute; bottom: 10px; left: 10px; right: 10px; font-family: Arial; font-size: 20px; }
     #subtitles {
       position: absolute; bottom: 6vh; left: 50%; transform: translateX(-50%);
@@ -50,6 +54,9 @@
           body: "F",
           avatarMood: "neutral"
         },
+        view: {
+          cameraY: 0
+        },
         setup: {
           voice: "af_bella",
           language: "en-us",
@@ -64,12 +71,16 @@
           body: "M",
           avatarMood: "neutral"
         },
+        view: {
+          cameraY: -0.04 // David is taller, so compensate
+        },
         setup: {
           voice: "am_fenrir",
           language: "en-us",
           speed: 1,
           audioEncoding: "wav"
-        }
+        },
+        deltaX: 0.5
       }
     };
 
@@ -101,6 +112,7 @@
       // Load and show the avatar
       try {
         el.speak.disabled = true;
+        el.person.disabled = true;
         el.info.style.display = 'block';
         el.info.textContent = "Loading...";
 
@@ -109,10 +121,15 @@
           headtts.connect( null, updateInfo.bind(null,"headtts"))
         ]);
 
+        // Setup view
+        head.setView(head.viewName, person.view );
+        head.cameraClock = 999; // Hack to prevent smooth transition
+
         // Setup voice
         headtts.setup( person.setup );
 
         el.info.style.display = 'none';
+        el.person.disabled = false;
         el.speak.disabled = false;
       } catch (error) {
         console.log(error);
@@ -194,6 +211,7 @@
       });
 
       // For debugging
+      window.head = head;
       window.headtts = headtts;
 
       // Speak and lipsync
