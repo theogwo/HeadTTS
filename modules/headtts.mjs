@@ -109,43 +109,47 @@ class HeadTTS {
   }
 
   /**
-  * Divide the given text into parts
-  * 
-  * @param {string} text Text
-  * @param {number} [initialLen=0] Initial length
-  * @return {string[]} Array of text parts.
-  */
-  divideToParts(text, initialLen=0) {
+   * Divide the given text into parts, handling emojis and complex Unicode correctly.
+   *
+   * @param {string} text Text
+   * @param {number} [initialLen=0] Initial length
+   * @return {string[]} Array of text parts.
+   */
+  divideToParts(text, initialLen = 0) {
+    const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
+    const letters = Array.from(segmenter.segment(text), s => s.segment);
+    const textLen = letters.length;
+
     const parts = [];
-    const textLen = text.length;
-    const letters = [...text];
     let lastSpace = 0;
     let part = "";
-    for( let i=0; i<textLen; i++ ) {
-      const letter = letters[i];
-      const isLast = i === (textLen-1);
-      const letterTwo = isLast ? null : (letter + letters[i+1]);
-      const isDivider = isLast ? false : this.dividers.hasOwnProperty(letterTwo);
-      if ( letter === ' ' ) lastSpace = i;
-      const isMax = i >= (this.settings.splitLength - initialLen);
 
+    for (let i = 0; i < textLen; i++) {
+      const letter = letters[i];
+      const isLast = i === textLen - 1;
+      const nextLetter = isLast ? null : letters[i + 1];
+      const letterTwo = isLast ? null : letter + nextLetter;
+      const isDivider = isLast ? false : this.dividers?.hasOwnProperty(letterTwo);
+
+      if (letter === " ") lastSpace = i;
+
+      const isMax = i >= this.settings.splitLength - initialLen;
       part += letter;
 
-      let s = null;
-      if ( isMax ) {
-        if ( lastSpace === 0 ) lastSpace = i;
-        parts.push( part.slice(0,lastSpace) );
-        part = part.slice(lastSpace+1);
+      if (isMax) {
+        if (lastSpace === 0) lastSpace = i;
+        parts.push(letters.slice(i - part.length + 1, lastSpace + 1).join(""));
+        part = letters.slice(lastSpace + 1, i + 1).join("");
         lastSpace = 0;
         initialLen = 0;
-      } else if ( isLast || isDivider ) {
-        parts.push( part );
+      } else if (isLast || isDivider) {
+        parts.push(part);
         part = "";
         lastSpace = 0;
         initialLen = 0;
       }
-
     }
+
     return parts;
   }
 
