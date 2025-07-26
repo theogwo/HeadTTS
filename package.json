@@ -1,6 +1,6 @@
 {
   "name": "@met4citizen/headtts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "HeadTTS: A free Javascript text-to-speech with timestamps and visemes.",
   "main": "modules/headtts.mjs",
   "type": "module",
