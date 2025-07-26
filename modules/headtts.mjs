@@ -133,8 +133,8 @@ class HeadTTS {
 
       if (letter === " ") lastSpace = i;
 
-      const isMax = i >= this.settings.splitLength - initialLen;
       part += letter;
+      const isMax = (part.length + initialLen) >= this.settings.splitLength;
 
       if (isMax) {
         if (lastSpace === 0) lastSpace = i;
