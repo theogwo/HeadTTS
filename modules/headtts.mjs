@@ -749,6 +749,45 @@ class HeadTTS {
   }
 
   /**
+  * Add a new "custom" message to the IN work queue.
+  *
+  * @param {Object} data Setup request message
+  * @param {function} [onmessage=null] Callback for audio messages overriding event handler
+  * @param {function} [onerror=null] Callback for Error events overriding event handler
+  */
+  async custom( data, onmessage=null, onerror=null ) {
+    const isTraceMessages = this.settings.trace & utils.traceMask.messages;
+    if ( isTraceMessages ) {
+      utils.trace( "CUSTOM: APP -> HeadTTS, data=",data);
+    }
+
+    // Check data item
+    const events = [onerror, this.onerror];
+    if ( !data ) this.emit("error", new Error("Data not set."), events, true );
+
+    // New custom item
+    const item = {
+      message: {
+        type: "custom",
+        id: this.messageId++,
+        data: data
+      },
+      status: 0,
+      onmessage: onmessage,
+      onerror: onerror,
+      started: performance.now(),
+      deferred: new utils.Deferred()
+    };
+    this.queueIn.push(item);
+
+    // Process
+    this.processIn(onerror);
+
+    // Return the promise of the setup request
+    return item.deferred.promise;
+  }
+
+  /**
   * Processes the IN work queue (fifo), sends the requests, and adds
   * the items to the OUT work queue to wait for responses.
   *
@@ -780,6 +819,20 @@ class HeadTTS {
         }
         item.deferred.resolve();
 
+      } else if ( item.message.type === "custom" ) {
+
+        // Marked ready and add to output queue
+        item.status = 2;
+        this.items.set( item.message.id, item );
+        this.queueOut.push(item);
+
+        // Emit start event, if out queue was empty
+        if ( this.queueOut.length === 1 ) {
+          this.emit("start", null, [this.onstart]);
+        }
+
+        this.processOut();
+
       } else {
 
         // Add to output queue to wait for response
@@ -787,7 +840,7 @@ class HeadTTS {
         this.queueOut.push(item);
 
 
-        // Emit event, if out queue was empty
+        // Emit start event, if out queue was empty
         if ( this.queueOut.length === 1 ) {
           this.emit("start", null, [this.onstart]);
         }
@@ -957,7 +1010,7 @@ class HeadTTS {
       Object.assign(message.data, item.metadata || {});
       const type = message.type;
 
-      if ( type === "audio" ) {
+      if ( type === "audio" || type === "custom" ) {
         this.emit("message", message, [item.onmessage, this.onmessage] );
         item.deferred.resolve(message);
       } else if ( type === "error" ) {
@@ -966,7 +1019,7 @@ class HeadTTS {
         item.deferred.resolve(message);
       }
 
-      // Emit event
+      // Emit end event
       if ( this.queueOut.length === 0 && this.queueIn.length === 0 ) {
         this.emit("end",null,[this.onend]);
       }

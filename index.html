@@ -223,6 +223,8 @@
           } catch(error) {
             console.log(error);
           }
+        } else if ( message.type === "custom" ) {
+          console.error("Received custom message, data=", message.data );
         } else if ( message.type === "error" ) {
           console.error("Received error message, error=", (message.data?.error || "Unknown error."));
         }

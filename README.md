@@ -1,7 +1,7 @@
 # <img src="logo.png" width="100"/>&nbsp; HeadTTS
 
 **HeadTTS** is a free JavaScript text-to-speech (TTS) solution that
-provides timestamps and Oculus visemes for lip-sync, in addition
+provides phoneme-level timestamps and Oculus visemes for lip-sync, in addition
 to audio output (WAV/PCM). It uses
 [Kokoro](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
 neural model and voices, and inference can run entirely in
@@ -16,7 +16,7 @@ MIT licensed, doesn't use eSpeak NG or any other GPL-licensed
 module.
 
 - **Cons**: WebGPU is only supported by default in Chrome and Edge
-desktop browsers. Takes time to load (the first time) and uses
+desktop browsers. Takes time to load on first load and uses
 a lot of memory. WebGPU support in onnxruntime-node is still experimental
 and not released, so server-side inference is relatively slow. English
 is currently the only supported language.
@@ -25,7 +25,7 @@ is currently the only supported language.
 [In-browser Demo](https://met4citizen.github.io/HeadTTS/)!**
 
 The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License),
-[hugginface/transformers.js](https://github.com/huggingface/transformers.js/)
+[hugginface/transformers.js (with ONNX Runtime)](https://github.com/huggingface/transformers.js/)
 (Apache 2.0 License) and
 [onnx-community/Kokoro-82M-v1.0-ONNX-timestamped](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX-timestamped)
 (Apache 2.0 License) as runtime dependencies. For information on
@@ -56,7 +56,7 @@ const headtts = new HeadTTS({
 ```
 
 <details>
-  <summary>CLICK HERE to see all the options.</summary>
+  <summary>CLICK HERE to see all the OPTIONS.</summary>
 
 Option | Description | Default value
 --- | --- | ---
@@ -115,6 +115,8 @@ headtts.onmessage = (message) => {
     } catch(error) {
       console.log(error);
     }
+  } else if ( message.type === "custom" ) {
+    console.error("Received custom message, data=", message.data);
   } else if ( message.type === "error" ) {
     console.error("Received error message, error=", message.data.error);
   }
@@ -122,18 +124,18 @@ headtts.onmessage = (message) => {
 ```
 
 <details>
-  <summary>CLICK HERE to see all the available class events.</summary>
+  <summary>CLICK HERE to see all the available class EVENTS.</summary>
   
 Event handler | Description
 --- | ---
 `onstart` | Triggered when the first message is added and all message queues were previously empty.
-`onmessage` | Handles incoming messages of type `audio` or `error`. For details, see the API section.
+`onmessage` | Handles incoming messages of type `audio`, `error` and `custom`. For details, see the API section.
 `onend` | Triggered when all message queues become empty.
 `onerror` | Handles system or class-level errors. If this handler is not set, such errors are thrown as exceptions. **Note:** Errors related to TTS conversion are sent to the `onmessage` handler (if defined) as messages of type `error`.
 
 </details>
 
-Setup the voice only when you need it to change:
+Setup the voice:
 
 ```javascript
 headtts.setup({
@@ -144,7 +146,11 @@ headtts.setup({
 });
 ```
 
-Synthesize speech:
+The HeadTTS client is stateful, so you don't need to call setup again
+unless you want to change a setting. For example, if you want to increase
+the speed, simply call `headtts.setup({ speed: 1.5 })`.
+
+Synthesize speech using the current voice setup:
 
 ```javascript
 headtts.synthesize({
@@ -168,23 +174,11 @@ try {
 }
 ```
 
-<details>
-  <summary>CLICK HERE to see all the class method.</summary>
-
-Method | Description
---- | ---
-`connect( settings=null, onprogress=null, onerror=null )` | Connects to the specified set of `endpoints` set in constructor or within the optinal `settings` object. If the `settings` parameter is provided, it forces a reconnection. The `onprogress` callback handles `ProgressEvent` events, while the `onerror` callback handles system-level error events. Returns a promise. **Note:** When connecting to a RESTful server, the method sends a hello message and considers the connection established only if a text response starting with `HeadTTS` is received.
-`clear()` | Clears all work queues and resolves all promises.
-`setup( data, onerror=null )` | Adds a new setup request to the work queue. See the API section for the supported `data` properties. Returns a promise.
-`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with a sorted array of related `audio` or `error` messages.
-
-</details>
-
-<details>
-  <summary>CLICK HERE to see the available input types for synthesize request.</summary>
-
-The `input` parameter can be a string or, alternatively, an array
+The `input` property can be a string or, alternatively, an array
 of strings or inputs items.
+
+<details>
+  <summary>CLICK HERE to see the available input ITEM TYPES.</summary>
 
 Type | Description | Example
 ---|---|---
@@ -219,6 +213,33 @@ An example using an array of input items:
 
 </details>
 
+You can add a custom message to the message queue using
+the `custom` method:
+
+```javascript
+headtts.custom({
+  emoji: "😀"
+});
+```
+
+Custom messages can be used, for example, to synchronize
+speech with animations, emojis, facial expressions, poses,
+and/or gestures. You need to implement the custom
+functionality yourself within the message handler.
+
+<details>
+  <summary>CLICK HERE to see all the class METHODS.</summary>
+
+Method | Description
+--- | ---
+`connect( settings=null, onprogress=null, onerror=null )` | Connects to the specified set of `endpoints` set in constructor or within the optinal `settings` object. If the `settings` parameter is provided, it forces a reconnection. The `onprogress` callback handles `ProgressEvent` events, while the `onerror` callback handles system-level error events. Returns a promise. **Note:** When connecting to a RESTful server, the method sends a hello message and considers the connection established only if a text response starting with `HeadTTS` is received.
+`clear()` | Clears all work queues and resolves all promises.
+`setup( data, onerror=null )` | Adds a new setup request to the work queue. See the API section for the supported `data` properties. Returns a promise.
+`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with a sorted array of related messages of type `"audio"` or `"error"`.
+`custom( data, onmessage=null, onerror=null )` | Adds a new custom message to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with the related message of the type `"custom"`.
+
+</details>
+
 ---
 
 # NodeJS WebSocket/RESTful Server: `headtts-node.mjs`
@@ -238,7 +259,7 @@ npm start
 ```
 
 <details>
-  <summary>CLICK HERE to see the command line options.</summary>
+  <summary>CLICK HERE to see the COMMAND LINE OPTIONS.</summary>
 
 Option|Description|Default
 ---|---|---
@@ -254,7 +275,7 @@ node ./modules/headtts-node.mjs --trace 16
 </details>
 
 <details>
-  <summary>CLICK HERE to see the configuration file options</summary>
+  <summary>CLICK HERE to see the configurable PROPERTIES.</summary>
 
 Property|Description|Default
 ---|---|---
@@ -374,6 +395,9 @@ either a WAV file (`wav`) or a chunk of raw PCM 16bit LE samples (`pcm`).
 ## RESTful API
 
 RESTful server API is a more simple alternative for WebSocket API.
+The REST server is stateless, so voice parameters must be included
+for each POST message. If you are using the HeadTTS client class,
+it handles this internally.
 
 ### POST `/v1/synthesize`
 
@@ -523,7 +547,7 @@ solutions use streaming, some not.
 audio. If RTF < 1, synthesis is faster than real-time (i.e., good).
 
 <details>
-  <summary>CLICK HERE here to see the test setup.</summary>
+  <summary>CLICK HERE here to see the TEST SETUP.</summary>
 
 **Test setup**: Macbook Air M2 laptop, 8 cores, 16GB memory,
 macOS Sequoia 15.3.2, Metal2 GPU 10 cores, 300/50 Mbit/s internet connection.
