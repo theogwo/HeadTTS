@@ -250,9 +250,8 @@ class LanguageBase {
         break;
 
       case "break":
-        // TODO: Figure out better way to add breaks
-        let cnt = Math.max(2, Math.min( part.value / 500, 10 ));
-        part.phonemes = Array(cnt).fill(".").join("") + " ";
+        part.phonemes = " ";
+        part.silence = part.value;
         break;
 
       // Leave other types to language specific implementation
@@ -363,7 +362,7 @@ class LanguageBase {
   * start and end indices respectively.
   *
   * @param {string|Object[]} input Input element
-  * @return {Object} `phonemes` array and TalkingHead `metadata` template
+  * @return {Object} `phonemes` array, TalkingHead `metadata` template, and `silences`
   */
   generate(input) {
 
@@ -373,6 +372,7 @@ class LanguageBase {
       words: [], wtimes: [], wdurations: [],
       visemes: [], vtimes: [], vdurations: []
     };
+    const silences = [];
 
     if ( this.settings.trace ) {
       utils.trace( 'Generate start, input=', input );
@@ -452,15 +452,22 @@ class LanguageBase {
         }
       }
       metadata.wdurations.push( phonemes.length );
+      if ( part.hasOwnProperty("silence") ) {
+        silences.push( [ phonemes.length, part.silence ] );
+      }
 
     });
 
     if ( this.settings.trace ) {
-      utils.trace( 'Generate end, output=', { phonemes, metadata } );
+      utils.trace( 'Generate end, output=', {
+        phonemes: utils.deepCopy(phonemes),
+        metadata: utils.deepCopy(metadata),
+        silences: utils.deepCopy(silences)
+      });
     }
 
     // Output
-    return { phonemes, metadata };
+    return { phonemes, metadata, silences };
 
   }
 

@@ -47,6 +47,15 @@ export const traceMask = {
 };
 
 /**
+* Make a deep copy
+* @param {any} o Object
+* @return {any} Copy of the object.
+*/
+export function deepCopy(o) {
+  return JSON.parse(JSON.stringify(o));
+}
+
+/**
 * Write console trace.
 *
 * @param {...any} outputs Output strings.
@@ -204,3 +213,45 @@ export function pcmToAudioBuffer(buf,samplerate,ctx) {
   audio.copyToChannel( floats, 0 , 0 );
   return audio;
 }
+
+/**
+ * Inserts new segments of silence into a Float32Array of audio samples.
+ *
+ * @param {Float32Array} samples The original audio samples
+ * @param {number} sampleRate The sample rate of the audio in Hz (e.g., 44100)
+ * @param {number[][]} silences Sorted array of [time, duration] in milliseconds
+ * @returns {Float32Array} A new Float32Array with silence segments inserted.
+ */
+export function insertSilences(samples, samplerate, silences) {
+  
+  // Convert times and durations to number of samples
+  let nNewSamples = 0; // Total new samples
+  silences.forEach( x => {
+    x[0] = Math.floor((x[0] / 1000) * samplerate);
+    x[1] = Math.floor((x[1] / 1000) * samplerate);
+    nNewSamples += x[1];
+  });
+
+  // New Float32Array
+  const result = new Float32Array( samples.length + nNewSamples );
+
+  // Copy existing samples
+  let readPos = 0;
+  let writePos = 0;
+  silences.forEach( x => {
+    const start = Math.min(x[0], samples.length);
+    const len = start - readPos;
+    if (len > 0) {
+      result.set(samples.subarray(readPos, start), writePos);
+      readPos += len;
+      writePos += len;
+    }
+    writePos += x[1]; // Add silence
+  });
+  if (readPos < samples.length) {
+    result.set(samples.subarray(readPos), writePos);
+  }
+
+  return result;
+}
+

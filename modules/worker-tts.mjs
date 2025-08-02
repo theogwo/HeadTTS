@@ -250,8 +250,9 @@ async function loadVoice(s) {
 *
 * @param {Object} o TalkingHead audio object to be updated
 * @param {number[]} ds Token durations in frames
+* @param {number[][]} silences Sorted array of [index,duration] of silences.
 */
-function updateTimestamps(o,ds) {
+function updateTimestamps(o,ds,silences) {
 
   // Calculate starting times in milliseconds
   const scaler = 1000 / settings.frameRate; // From frames to milliseconds
@@ -263,6 +264,16 @@ function updateTimestamps(o,ds) {
     t += scaler * ds[i];
   }
   times.push( Math.round(t) ); // Last entry
+
+  // Shift times based on silent periods and
+  // convert phoneme indexes to original starting times
+  const shifts = silences.map( x => [x[0]+1,x[1]] );
+  silences.forEach( x => x[0] = times[x[0]] - 20 );
+  shifts.forEach( x => {
+    for( let i=x[0]; i<times.length; i++ ) {
+      times[i] += x[1];
+    }
+  });
 
   // Calculate word times and durations (+1 because of $)
   len = o.words.length;
@@ -312,7 +323,7 @@ async function process() {
       eventHandler.postMessage(item);
       continue;
     }
-    const { phonemes, metadata } = language.generate(d.input);
+    const { phonemes, metadata, silences } = language.generate(d.input);
     if ( isTraceG2P ) {
       if ( typeof d.input === "string" ) {
         utils.trace( "G2P: " + d.input );
@@ -357,14 +368,19 @@ async function process() {
 
     // Generate timestamps from durations
     const durationsFrames = Array.from(durations.data);
-    updateTimestamps( metadata, durationsFrames );
+    updateTimestamps( metadata, durationsFrames, silences );
 
     // Encode audio
+    const samplerate = settings.audioSampleRate;
+    let samples = waveform.data;
+    if ( silences.length ) {
+      samples = utils.insertSilences(samples, samplerate, silences)
+    }
     if ( d.audioEncoding === "pcm" ) {
-      metadata.audio = utils.encodeAudio(waveform.data, settings.audioSampleRate, false);
+      metadata.audio = utils.encodeAudio(samples, samplerate, false);
       metadata.audioEncoding = "pcm";
     } else {
-      metadata.audio = utils.encodeAudio(waveform.data, settings.audioSampleRate, true);
+      metadata.audio = utils.encodeAudio(samples, samplerate, true);
       metadata.audioEncoding = "wav";
     }
 
