@@ -134,14 +134,16 @@ for( let i=0; i<config.tts.threads; i++ ) {
           if ( isTraceMessages ) {
             utils.trace( "OUT: -> REST Client, Error", message.data );
           }
-          res.writeHead(422, { 'Content-Type': 'application/json' });
+          res.statusCode = 422;
+          res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(message.data));
         } else if ( message.type === "audio" ){
           if ( isTraceMessages ) {
             utils.trace( "OUT: -> REST Client, Audio", message.data );
           }
           message.data.audio = Buffer.from(message.data.audio).toString('base64');
-          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(message.data));
         }
       }
@@ -249,7 +251,7 @@ function restHandler(req,res) {
 
   // Handle preflight (OPTIONS) requests
   if (req.method === 'OPTIONS') {
-    res.writeHead(200);
+    res.statusCode = 200;
     return res.end();
   }
 
@@ -302,7 +304,8 @@ function restHandler(req,res) {
           if ( isTraceMessages ) {
             utils.trace( "OUT: -> REST Client, Error", err.message || "Internal error." );
           }
-          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.statusCode = 400;
+          res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify({
             error: (err.message || "Internal error.")
           }));
@@ -312,20 +315,20 @@ function restHandler(req,res) {
       if ( isTraceMessages ) {
         utils.trace( "OUT: -> REST Client, HELLO" );
       }
-      res.writeHead(200);
+      res.statusCode = 200;
       res.end('HeadTTS v0.1.0');
     } else {
       if ( isTraceMessages ) {
         utils.trace( "OUT: REST -> Client Error, Not found." );
       }
-      res.writeHead(404);
+      res.statusCode = 404;
       res.end('Not Found');
     }
   } else {
     if ( isTraceMessages ) {
       utils.trace( "OUT: -> REST Client, Error Not found." );
     }
-    res.writeHead(404);
+    res.statusCode = 404;
     res.end('Not Found');
   }
 }
