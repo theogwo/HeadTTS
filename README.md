@@ -183,7 +183,7 @@ of strings or inputs items.
 Type | Description | Example
 ---|---|---
 `text` |  Speak the text in `value`. This is equivalent to giving a pure string input. | <pre>{<br>  type: "text",<br>  value: "This is an example."<br>}</pre>
-`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre>{<br>  type: "text",<br>  value: "One two three",<br>  subtitles: "123"<br>}</pre>
+`speech` |  Speak the text in `value` with corresponding subtitles in `subtitles` (optional). This type allows the spoken words to be different that the subtitles. | <pre>{<br>  type: "speech",<br>  value: "One two three",<br>  subtitles: "123"<br>}</pre>
 `phonetic` | Speak the model specific phonetic alphabets in `value` with corresponding `subtitles` (optional). | <pre>{<br>  type: "phonetic",<br>  value: "mˈɜɹʧəndˌIz",<br>  subtitles: "merchandise"<br>}</pre>
 `characters` | Speak the `value` character-by-character with corresponding `subtitles` (optional). Supports also numbers that are read digit-by-digit. | <pre>{<br>  type: "characters",<br>  value: "ABC-123-8",<br>  subtitles: "ABC-123-8"<br>}</pre>
 `number` | Speak the number in `value` with corresponding `subtitles` (optional). The number should presented as a string. | <pre>{<br>  type: "number",<br>  value: "123.5",<br>  subtitles: "123.5"<br>}</pre>
