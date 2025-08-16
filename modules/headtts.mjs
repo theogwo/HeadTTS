@@ -516,7 +516,7 @@ class HeadTTS {
     while( this.queueOut.length ) {
       const item = this.queueOut[0];
       this.queueOut.shift();
-      this.items.delete( item.message.id );
+      this.items.delete( item.message.ref );
       clearItem(item);
     }
 
@@ -824,6 +824,7 @@ class HeadTTS {
         // Marked ready and add to output queue
         item.status = 2;
         this.items.set( item.message.id, item );
+        item.message.ref = item.message.id;
         this.queueOut.push(item);
 
         // Emit start event, if out queue was empty
@@ -837,6 +838,7 @@ class HeadTTS {
 
         // Add to output queue to wait for response
         this.items.set( item.message.id, item );
+        item.message.ref = item.message.id;
         this.queueOut.push(item);
 
 
@@ -1004,7 +1006,7 @@ class HeadTTS {
       const item = this.queueOut[0];
       if ( item.status < 2 ) break; // First item not yet ready
       this.queueOut.shift();
-      this.items.delete( item.message.id );
+      this.items.delete( item.message.ref );
 
       const message = item.message;
       Object.assign(message.data, item.metadata || {});
