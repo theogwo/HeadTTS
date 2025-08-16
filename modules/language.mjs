@@ -68,6 +68,9 @@ class LanguageBase {
       "-": "-", "'": "'", ".": ".", ",": ","
     }
 
+    // Grapheme segmenter
+    this.segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
+
     if ( this.settings.trace ) {
       utils.trace( 'Language base module initiated.' );
     }
@@ -166,7 +169,7 @@ class LanguageBase {
   splitText(s) {
 
     const parts = [];
-    const chars = [...s];
+    const chars = Array.from(this.segmenter.segment(s), seg => seg.segment);
     const len = chars.length;
     let i = 0;
     let lastType = 0; // 0=unknown, 1=whitespace, 2=other
@@ -204,7 +207,7 @@ class LanguageBase {
   */
   normalizeUpper(s) {
     const norm = [];
-    const chars = [...s.toUpperCase()];
+    const chars = Array.from(this.segmenter.segment(s.toUpperCase()), seg => seg.segment);
     const len = chars.length;
     let i=0;
     while( i<len ) {
