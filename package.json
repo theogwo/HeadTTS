@@ -1,6 +1,6 @@
 {
   "name": "@met4citizen/headtts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HeadTTS: A free Javascript text-to-speech with timestamps and visemes.",
   "main": "modules/headtts.mjs",
   "type": "module",
@@ -12,8 +12,8 @@
     "dictionaries/"
   ],
   "dependencies": {
-    "@huggingface/transformers": "^3.6.0",
-    "ws": "^8.18.1"
+    "@huggingface/transformers": "^3.7.2",
+    "ws": "^8.18.3"
   },
   "scripts": {
     "start": "node ./modules/headtts-node.mjs",
