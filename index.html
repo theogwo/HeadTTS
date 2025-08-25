@@ -145,11 +145,11 @@
     * Add the given word to subtitles and reset the clear timer.
     * Play hand gestures for pre-defined keywords.
     *
-    * @param {Object} data HeadTTS response message
+    * @param {Object} msg HeadTTS response message
     * @param {string} word Word that is been currently spoken
     * @param {number} [ms=2000] Timeout for clearing subtitles, in milliseconds
     */
-    function addSubtitle(data, word, ms=2000) {
+    function addSubtitle(msg, word, ms=2000) {
 
       // Add the word and scroll to bottom
       if ( word ) {
@@ -218,7 +218,7 @@
         if ( message.type === "audio" ) {
           try {
             head.speakMarker( clearSubtitles );
-            head.speakAudio( message.data, {}, addSubtitle.bind(null,message.data) );
+            head.speakAudio( message.data, {}, addSubtitle.bind(null,message) );
           } catch(error) {
             console.log(error);
           }

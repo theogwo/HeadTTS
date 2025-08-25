@@ -21,7 +21,7 @@ a lot of memory. WebGPU support in onnxruntime-node is still experimental
 and not released, so server-side inference is relatively slow. English
 is currently the only supported language.
 
-**If you're using a Chrome or Edge desktop browser, check out the
+**👉 If you're using a Chrome or Edge desktop browser, check out the
 [In-browser Demo](https://met4citizen.github.io/HeadTTS/)!**
 
 The project uses [websockets/ws](https://github.com/websockets/ws) (MIT License),
@@ -235,7 +235,7 @@ Method | Description
 `connect( settings=null, onprogress=null, onerror=null )` | Connects to the specified set of `endpoints` set in constructor or within the optinal `settings` object. If the `settings` parameter is provided, it forces a reconnection. The `onprogress` callback handles `ProgressEvent` events, while the `onerror` callback handles system-level error events. Returns a promise. **Note:** When connecting to a RESTful server, the method sends a hello message and considers the connection established only if a text response starting with `HeadTTS` is received.
 `clear()` | Clears all work queues and resolves all promises.
 `setup( data, onerror=null )` | Adds a new setup request to the work queue. See the API section for the supported `data` properties. Returns a promise.
-`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesize request to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with a sorted array of related messages of type `"audio"` or `"error"`.
+`synthesize( data, onmessage=null, onerror=null )` | Adds a new synthesis request to the work queue. The `data` object supports the `input` and `userData` properties. The `userData` property is returned in the output as `message.userData` unchanged. If event handlers are provided, they override the default handlers. Returns a promise that resolves with a sorted array of related messages of type `"audio"` or `"error"`.
 `custom( data, onmessage=null, onerror=null )` | Adds a new custom message to the work queue. If event handlers are provided, they override other handlers. Returns a promise that resolves with the related message of the type `"custom"`.
 
 </details>
@@ -273,6 +273,8 @@ node ./modules/headtts-node.mjs --trace 16
 ```
 
 </details>
+
+By default, the server uses the `./headtts-node.json` configuration file.
 
 <details>
   <summary>CLICK HERE to see the configurable PROPERTIES.</summary>
@@ -507,7 +509,7 @@ ALUMIINI	FOLI	KATT	OKSI	PAPE	SEOS	VENE	VUOK
 
 # Appendix C: Latency
 
-In-browser TTS on WebGPU is 3x times faster than
+In-browser TTS on WebGPU is 3x faster than
 real-time and approximately 10x faster than WASM. CPU inference on
 a Node.js server performs surprisingly well, but increasing the thread
 pool size worsens performance, so we need to wait for WebGPU support.

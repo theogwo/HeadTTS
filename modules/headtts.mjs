@@ -732,10 +732,11 @@ class HeadTTS {
         onerror: onerror,
         started: performance.now(),
         deferred: new utils.Deferred(),
-        metadata: {
+        metaData: {
           part: i,
           partsTotal: messages.length
-        }
+        },
+        userData: data.userData
       };
       deferredPromises.push( item.deferred.promise );
       this.queueIn.push(item);
@@ -904,7 +905,7 @@ class HeadTTS {
                 console.error("HeadTTS: REST error, error=", error);
                 this.processData({
                   type: "error",
-                  ref: item.id,
+                  ref: item.message.id,
                   data: {
                     error: "HeadTTS: REST error, message=" + error.message
                   }
@@ -1009,7 +1010,8 @@ class HeadTTS {
       this.items.delete( item.message.ref );
 
       const message = item.message;
-      Object.assign(message.data, item.metadata || {});
+      message.metaData = item.metaData;
+      message.userData = item.userData;
       const type = message.type;
 
       if ( type === "audio" || type === "custom" ) {
