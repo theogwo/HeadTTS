@@ -62,7 +62,8 @@ Option | Description | Default value
 --- | --- | ---
 `endpoints` | List of WebSocket/RESTful servers or backends `webgpu` or `wasm`, in order of priority. If one fails, the next is used.  | `["webgpu",`<br>` "wasm"]`
 `audioCtx` | Audio context for creating audio buffers. If `null`, a new one is created. | `null`
-`transformersModule` | URL of the `transformers.js` module to load. | `"https://cdn.jsdelivr.net/npm/`<br>`@huggingface/transformers@3.4.2`<br>`/dist/transformers.min.js"`
+`workerModule` | URL of the HeadTTS Web Worker module. Enables use from a CDN. If set to `null`, the relative path/file `./worker-tts.mjs` is used. | `null`
+`transformersModule` | URL of the `transformers.js` module to load. | `"https://cdn.jsdelivr.net/npm/`<br>`@huggingface/transformers@3.7.2`<br>`/dist/transformers.min.js"`
 `model` | Kokoro text-to-speech ONNX model (timestamped) used for in-browser inference. | `"onnx-community/`<br>`Kokoro-82M-v1.0-ONNX-timestamped"`
 `dtypeWebgpu` | Data type precision for WebGPU inference: `"fp32"` (recommended), `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`.  | `"fp32"`
 `dtypeWasm` | Data type precision for WASM inference: `"fp32"`, `"fp16"`, `"q8"`, `"q4"`, or `"q4f16"`. | `"q4"`

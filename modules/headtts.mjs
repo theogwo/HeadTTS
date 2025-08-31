@@ -36,6 +36,7 @@ class HeadTTS {
       endpoints: ["webgpu", "wasm"],
       audioCtx: null,
 
+      workerModule: null,
       transformersModule: "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2/dist/transformers.min.js",
 
       model: "onnx-community/Kokoro-82M-v1.0-ONNX-timestamped",
@@ -265,8 +266,20 @@ class HeadTTS {
           await new Promise((resolve, reject) => {
 
             // Start the TTS web worker
-            const url = new URL("./worker-tts.mjs", import.meta.url);
-            this.ww = new Worker(url, { type: 'module' });
+            if ( this.settings.workerModule ) {
+              const code = `import "${this.settings.workerModule}";`;
+              const blob = new Blob([code], { type: "application/javascript" });
+              const url = URL.createObjectURL(blob);
+              this.ww = new Worker(url, { type: "module" });
+              const origTerminate = this.ww.terminate;
+              this.ww.terminate = function () {
+                URL.revokeObjectURL(url);
+                origTerminate.call(this);
+              };
+            } else {
+              const url = new URL("./worker-tts.mjs", import.meta.url);
+              this.ww = new Worker(url, { type: 'module' });
+            }
 
             // Handle progress reports and wait for ready message
             const rejectedTimeout = () => reject('Connection timed out.');
