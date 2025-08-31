@@ -55,6 +55,20 @@ const headtts = new HeadTTS({
 });
 ```
 
+Beware that if you import the HeadTTS module from a CDN, you may need to
+set the `workerModule` and `dictionaryURL` options explicitly,
+as the default relative paths will likely not work:
+
+```javascript
+import { HeadTTS } from "https://cdn.jsdelivr.net/npm/@met4citizen/headtts@1.1/+esm";
+
+const headtts = new HeadTTS({
+  /* ... */
+  workerModule: "https://cdn.jsdelivr.net/npm/@met4citizen/headtts@1.1/modules/worker-tts.mjs",
+  dictionaryURL: "https://cdn.jsdelivr.net/npm/@met4citizen/headtts@1.1/dictionaries/"
+});
+```
+
 <details>
   <summary>CLICK HERE to see all the OPTIONS.</summary>
 
@@ -114,10 +128,10 @@ headtts.onmessage = (message) => {
         console.log(word);
       });
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
   } else if ( message.type === "custom" ) {
-    console.error("Received custom message, data=", message.data);
+    console.log("Received custom message, data=", message.data);
   } else if ( message.type === "error" ) {
     console.error("Received error message, error=", message.data.error);
   }
