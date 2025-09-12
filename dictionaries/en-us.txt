@@ -126,7 +126,7 @@
 :COLON	kˈOlən
 ;SEMI-COLON	sˈɛmikˈOlən	sˈɛmɪkˌOlən
 ?QUESTION-MARK	kwˈɛsʧənmˈɑɹk
-A	ə	ə	ˈA
+A	ə	ˈA
 A'S	ˈAz
 A.	ˈA
 A.'S	ˈAz
@@ -392,7 +392,7 @@ ABOUND	əbˈWnd
 ABOUNDED	əbˈWndɪd
 ABOUNDING	əbˈWndɪŋ
 ABOUNDS	əbˈWndz
-ABOUT	əbˈWt	əbˈWt
+ABOUT	əbˈWt
 ABOUT'S	əbˈWts
 ABOVE	əbˈʌv
 ABOVE'S	əbˈʌvz
@@ -2019,7 +2019,7 @@ AIMLESS	ˈAmləs
 AIMLESSLY	ˈAmləsli
 AIMONE	ˈAmˌOn
 AIMS	ˈAmz
-AIN'T	Ant	ˈAnt
+AIN'T	ˈAnt
 AINE	ˈAn
 AINGE	ˈAŋ	ˈAnʤ
 AINLEY	ˈAnli
@@ -3694,7 +3694,7 @@ AMYLIN	ˈæmɪlˌɪn
 AMYLOID	ˈæmɪlˌYd
 AMYOTROPHIC	ˌæmIətɹˈOfɪk	ˌæmiətɹˈOfɪk
 AMYX	ˈæmɪks
-AN	ən	ˈæn	ən
+AN	ˈæn	ən
 ANA	ˈɑnə	ˈænə
 ANABAPTIST	ˌænəbˈæptəst
 ANABLE	ˈAnəbəl
@@ -3824,7 +3824,7 @@ ANCIRA	ɑnʧˈɪɹə
 ANCONA	ɑnkˈOnə
 ANCRUM	ənkɹˈʌm
 ANCTIL	ˈæŋktɪl
-AND	ən	ənd	ˈænd
+AND	ənd	ˈænd
 ANDAL	ˈændəl
 ANDALUSIA	ˌændəlˈuʒə
 ANDALUSIAN	ˌændəlˈuʃən
@@ -5112,7 +5112,7 @@ ARDSHIEL	ˈɑɹdʃˌil
 ARDSLEY	ˈɑɹdzli
 ARDUINI	ɑɹduˈini
 ARDUOUS	ˈɑɹʤuəs
-ARE	ɜɹ	ˈɑɹ	ɜɹ
+ARE	ˈɑɹ	ɜɹ
 AREA	ˈɛɹiə
 AREA'S	ˈɛɹiəz
 AREAS	ˈɛɹiəz
@@ -5123,7 +5123,7 @@ AREL	ɑɹˈɛl
 ARELLANES	ˈæɹɪlˌAnz
 ARELLANO	ɑɹɛlˈɑnO
 AREN	ˈɑɹən
-AREN'T	ɑɹnt	ˈɑɹənt	ˈɑɹnt
+AREN'T	ˈɑɹənt	ˈɑɹnt
 ARENA	ɜɹˈinə
 ARENA'S	ɜɹˈinəz
 ARENABALL	ɜɹˈinəbˌɔl
@@ -5650,7 +5650,7 @@ ARZAMAS	ɑɹzˈɑməz
 ARZATE	ˈɑɹzˌAt
 ARZOLA	ɑɹzˈOlə
 ARZT	ˈɑɹzt
-AS	əz	ˈæz	ˈɛz
+AS	ˈæz	ˈɛz
 ASA	ˈɑsə
 ASAF	ɑsˈɑf
 ASAHAN	ˈæsəhæn
@@ -6074,7 +6074,7 @@ ASYMPTOTE	ˈæsɪmptˌOt
 ASYMPTOTES	ˈæsɪmptˌOts
 ASYMPTOTIC	ˈæsɪmptˌɔtɪk
 ASYNCHRONOUS	ˈAsˈɪŋkɹənəs
-AT	ət	ˈæt
+AT	ˈæt
 AT-BAT	ˈætbˈæt
 AT-BATS	ˈætbˈæts
 ATA	ˈɑtə
@@ -8871,7 +8871,7 @@ BBC	bˌibisˈi
 BBC'S	bˌibisˈis
 BBQ	bˈibikjˌu	bˈɑɹbɪkjˌu
 BC	bˌisˈi
-BE	bi	bˈi	bi
+BE	bˈi	bi
 BE'S	bˈiz
 BEA	bˈi
 BEABER	bˈibɜɹ
@@ -9244,7 +9244,7 @@ BEELER	bˈilɜɹ
 BEEM	bˈim
 BEEMAN	bˈimən
 BEEMER	bˈimɜɹ
-BEEN	bɪn	bˈɪn	bən	bɪn
+BEEN	bˈɪn	bən	bɪn
 BEENE	bˈin
 BEENEY	bˈini
 BEENKEN	bˈiŋkən
@@ -16860,7 +16860,7 @@ CAMSHAFT	kˈæmʃˌæft
 CAMSHAFTS	kˈæmʃˌæfts
 CAMUS	kˈæmɪs
 CAMUSO	kɑmˈusO
-CAN	kən	kˈæn	kən
+CAN	kˈæn	kən
 CAN'S	kˈænz
 CAN'T	kˈænt
 CANA	kˈænə
@@ -24383,9 +24383,9 @@ COUGHLIN	kˈɔɡlɪn
 COUGHRAN	kˈɔɡɹən
 COUGHS	kˈɔfs
 COUILLARD	kwilˈɑɹd
-COULD	kʊd	kˈʊd
+COULD	kˈʊd
 COULD'VE	kˈʊdəv
-COULDN'T	kʊdnt	kˈʊdənt	kˈʊdən
+COULDN'T	kˈʊdənt	kˈʊdən
 COULEE	kˈuli
 COULL	kˈWl
 COULOMBE	kWlˈOmbi
@@ -29917,7 +29917,7 @@ DICTIONARIES	dˈɪkʃənˌɛɹiz
 DICTIONARY	dˈɪkʃənˌɛɹi
 DICTUM	dˈɪktəm
 DICUS	dˈIkəs
-DID	dɪd	dˈɪd	dɪd
+DID	dˈɪd	dɪd
 DIDACTIC	dIdˈæktɪk
 DIDDLEY	dˈɪdli
 DIDDY	dˈɪdi
@@ -29929,7 +29929,7 @@ DIDIER	dˈɪdiɜɹ
 DIDINIUM	dɪdˈɪniəm
 DIDION	dˈɪdiən
 DIDION'S	dˈɪdiənz
-DIDN'T	dɪdnt	dˈɪdənt	dˈɪdnt	dˈɪdən	dˈɪnt
+DIDN'T	dˈɪdənt	dˈɪdnt	dˈɪdən	dˈɪnt
 DIDO	dˈIdO
 DIDOMENICO	dɪdOmˈɛnɪkˌO
 DIDONATO	dɪdOnˈɑtˌO
@@ -31289,7 +31289,7 @@ DNASE	dˈiˌɛnˌAs	dˈiˌɛnˌAz
 DNC	dˈiˌɛnsˌi
 DNIESTER	dnˈistɜɹ
 DNS	dˌiˌɛnˈɛs
-DO	də	dˈu
+DO	dˈu
 DO'S	dˈuz
 DOABLE	dˈuəbəl
 DOAK	dˈOk
@@ -31445,9 +31445,9 @@ DOERNER	dˈɔɹnɜɹ
 DOERR	dˈɔɹ
 DOERS	dˈuɜɹz
 DOERSAM	dˈɔɹsəm
-DOES	dəz	dˈʌz	dɪz
+DOES	dˈʌz	dɪz
 DOESCHER	dˈOʃɜɹ
-DOESN'T	dəznt	dˈʌzənt	dˈʌzən
+DOESN'T	dˈʌzənt	dˈʌzən
 DOETSCH	dˈOʧ
 DOFASCO	dəfˈæskO
 DOFF	dˈɔf
@@ -31686,7 +31686,7 @@ DOMTAR'S	dˈɑmtɜɹz
 DOMZALSKI	dəmzˈɑlski
 DON	dˈɑn
 DON'S	dˈɑnz
-DON'T	dOnt	dˈOnt
+DON'T	dˈOnt
 DON'TS	dˈOnts
 DONA	dˈOnə
 DONADIO	dOnˈɑdiO
@@ -40777,7 +40777,7 @@ FOOTWEAR	fˈʊtwˌɛɹ
 FOOTWORK	fˈʊtwˌɜɹk
 FOP	fˈɔp	ˈɛfˈOpˈi
 FOPPIANO	fOpiˈɑnO
-FOR	fɜɹ	fˈɔɹ	fɜɹ	fɹɜɹ
+FOR	fˈɔɹ	fɜɹ	fɹɜɹ
 FOR-PROFIT	fˌɜɹpɹˈɑfɪt
 FORA	fˈɔɹə
 FORAGE	fˈɔɹɪʤ
@@ -42016,7 +42016,7 @@ FROIO	fɹˈOiO
 FROLIC	fɹˈɑlɪk
 FROLICKING	fɹˈɑlɪkɪŋ
 FROLO	fɹˈOlO
-FROM	fɹəm	fɹˈʌm
+FROM	fɹˈʌm
 FROMAN	fɹˈOmən
 FROMBUGER	fɹˈOmbjˌuɡɜɹ
 FROMBUGER'S	fɹˈOmbjˌuɡɜɹz
@@ -48025,7 +48025,7 @@ HACKS	hˈæks
 HACKSAW	hˈæksˌɔ
 HACKSTAFF	hˈækstˌæf
 HACKWORTH	hˈækwˌɜɹθ
-HAD	həd	hˈæd
+HAD	hˈæd
 HADA	hˈɑdə
 HADAD	hˈædəd
 HADAR	hˈædˌɜɹ
@@ -48050,7 +48050,7 @@ HADLER	hˈAdəlɜɹ	hˈAdlɜɹ
 HADLEY	hˈædli
 HADLINE	hˈædlIn
 HADLOCK	hˈædlək
-HADN'T	hædnt	hˈædənt	hˈædən
+HADN'T	hˈædənt	hˈædən
 HADNOT	hˈædnət
 HADOYA	hədˈYə
 HADRIA	hˈædɹiə
@@ -49368,7 +49368,7 @@ HARWELL	hˈɑɹwˌɛl
 HARWICK	hˈɑɹwɪk
 HARWOOD	hˈɑɹwˌʊd
 HARYANA	hɛɹjˈɑnə
-HAS	həz	hˈæz	həz
+HAS	hˈæz	həz
 HAS-BEEN	hˈæzbˌɪn
 HAS-BEENS	hˈæzbˌɪnz
 HASAN	hˌɑsˈɑn
@@ -49425,7 +49425,7 @@ HASLER	hˈæsəlɜɹ	hˈæslɜɹ
 HASLETT	hˈæslɪt
 HASLEY	hˈæzli
 HASMAN	hˈæsmən
-HASN'T	hæznt	hˈæzənt
+HASN'T	hˈæzənt
 HASO	hˈɑsˌO
 HASO'S	hˈɑsˌOz
 HASPEL	hˈæspəl
@@ -49614,14 +49614,14 @@ HAVANA	həvˈænə
 HAVANA'S	həvˈænəz
 HAVARD	hˈævɜɹd
 HAVAS	hˈɑvɑz
-HAVE	həv	hˈæv
+HAVE	hˈæv
 HAVEL	hˈævəl
 HAVELKA	həvˈɛlkə
 HAVELOCK	hˈævlˌɑk
 HAVEMAN	hˈAvmən
 HAVEMANN	hˈævəmən
 HAVEN	hˈAvən
-HAVEN'T	hævnt	hˈævənt	hˈævən
+HAVEN'T	hˈævənt	hˈævən
 HAVENER	hˈævinɜɹ
 HAVENS	hˈAvənz
 HAVER	hˈɛvɜɹ
@@ -49783,10 +49783,10 @@ HAZZARD	hˈæzɜɹd
 HBO	ˈAʧbiˈO
 HBOX	ˈAʧbˈɔks
 HCES	ˈAʧsˈiˈiˈɛs
-HE	hi	hˈi
-HE'D	hid	hˈid
-HE'LL	hil	hˈil
-HE'S	hiz	hˈiz
+HE	hˈi
+HE'D	hˈid
+HE'LL	hˈil
+HE'S	hˈiz
 HEABERLIN	hˈibɜɹlɪn
 HEACOCK	hˈikək
 HEACOX	hˈikɑks
@@ -50747,7 +50747,7 @@ HEPPLER	hˈɛplɜɹ
 HEPPNER	hˈɛpnɜɹ
 HEPTATHLON	hɛptˈæθlɑn
 HEPWORTH	hˈɛpwɜɹθ
-HER	hɜɹ	hˈɜɹ
+HER	hˈɜɹ
 HER'S	hˈɜɹz
 HERA	hˈɪɹə
 HERADIA	hɜɹˈɑdiə
@@ -51464,7 +51464,7 @@ HILTY	hˈɪlti
 HILTZ	hˈɪlts
 HILYARD	həljˈɑɹd
 HILYER	hˈɪliɜɹ
-HIM	hɪm	hˈɪm	ɪm
+HIM	hˈɪm	ɪm
 HIMALAYA	hˌɪməlˈIə	hˌɪməlˈAə
 HIMALAYAN	hˌɪməlˈAən	hˌɪməlˈIən
 HIMALAYAS	hˌɪməlˈIəs	hˌɪməlˈAəs
@@ -51658,7 +51658,7 @@ HIRTLE	hˈɜɹtəl
 HIRTZ	hˈɜɹts
 HIRULOG	hˈɪɹˌulˌɑɡ
 HIRZEL	hˈɜɹzəl
-HIS	hɪz	hˈɪz	hɪz
+HIS	hˈɪz	hɪz
 HISADA	hɪsˈɑdə
 HISAO	hɪsˈɑO
 HISAW	hˈIsɔ
@@ -53072,7 +53072,7 @@ HOVY	hˈOvi
 HOW	hˈW
 HOW'D	hˈWd
 HOW'RE	hˈWɜɹ
-HOW'S	hWz	hˈWz
+HOW'S	hˈWz
 HOW-ABOUT	hˌWəbˈWt
 HOW-MANY	hˌWmˈɛni
 HOW-MUCH	hˌWmˈʌʧ
@@ -54005,13 +54005,13 @@ HYUNDAI'S	hˈʌndˌAz
 HYUNDAIS	hjˈʌndˌAz
 HYWELL	hˈIwɛl
 HZ	hˈɜɹtz
-I	I	ˈI
-I'D	Id	ˈId
+I	ˈI
+I'D	ˈId
 I'ERS	ˈIɜɹz
-I'LL	Il	ˈIl
-I'M	Im	ˈIm	əm
+I'LL	ˈIl
+I'M	ˈIm	əm
 I'S	ˈIz
-I'VE	Iv	ˈIv
+I'VE	ˈIv
 I.	ˈI
 I.'S	ˈIz
 I.S	ˈIz
@@ -54213,7 +54213,7 @@ IEEE	ˌItɹˌɪpləˈi
 IERARDI	iɜɹˈɑɹdi
 IERNE	ˈɪɹn
 IEZZI	iˈɛtsi
-IF	ɪf	ˈɪf
+IF	ˈɪf
 IF'S	ˈɪfs
 IFAS	ˈIfəs
 IFFY	ˈɪfi
@@ -54782,7 +54782,7 @@ IMREG	ˌɪmɹˈɛɡ
 IMREG'S	ˌɪmɹˈɛɡz
 IMRIE	ˈɪmɜɹi
 IMUS	ˈIməs
-IN	ɪn	ɪn	ˈɪn
+IN	ɪn	ˈɪn
 IN'S	ɪnz	ˈɪnz
 IN-HOUSE	ˌɪnhˈWs
 IN-LAW	ˌɪnlˈɔ
@@ -56740,7 +56740,7 @@ IRVING	ˈɜɹvɪŋ
 IRVING'S	ˈɜɹvɪŋz
 IRWIN	ˈɜɹwən	ˈɜɹwɪn
 IRWINDALE	ˈɜɹwɪndˌAl
-IS	ɪz	ˈɪz	ɪz
+IS	ˈɪz	ɪz
 ISA	ˈisə
 ISAAC	ˈIzək	ˈIzɪk
 ISAACKS	ˈɪsɑks
@@ -56839,7 +56839,7 @@ ISM	ˈɪzəm
 ISMAEL	ˈɪsmAl
 ISMAIL	ˈɪsmAl
 ISMS	ˈɪzəmz
-ISN'T	ɪznt	ˈɪzənt	ɪzənt	ˈɪzən
+ISN'T	ˈɪzənt	ɪzənt	ˈɪzən
 ISNER	ˈɪsnɜɹ
 ISOBEL	ˈIsɔbˌɛl
 ISOCYANATE	ˌIsəsˈIənˌAt
@@ -56919,10 +56919,10 @@ ISTRE	ˈɪstɜɹ
 ISTY	ˈɪsti	ˈIˈɛstˈiwˈI
 ISU	ˈɪsˌu	ˈIˈɛsjˈu
 ISUZU	ˌɪsˈuzˌu
-IT	ɪt	ˈɪt	ɪt
+IT	ˈɪt	ɪt
 IT'D	ˈɪtəd
 IT'LL	ˈɪtəl	ˈɪtl
-IT'S	ɪts	ˈɪts	ɪts
+IT'S	ˈɪts	ɪts
 IT-WIT	ˈɪtwˈɪt
 ITA	ˈItə	ˈItˈiˈA
 ITALIA	itˈæliə	ˌɪtˈæljə
@@ -65079,7 +65079,7 @@ LESURE	lɛʃˈʊɹ
 LESZCZYNSKI	lɛʃˈɪnski
 LESZEK	lˈɛsɛk
 LET	lˈɛt
-LET'S	lɛts	lˈɛts
+LET'S	lˈɛts
 LET-UP	lˈɛtˌəp
 LETA	lˈɛtə
 LETARTE	lˈɛtɑɹt
@@ -71874,7 +71874,7 @@ MCWILLIAMS	məkwˈɪljəmz
 MCWRIGHT	məkɹˈIt
 MCZEAL	məkzˈil
 MD	ˌɛmdˈi
-ME	mi	mˈi
+ME	mˈi
 MEA	mˈi
 MEACHAM	mˈiʧəm
 MEACHUM	mˈiʧəm
@@ -73529,7 +73529,7 @@ MIG	mˈɪɡ
 MIGDAL	mˈɪɡdəl
 MIGENT	mˈɪʤənt
 MIGGINS	mˈɪɡɪnz
-MIGHT	mIt	mˈIt
+MIGHT	mˈIt
 MIGHT'VE	mˈItəv
 MIGHT-HAVE-BEEN	mˈItəvbˌɪn
 MIGHT-HAVE-BEENS	mˈItəvbˌɪnz
@@ -76785,7 +76785,7 @@ MUSSO	mˈusO
 MUSSOLINI	mˌusOlˈini
 MUSSOLINI'S	mˌusOlˈiniz
 MUSSON	mˈʌsən
-MUST	məst	mˈʌst
+MUST	mˈʌst
 MUST'VE	mˈʌstɪv
 MUSTACHE	mˈʌstˌæʃ
 MUSTACHED	mˈʌstˌæʃt
@@ -76803,7 +76803,7 @@ MUSTERED	mˈʌstɜɹd
 MUSTERING	mˈʌstɜɹɪŋ
 MUSTERS	mˈʌstɜɹz
 MUSTIN	mˈʌstɪn
-MUSTN'T	məsnt	mˈʌsənt
+MUSTN'T	mˈʌsənt
 MUSTO	mˈʌstO
 MUSTOE	mˈʌstO
 MUSTON	mˈʌstən
@@ -79560,7 +79560,7 @@ NOSTRIL	nˈɑstɹɪl
 NOSTRILS	nˈɑstɹəlz
 NOSTRUMS	nˈɑstɹəmz
 NOSY	nˈOzi
-NOT	nət	nˈɑt
+NOT	nˈɑt
 NOTABLE	nˈOtəbəl
 NOTABLES	nˈOtəbəlz
 NOTABLY	nˈOtəbli
@@ -80585,7 +80585,7 @@ OETKEN	ˈOtkən
 OETTING	ˈOtɪŋ
 OETTINGER	ˈOtɪnʤɜɹ	ˈOtɪŋɜɹ
 OEUVRE	ˈuvɹə	ˈɜɹv
-OF	əv	ˈʌv	əv
+OF	ˈʌv	əv
 OFALLON	Ofˈælən
 OFARRELL	Ofˈɛɹəl	Ofˈæɹəl
 OFC	ˈOˈɛfsˈi
@@ -81094,7 +81094,7 @@ OMOHUNDRO	OmOhˈundɹO
 OMONIA	əmˈOniə	ˈOmOnjə
 OMORI	Omˈɔɹi
 OMRON	ˈɑmɹən
-ON	ən	ˈɑn	ˈɔn
+ON	ˈɑn	ˈɔn
 ON-LINE	ˈɔnlˌIn
 ON-SCREEN	ˈɑnskɹˌin
 ONA	ənˈɑ
@@ -81403,7 +81403,7 @@ OPUS	ˈOpəs
 OQUENDO	OkwˈɛndO
 OQUIN	Okwˈin
 OQUINN	Okwˈin
-OR	ɜɹ	ˈɔɹ	ɜɹ
+OR	ˈɔɹ	ɜɹ
 ORA	ˈɔɹə
 ORABEL	ɔɹɑbˈɛl
 ORABELLE	ˈɔɹəbəl
@@ -82040,7 +82040,7 @@ OUIMETTE	wimˈɛt
 OUNCE	ˈWns
 OUNCES	ˈWnsəz	ˈWnsɪz
 OUNSTED	ˈWnstˌɛd
-OUR	Wɜɹ	ˈWɜɹ	ˈWɹ	ˈɑɹ
+OUR	ˈWɜɹ	ˈWɹ	ˈɑɹ
 OURADA	Oʊɹˈɑdə
 OURS	ˈWɜɹz	ˈɑɹz	ˈWɹz
 OURSELF	Wɜɹsˈɛlf	ɑɹsˈɛlf
@@ -82052,7 +82052,7 @@ OUST	ˈWst
 OUSTED	ˈWstɪd
 OUSTER	ˈWstɜɹ
 OUSTING	ˈWstɪŋ
-OUT	Wt	ˈWt
+OUT	ˈWt
 OUT'S	ˈWts
 OUT-MODE	ˈWtmˈOd
 OUT-MODED	ˈWtmˈOdɪd
@@ -101948,7 +101948,7 @@ SHALEV	ʃˈɑlˌɛv
 SHALI	ʃˈæli
 SHALIKASHVILI	ʃˌælikɑʃvˈili
 SHALIKASHVILI'S	ʃˌælikɑʃvˈiliz
-SHALL	ʃəl	ʃˈæl
+SHALL	ʃˈæl
 SHALL'S	ʃˈælz
 SHALLCROSS	ʃˈælkɹˌɑs
 SHALLENBERGER	ʃˈɔlənbɜɹɡɜɹ
@@ -102209,9 +102209,9 @@ SHCHARANSKY	ʃɜɹˈænski
 SHCHEDRIN	ʃˈɛdɹɪn
 SHCHERBITSKY	ʃɜɹbˈɪtski
 SHE	ʃˈi
-SHE'D	ʃid	ʃˈid
-SHE'LL	ʃil	ʃˈil
-SHE'S	ʃiz	ʃˈiz
+SHE'D	ʃˈid
+SHE'LL	ʃˈil
+SHE'S	ʃˈiz
 SHEA	ʃˈA
 SHEA'S	ʃˈAz
 SHEAD	shˈɛd
@@ -102927,13 +102927,13 @@ SHOTTS	ʃˈɑts
 SHOTWELL	ʃˈɑtwˌɛl
 SHOUGANG	ʃˈWɡˈɑŋ
 SHOUGH	ʃˈW
-SHOULD	ʃʊd	ʃˈʊd
+SHOULD	ʃˈʊd
 SHOULD'VE	ʃˈʊdəv
 SHOULDER	ʃˈOldɜɹ
 SHOULDERED	ʃˈOldɜɹd
 SHOULDERING	ʃˈOldɜɹɪŋ
 SHOULDERS	ʃˈOldɜɹz
-SHOULDN'T	ʃʊdnt	ʃˈʊdənt
+SHOULDN'T	ʃˈʊdənt
 SHOULI	ʃˈuli
 SHOULTS	ʃˈOlts
 SHOULTZ	ʃˈOlts
@@ -105156,7 +105156,7 @@ SNUGLY	snˈʌɡli
 SNYDER	snˈIdɜɹ
 SNYDER'S	snˈIdɜɹz
 SNYDERGENERAL	snˌIdɜɹʤˈɛnɜɹəl
-SO	sO	sˈO
+SO	sˈO
 SO'S	sˈOz
 SO-CALLED	sˈOkˈɔld
 SO-SO	sˈOsˈO
@@ -112717,7 +112717,7 @@ THALMAN	θˈælmən
 THALMANN	θˈɔlmən
 THAM	θˈæm
 THAMES	tˈɛmz
-THAN	ðən	ðˈæn	ðən
+THAN	ðˈæn	ðən
 THANATOLOGY	θænətˈɔləʤi
 THANE	θˈAn
 THANG	θˈæŋ
@@ -112743,10 +112743,10 @@ THARPE'S	θˈɑɹps
 THARRINGTON	θˈæɹɪŋtən
 THASER	θˈAzɜɹ
 THASSOS	θˈæsOs
-THAT	ðət	ðˈæt	ðət
+THAT	ðˈæt	ðət
 THAT'D	ðˈætɪd
 THAT'LL	ðˈætəl
-THAT'S	ðæts	ðˈæts
+THAT'S	ðˈæts
 THAT'VE	ðˈætəv
 THATCH	θˈæʧ
 THATCHED	θˈæʧt
@@ -112769,7 +112769,7 @@ THAYER	θˈAɜɹ
 THAYER'S	θˈAɜɹz
 THAYERS	θˈAɜɹz
 THAYNE	θˈAn
-THE	ðə	ðə	ðˈʌ	ði
+THE	ðə	ðˈʌ	ði
 THEA	θˈiə
 THEALL	θˈil
 THEANO	θˈinˌO
@@ -112820,7 +112820,7 @@ THELIN	θˈɛlɪn
 THELMA	θˈɛlmə
 THELMA'S	θˈɛlməz
 THELONIUS	θɪlˈOniəs
-THEM	ðəm	ðˈɛm	ðəm
+THEM	ðˈɛm	ðəm
 THEMATIC	θimˈætɪk
 THEMATICALLY	θəmˈætɪkli
 THEME	θˈim
@@ -112882,7 +112882,7 @@ THERAPISTS'	θˈɛɹəpɪsts
 THERAPISTS'S	θˈɛɹəpɪsts
 THERAPY	θˈɛɹəpi
 THERAT	ðˈɛɹˌæt
-THERE	ðˈɛɹ	ðˈɛɹ
+THERE	ðˈɛɹ
 THERE'D	ðˈɛɹd
 THERE'LL	ðˈɛɹəl
 THERE'RE	ðˈɛɹɜɹ
@@ -112942,11 +112942,11 @@ THEURER	θˈɜɹɜɹ
 THEUS	ðjˈuz
 THEW	θˈu
 THEWLIS	θjˈulɪs
-THEY	ðA	ðˈA
-THEY'D	ðAd	ðˈAd
-THEY'LL	ðAl	ðˈɛl
-THEY'RE	ðɜɹ	ðˈɛɹ
-THEY'VE	ðAv	ðˈAv
+THEY	ðˈA
+THEY'D	ðˈAd
+THEY'LL	ðˈɛl
+THEY'RE	ðˈɛɹ
+THEY'VE	ðˈAv
 THI	θˈi
 THIAMIN	θˈIəmən
 THIBADEAU	tˈɪbədO
@@ -113053,7 +113053,7 @@ THIRTY-FIVE	θˈɜɹdifˌIv
 THIRTYSOMETHING	θˈɜɹtisˌəmθɪŋ
 THIRY	θˈɪɹi
 THIRZA	θˈɜɹzə
-THIS	ðɪs	ðˈɪs	ðɪs
+THIS	ðˈɪs	ðɪs
 THIS'	ðˈɪs
 THIS'LL	ðˈɪsəl	ðɪsəl
 THISSEN	θˈɪsən
@@ -113837,7 +113837,7 @@ TKACZ	kˈɑʧ
 TLATELOCO	tlˌætɪlˈOkO
 TLC	tˌiˌɛlsˈi
 TLINGIT	tlˈiŋɡɪt
-TO	tə	tˈu	tɪ	tə
+TO	tˈu	tɪ	tə
 TO-DO	tˌudˈu
 TO-DOS	tˌudˈuz
 TOA	tˈOɑ
@@ -117726,7 +117726,7 @@ UNZ	ˈʌnz
 UNZICKER	ˈɔnzɪkɜɹ
 UNZIP	ənzˈɪp
 UNZIPPED	ənzˈɪpt
-UP	əp	ˈʌp
+UP	ˈʌp
 UP'S	ˈʌps
 UPBEAT	ˈʌpbˌit
 UPBRAID	ˈʌpbɹˌAd
@@ -117949,7 +117949,7 @@ URUGUAY'S	jˈɜɹəɡwˌAz	jˈɜɹəɡwˌIz
 URUGUAYAN	jˌɜɹəɡwˈAən	jˌɜɹəɡwˈIən
 URWIN	ˈɜɹwən
 URY	jˈuɹi	jˈɜɹi
-US	əs	ˈʌs	jˌuˈɛs
+US	ˈʌs	jˌuˈɛs
 USA	jˌuˌɛsˈA
 USABLE	jˈuzəbəl
 USAFE	jˈusAf
@@ -121002,7 +121002,7 @@ WARWICK	wˈɔɹwɪk
 WARWICK'S	wˈɔɹwˌɪks
 WARY	wˈɛɹi
 WARZECHA	wɔɹzˈɛhə
-WAS	wəz	wˈɑz	wɑz
+WAS	wˈɑz	wɑz
 WASATCH	wˈɑsæʧ
 WASCH	wˈɔʃ
 WASCHER	wˈɔʃɜɹ
@@ -121050,7 +121050,7 @@ WASLEY	wˈɔsli
 WASMER	wˈɔsəmɜɹ
 WASMUND	wˈɔzmənd
 WASMUTH	wˈɔzmuθ
-WASN'T	wəznt	wˈɑzənt	wˈʌzənt
+WASN'T	wˈɑzənt	wˈʌzənt
 WASON	wˈɑsən
 WASP	wˈɑsp
 WASP'S	wˈɑsps
@@ -121251,11 +121251,11 @@ WAYT	wˈAt
 WAYWARD	wˈAwɜɹd
 WAZIR	wɑzˈɪɹ
 WAZIR'S	wɑzˈɪɹz
-WE	wi	wˈi
-WE'D	wid	wˈid
-WE'LL	wil	wˈil	wˈɪl
-WE'RE	wɜɹ	wˈiɹ	wˈɪɹ	wˈɜɹ
-WE'VE	wiv	wˈiv
+WE	wˈi
+WE'D	wˈid
+WE'LL	wˈil	wˈɪl
+WE'RE	wˈiɹ	wˈɪɹ	wˈɜɹ
+WE'VE	wˈiv
 WEAK	wˈik
 WEAKEN	wˈikən
 WEAKENED	wˈikənd
@@ -121820,9 +121820,9 @@ WERBER	wˈɜɹbɜɹ
 WERDEN	wˈɜɹdən
 WERDER	wˈɜɹdɜɹ
 WERDESHEIM	wˈɜɹdzhˌIm
-WERE	wɜɹ	wˈɜɹ
+WERE	wˈɜɹ
 WERELDHAVE	wˈɛɹəldhˌɑvA
-WEREN'T	wɜɹnt	wˈɜɹənt	wˈɜɹnt
+WEREN'T	wˈɜɹənt	wˈɜɹnt
 WEREWOLF	wˈɛɹwˌʊlf
 WEREWOLVES	wˈɛɹwˌʊlvz
 WERGIN	wˈɜɹɡɪn
@@ -122096,11 +122096,11 @@ WHARFS	wˈɔɹfs	hwˈɔɹfs
 WHARRY	wˈæɹi	hwˈæɹi
 WHARTON	wˈɔɹtən
 WHARTON'S	wˈɔɹtənz
-WHAT	wət	wˈʌt	hwˈʌt
+WHAT	wˈʌt	hwˈʌt
 WHAT'D	wˈʌtɪd	hwˈʌtɪd
 WHAT'LL	wˈʌtəl	hwˈʌtəl
 WHAT'RE	wˈʌtɜɹ	hwˈʌtɜɹ
-WHAT'S	wəts	wˈʌts	hwˈʌts
+WHAT'S	wˈʌts	hwˈʌts
 WHAT'VE	wˈʌtəv
 WHAT-WHAT	wˈʌtwˈʌt
 WHATE	wˈAt
@@ -122154,13 +122154,13 @@ WHELPLEY	wˈɛlpli	hwˈɛlpli
 WHELTON	wˈɛltən	hwˈɛltən
 WHEN	wˈɛn	hwˈɛn	wˈɪn	hwˈɪn
 WHEN'LL	wˈɛnəl	hwˈɛnəl
-WHEN'S	wɛnz	wˈɛnz	hwˈɛnz
+WHEN'S	wˈɛnz	hwˈɛnz
 WHENCE	wˈɛns	hwˈɛns
 WHENEVER	wɛnˈɛvɜɹ	hwɛnˈɛvɜɹ
 WHERE	wˈɛɹ	hwˈɛɹ
 WHERE'D	wˈɛɹd	hwˈɛɹd
 WHERE'RE	wˈɛɹɜɹ
-WHERE'S	wɛɹz	wˈɛɹz	hwˈɛɹz
+WHERE'S	wˈɛɹz	hwˈɛɹz
 WHERE'VE	wˈɛɹəv
 WHEREABOUTS	wˈɛɹəbˌWts	hwˈɛɹəbˌWts
 WHEREAS	wɛɹˈæz	hwɛɹˈæz
@@ -122395,11 +122395,11 @@ WHIZZED	wˈɪzd	hwˈɪzd
 WHIZZER	wˈɪzɜɹ	hwˈɪzɜɹ
 WHIZZES	wˈɪzɪz	hwˈɪzɪz
 WHIZZING	wˈɪzɪŋ	hwˈɪzɪŋ
-WHO	hu	hˈu
+WHO	hˈu
 WHO'D	hˈud
 WHO'LL	hˈul
 WHO'RE	hˈuɜɹ
-WHO'S	huz	hˈuz
+WHO'S	hˈuz
 WHO'VE	huv
 WHOA	wˈO	hwˈO	hˈO
 WHOBREY	wˈɑbɹi
@@ -122451,7 +122451,7 @@ WHOSOEVER	hˌusOˈɛvɜɹ
 WHY	wˈI	hwˈI
 WHY'D	wˈId	hwˈId
 WHY'RE	wˈIɜɹ
-WHY'S	wIz	wˈIz	hwˈIz
+WHY'S	wˈIz	hwˈIz
 WHYS	wˈIz	hwˈIz
 WHYTE	wˈIt	hwˈIt
 WI-FI	wˈIfˌI
@@ -122812,7 +122812,7 @@ WILKIS	wˈɪlkɪs
 WILKISON	wˈɪlkɪsən
 WILKOWSKI	vɪlkˈɔfski
 WILKS	wˈɪlks
-WILL	wɪl	wˈɪl	wəl
+WILL	wˈɪl	wəl
 WILL'S	wˈɪlz
 WILLA	wˈɪlə
 WILLABELLE	wˈɪləbˌɛl
@@ -123934,9 +123934,9 @@ WOTHERSPOON	wəðɜɹspˈun
 WOTRING	wˈɑtɜɹɪŋ
 WOTTON	wˈɑtən
 WOUK	wˈuk	wˈOk
-WOULD	wʊd	wˈʊd
+WOULD	wˈʊd
 WOULD'VE	wˈʊdəv
-WOULDN'T	wʊdnt	wˈʊdənt
+WOULDN'T	wˈʊdənt
 WOULFE	wˈWlf
 WOUND	wˈWnd	wˈund
 WOUNDED	wˈundɪd
@@ -124272,7 +124272,7 @@ XYLONA	zˈIlənə
 XYLOPHONE	zˈIləfˌOn
 XYVISION	zˈIvˈɪʒən
 Y	wˈI
-Y'ALL	jɔl	jˌɔl
+Y'ALL	jˌɔl
 Y'KNOW	jənˈO
 Y'S	wˈIz
 Y.	wˈI
@@ -124795,11 +124795,11 @@ YOSSI	jˈOsi
 YOST	jˈOst
 YOTHER	jˈʌðɜɹ
 YOTT	jˈɑt
-YOU	ju	jˈu
-YOU'D	jud	jˈud	jˈʊd
-YOU'LL	jul	jˈul
-YOU'RE	jɜɹ	jˈʊɹ	jˈuɹ
-YOU'VE	juv	jˈuv
+YOU	jˈu
+YOU'D	jˈud	jˈʊd
+YOU'LL	jˈul
+YOU'RE	jˈʊɹ	jˈuɹ
+YOU'VE	jˈuv
 YOUELL	jˈɑul
 YOUGHAL	jˈOəl
 YOUKER	jˈWkɜɹ
@@ -124839,7 +124839,7 @@ YOUNKIN	jˈʌŋkɪn
 YOUNKINS	jˈʌŋkɪnz
 YOUNT	jˈWnt
 YOUNTS	jˈWnts
-YOUR	jɜɹ	jˈɔɹ	jˈʊɹ
+YOUR	jˈɔɹ	jˈʊɹ
 YOUREE	jɔɹˈi
 YOURI	jˈʊɹi
 YOURS	jˈʊɹz	jˈɔɹz	jɜɹz
