@@ -86,7 +86,7 @@ Option | Description | Default value
 `frameRate` | Frame rate in FPS for inference. | `40`
 `languages` | Language modules to be pre-loaded. | [`"en-us"`]
 `dictionaryURL` | URL to language dictionaries. Set to `null` to disable dictionaries. | `"../dictionaries"`
-`voiceURL` | URL for loading voices. | `"https://huggingface.co/`<br>`onnx-community/`<br>`Kokoro-82M-v1.0-ONNX/`<br>`resolve/main/voices"`
+`voiceURL` | URL for loading voices. If the given value is a relative URL, it should be relative to the worker file location. | `"https://huggingface.co/`<br>`onnx-community/`<br>`Kokoro-82M-v1.0-ONNX/`<br>`resolve/main/voices"`
 `voices` | Voices to preload (e.g., `["af_bella", "am_fenrir"]`).  | `[]`
 `splitSentences` | Whether to split text into sentences. | `true`
 `splitLength` | Maximum length (in characters) of each text chunk. | `500`
@@ -473,9 +473,6 @@ and then to Misaki-compatible phonemes by applying the following mapping:
 - `ɔɪ` → [ `Y` ], `ˈɔɪ` → [ `ˈY` ], `ˌɔɪ` → [ `ˌY` ]
 - `oʊ` → [ `O` ], `ˈoʊ` → [ `ˈO` ], `ˌoʊ` → [ `ˌO` ]
 - `əʊ` → [ `Q` ], `ˈəʊ` → [ `ˈQ` ], `ˌəʊ` → [ `ˌQ` ]
-
-Note: During the dataset conversion, some vowels were reduced to reflect
-casual speech since HeadTTS is primarily designed for conversational use.
 
 The final dictionary is a plain text file with around 125,000 lines (2,8MB).
 Lines starting with `;;;` are comments. Each other line represents

@@ -225,7 +225,7 @@ async function loadVoice(s) {
           buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
           return buffer;
         } else if ( !isNode && settings.voiceURL ) {
-          const url = new URL(settings.voiceURL);
+          const url = new URL(settings.voiceURL, self.location.href);
           url.pathname += (url.pathname.endsWith("/") ? "" : "/") + s + ".bin";
           if ( isTraceConnection ) {
             utils.trace( 'Loading voice "' + url + '".' );
