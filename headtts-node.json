@@ -1,9 +1,9 @@
 {
   "server": {
-    "port": 8882,
+    "port": 10000,
     "certFile": null,
     "keyFile": null,
-    "websocket": true,
+    "websocket": false,
     "rest": true,
     "connectionTimeout": 20000,
     "corsOrigin": "*"
