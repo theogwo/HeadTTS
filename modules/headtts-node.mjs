@@ -1,11 +1,3 @@
-import http from 'node:http';
-import https from 'node:https';
-import { readFileSync } from 'node:fs';
-import process from 'node:process';
-import { cpus } from 'node:os';
-import { Worker } from 'node:worker_threads';
-import { WebSocketServer } from 'ws';
-import * as utils from "./utils.mjs";
 
 console.log("🚀 HeadTTS is starting...");
 
@@ -16,6 +8,15 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
+
+import http from 'node:http';
+import https from 'node:https';
+import { readFileSync } from 'node:fs';
+import process from 'node:process';
+import { cpus } from 'node:os';
+import { Worker } from 'node:worker_threads';
+import { WebSocketServer } from 'ws';
+import * as utils from "./utils.mjs";
 
 
 /**
