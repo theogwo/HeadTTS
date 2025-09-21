@@ -4,6 +4,9 @@
   "description": "HeadTTS: A free Javascript text-to-speech with timestamps and visemes.",
   "main": "modules/headtts.mjs",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "files": [
     "README.md",
     "LICENSE",
