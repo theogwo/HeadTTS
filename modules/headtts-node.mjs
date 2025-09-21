@@ -8,6 +8,15 @@ import { WebSocketServer } from 'ws';
 import * as utils from "./utils.mjs";
 
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+
 /**
 * Check if a specific command line option/flag was set.
 *
