@@ -7,6 +7,7 @@ import { Worker } from 'node:worker_threads';
 import { WebSocketServer } from 'ws';
 import * as utils from "./utils.mjs";
 
+console.log("🚀 HeadTTS is starting...");
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
