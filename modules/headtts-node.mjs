@@ -17,6 +17,9 @@ import { cpus } from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { WebSocketServer } from 'ws';
 import * as utils from "./utils.mjs";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
 
 
 /**
@@ -88,7 +91,11 @@ const config = {
 
 
 // Read JSON configuration file
-const file = getOptionValue("config") || "./headtts-node.json";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// const file = getOptionValue("config") || "./headtts-node.json";
+const file = getOptionValue("config") || path.join(__dirname, '../headtts-node.json');
 const json = readFileSync(file, 'utf8');
 const trace = parseInt(getOptionValue("trace"));
 const o = JSON.parse(json);
