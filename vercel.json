@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/api/v1/(.*)",
-      "dest": "/modules/headtts-node.mjs"
+      "dest": "modules/headtts-node.mjs"
     }
   ]
 }
