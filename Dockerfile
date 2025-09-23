@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the app
 COPY . .
 
+RUN mkdir -p /app/voices && \
+    curl -L -o /app/voices/af_bella.bin https://github.com/theogwo/HeadTTS/blob/main/voices/af_bella.bin
+
 # Set port (optional, not always used)
 ENV PORT=10000
 
