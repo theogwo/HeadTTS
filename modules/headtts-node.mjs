@@ -61,7 +61,7 @@ const config = {
     keyFile: null,
     websocket: false,
     rest: true,
-    connectionTimeout: 20000,
+    connectionTimeout: 65000,
     corsOrigin: "*"
   },
 
