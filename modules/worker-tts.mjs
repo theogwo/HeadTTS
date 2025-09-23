@@ -217,14 +217,28 @@ async function loadVoice(s) {
       (async () => {
         let url, path, response, buffer;
         if ( isNode && settings.voicePath ) {
-          path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
-          if ( isTraceConnection ) {
-            utils.trace( 'Loading voice "' + path + '".' );
-          }
-         console.log("path in worker = "+ path)
-          response = await fileReader(path);
-          buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
-          return buffer;
+         //  path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
+         //  if ( isTraceConnection ) {
+         //    utils.trace( 'Loading voice "' + path + '".' );
+         //  }
+         // console.log("path in worker = "+ path)
+         //  response = await fileReader(path);
+         //  buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
+         //  return buffer;
+                 const filePath = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
+                    if (isTraceConnection) {
+                      utils.trace('Loading voice "' + filePath + '".');
+                    }
+                    console.log("🔍 Voice file path in worker =", filePath);
+                    try {
+                      await access(filePath, fsConstants.F_OK);
+                      const response = await fileReader(filePath);
+                      const buffer = response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
+                      return buffer;
+                    } catch (err) {
+                      console.error(`❌ Voice file not found or unreadable: ${filePath}`);
+                      throw new Error(`Voice file not found: ${filePath}`);
+                    }
         } else if ( !isNode && settings.voiceURL ) {
           const url = new URL(settings.voiceURL, self.location.href);
           url.pathname += (url.pathname.endsWith("/") ? "" : "/") + s + ".bin";
