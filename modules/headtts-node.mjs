@@ -282,6 +282,7 @@ function restHandler(req,res) {
   if (req.method === 'POST') {
 
     // Synthesize
+    console.log("URL - "+req.url);
     if ( req.url === '/v1/synthesize') {
 
       let body = '';
