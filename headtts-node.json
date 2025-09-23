@@ -22,8 +22,8 @@
     "audioSampleRate": 24000,
 
     "languages": ["en-us"],
-    "dictionaryPath": "/app/dictionaries",
-    "voicePath": "/app/voices",
+    "dictionaryPath": "./dictionaries",
+    "voicePath": "./voices",
     "voices": ["af_bella"],
 
     "deltaStart": -10,
