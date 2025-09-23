@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "modules/headtts-node.mjs",
+      "src": "modules/headtts-node-vercel.mjs",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "modules/headtts-node.mjs"
+      "dest": "modules/headtts-node-vercel.mjs"
     }
   ]
 }
