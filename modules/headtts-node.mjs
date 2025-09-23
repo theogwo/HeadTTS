@@ -22,6 +22,9 @@ import path from 'path';
 import fs from 'fs';
 
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /**
 * Check if a specific command line option/flag was set.
 *
@@ -93,8 +96,6 @@ const config = {
 
 
 // Read JSON configuration file
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // const file = getOptionValue("config") || "./headtts-node.json";
 const file = getOptionValue("config") || path.join(__dirname, '../headtts-node.json');
