@@ -1,6 +1,4 @@
 import * as utils from "./utils.mjs";
-import { fileURLToPath } from 'url';
-import path from 'path';
 
 // Dynamic imports
 let StyleTextToSpeech2Model;
@@ -22,9 +20,6 @@ const languages = new Map(); // Language modules
 const voices = new Map(); // Voices
 let settings = {}; // Settings
 const queue = []; // Text-to-speech work queue
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Different event handler for Node.js and browsers
 let eventHandler;
@@ -222,8 +217,7 @@ async function loadVoice(s) {
       (async () => {
         let url, path, response, buffer;
         if ( isNode && settings.voicePath ) {
-          // path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
-          path = path.join(__dirname, '../voices') + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
+          path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
           if ( isTraceConnection ) {
             utils.trace( 'Loading voice "' + path + '".' );
           }
