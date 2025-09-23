@@ -223,14 +223,24 @@ async function loadVoice(s) {
            files.forEach(file => {
              console.log(` - ${file}`);
            });
-          path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
-          if ( isTraceConnection ) {
-            utils.trace( 'Loading voice "' + path + '".' );
-          }
-         console.log("path in worker = "+ path)
-          response = await fileReader(path);
-          buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
-          return buffer;
+         //  path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
+         //  if ( isTraceConnection ) {
+         //    utils.trace( 'Loading voice "' + path + '".' );
+         //  }
+         // console.log("path in worker = "+ path)
+         //  response = await fileReader(path);
+         //  buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
+         //  return buffer;
+                 path = settings.voicePath + (settings.voicePath.endsWith("/") ? "" : "/") + s + ".bin";
+                    if (isTraceConnection) {
+                      utils.trace('Loading voice "' + path + '".');
+                    }
+                    console.log("path in worker = " + path);
+                    const response = await fileReader(path); // already a Buffer
+                    console.log(`📦 Read voice file '${path}', size: ${response.length} bytes`);
+                    buffer = response; // No need to slice
+                    voices.set(s, buffer);
+                    return buffer;
         } else if ( !isNode && settings.voiceURL ) {
           const url = new URL(settings.voiceURL, self.location.href);
           url.pathname += (url.pathname.endsWith("/") ? "" : "/") + s + ".bin";
