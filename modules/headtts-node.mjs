@@ -102,7 +102,7 @@ export default async function handler(req, res) {
 
   console.log("req.method = " + req.method);
   console.log("req.url = " + req.url);
-  if (req.method !== 'POST' || req.url !== '/v1/synthesize') {
+  if (req.method !== 'POST' || req.url !== '/api/v1/synthesize') {
     res.statusCode = 404;
     return res.end('Not Found');
   }
