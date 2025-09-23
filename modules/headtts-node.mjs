@@ -100,6 +100,8 @@ export default async function handler(req, res) {
     return res.end();
   }
 
+  console.log("req.method = " + req.method);
+  console.log("req.url = " + req.url);
   if (req.method !== 'POST' || req.url !== '/v1/synthesize') {
     res.statusCode = 404;
     return res.end('Not Found');
