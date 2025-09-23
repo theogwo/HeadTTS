@@ -70,8 +70,10 @@ const config = {
     audioSampleRate: 24000,
 
     languages: ['en-us'],
-    dictionaryPath: "./dictionaries",
-    voicePath: "./voices",
+    // dictionaryPath: "./dictionaries",
+    // voicePath: "./voices",
+    dictionaryPath: path.join(__dirname, '../dictionaries'),
+    voicePath: path.join(__dirname, '../voices'),
     voices: ["af_bella"],
 
     deltaStart: -10,
