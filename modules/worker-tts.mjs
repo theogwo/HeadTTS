@@ -232,9 +232,11 @@ async function loadVoice(s) {
                     console.log("🔍 Voice file path in worker =", filePath);
                     try {
                       await access(filePath, fsConstants.F_OK);
-                      const response = await fileReader(filePath);
-                      const buffer = response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
-                      return buffer;
+                      // const response = await fileReader(filePath);
+                      // const buffer = response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
+                      // return buffer;
+                             const buffer = await fileReader(filePath);
+                             return buffer;
                     } catch (err) {
                       console.error(`❌ Voice file not found or unreadable: ${filePath}`);
                       throw new Error(`Voice file not found: ${filePath}`);
