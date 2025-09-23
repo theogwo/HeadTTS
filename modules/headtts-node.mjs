@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { cpus } from 'os';
 import { Worker } from 'worker_threads';
 import * as utils from './utils.mjs';
+import '@huggingface/transformers';
 
 console.log("🚀 HeadTTS is starting...");
 
