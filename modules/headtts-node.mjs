@@ -44,9 +44,6 @@ let restId = 0;
 const workers = new Array(config.tts.threads);
 const statuses = new Array(config.tts.threads);
 const mapRest = new Map();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const workerPath = path.join(__dirname, 'worker-tts.mjs');
 
 for (let i = 0; i < config.tts.threads; i++) {
