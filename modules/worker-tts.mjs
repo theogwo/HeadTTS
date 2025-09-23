@@ -221,6 +221,7 @@ async function loadVoice(s) {
           if ( isTraceConnection ) {
             utils.trace( 'Loading voice "' + path + '".' );
           }
+         console.log("path in worker = "+ path)
           response = await fileReader(path);
           buffer =  response.buffer.slice(response.byteOffset, response.byteOffset + response.byteLength);
           return buffer;
