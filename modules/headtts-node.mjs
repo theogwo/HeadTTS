@@ -283,7 +283,7 @@ function restHandler(req,res) {
 
     // Synthesize
     console.log("URL - "+req.url);
-    if ( req.url === '/v1/synthesize') {
+    if ( req.url === '/api/v1/synthesize') {
 
       let body = '';
       req.on('data', chunk => (body += chunk));
@@ -335,7 +335,7 @@ function restHandler(req,res) {
           }));
         }
       });
-    } else if ( req.url === '/v1/hello' ) {
+    } else if ( req.url === '/api/v1/hello' ) {
       if ( isTraceMessages ) {
         utils.trace( "OUT: -> REST Client, HELLO" );
       }
